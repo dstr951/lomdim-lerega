@@ -1,10 +1,10 @@
 const {Teacher} = require('../models/Teachers')
 const TEACHERS_SERVICE_DEBUG = false
 
-async function registerTeacher(email, password, name, dateOfBirth, socialProfileLink, phoneNumber, profilePicture) {
+async function registerTeacher(email, hashedPassword, name, dateOfBirth, socialProfileLink, phoneNumber, profilePicture) {
     const newTeacher = new Teacher({
         email,
-        password,
+        password: hashedPassword,
         name,
         dateOfBirth,
         socialProfileLink,

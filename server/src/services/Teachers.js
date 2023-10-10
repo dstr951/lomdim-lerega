@@ -1,4 +1,7 @@
 const {Teacher} = require('../models/Teachers')
+const bcrypt = require ('bcrypt')
+const jwt = require("jsonwebtoken")
+
 const TEACHERS_SERVICE_DEBUG = false
 
 async function registerTeacher(email, hashedPassword, name, dateOfBirth, socialProfileLink, phoneNumber, profilePicture) {
@@ -41,6 +44,42 @@ async function registerTeacher(email, hashedPassword, name, dateOfBirth, socialP
 
 }
 
+async function loginTeacher(email, password) {
+    try {
+        const teacher = await Teacher.findOne({email})
+        if(!teacher) {
+            return {
+                status:404,
+                error: "We couldn't find a teacher with those credentials"
+            }
+        }
+        const compareResult = await bcrypt.compare(password, teacher.password) 
+        if(!compareResult) {
+            return {
+                status:404,
+                error: "We couldn't find a teacher with those credentials"
+            }
+        }
+        const data = {email}
+        // Generate the token.
+        const token = jwt.sign(data, process.env.JWT_KEY)
+        // Return the token to the browser
+        return{
+            status: 200,
+            body: token
+        }
+       
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            body:error
+        }
+
+    }
+}
+
 module.exports= {
     registerTeacher,
+    loginTeacher,
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,8 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleLogin = async (event) => {
+    const handleLogin = async (event, navigate) => {
         event.preventDefault();
 
         try {
@@ -19,7 +20,7 @@ const App = () => {
                 password
             });
             if (response.data) {
-                console.log('Successfully logged in:', response.data);
+                navigate('/teacher-homepage', { state: { email: email, token: response.data} })
             }
         } catch (error) {
             console.error('Error logging in:', error);

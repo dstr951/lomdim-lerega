@@ -20,8 +20,8 @@ const TeacherSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    dateOfBirth:{
-        type:Date,
+    age:{
+        type:Number,
         required:true
     },
     socialProfileLink:{
@@ -38,6 +38,27 @@ const TeacherSchema = new mongoose.Schema({
     },
     profilePicture:{
         type:String,
+        required: true
+    },
+    aboutMe:{
+        type: String,
+        required: true,
+    },
+    canTeach: {
+        type: [new mongoose.Schema({
+            subject:{
+                type: Number,
+                required: true
+            },
+            lowerGrade:{
+                type: Number,
+                required: true
+            },
+            higherGrade:{
+                type: Number,
+                required: true
+            },
+        })],
         required: true
     },
     authenticated:{

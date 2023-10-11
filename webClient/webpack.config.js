@@ -1,7 +1,8 @@
 const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const Dotenv = require('dotenv-webpack')
+const Dotenv = require('dotenv-webpack');
+const { EnvironmentPlugin } = require("webpack");
 
 /*We are basically telling webpack to take index.js from entry. Then check for all file extensions in resolve. 
 After that apply all the rules in module.rules and produce the output and place it in main.js in the public folder.*/
@@ -87,5 +88,6 @@ module.exports={
         new Dotenv({
             path: './.env', // Path to .env file (this is the default)
             safe: true, // load .env.example (defaults to "false" which does not use dotenv-safe)
-          })],
+          }),
+        new EnvironmentPlugin(Object.keys(process.env))],
 }

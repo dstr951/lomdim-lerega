@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 
-const App = () => {
+const App = () => {    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ const App = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3001/api/Users/login', {
+            const response = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
                 email,
                 password
             });

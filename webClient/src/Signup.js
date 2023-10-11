@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, CloseButton } from "react-bootstrap";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -96,7 +97,7 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post('http://127.0.0.1:3001/api/Teachers', teacherData);
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Teachers`, teacherData);
                 if (response.status === 200) {
                     console.log("Teacher created successfully");
                     // Maybe redirect to another page or show a success message
@@ -122,7 +123,7 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post('http://127.0.0.1:3001/api/Students', studentData); // Adjust the endpoint if needed
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); // Adjust the endpoint if needed
                 if (response.status === 200) {
                     console.log("Student created successfully");
                     // Maybe redirect to another page or show a success message

@@ -19,14 +19,14 @@ const App = () => {
         event.preventDefault();
     
         try {
-            const response = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
+            const loginResponse = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
                 email,
                 password
             });
             
             if (loginResponse.data) {
                 const token = loginResponse.data;
-                const teacherResponse = await axios.get(`http://localhost:3001/api/Teachers/search?email=${email}`,
+                const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
                  { headers: { Authorization: token} });
                 
                 if (teacherResponse.data) {

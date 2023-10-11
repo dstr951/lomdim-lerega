@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, CloseButton } from "react-bootstrap";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ const Signup = () => {
     const [subjects, setSubjects] = useState([]);
     const [selectedSubject, setSelectedSubject] = useState('מתמטיקה');
     const [startClass, setStartClass] = useState("א'");
-    const [endClass, setEndClass] = useState("י'ב");
+    const [endClass, setEndClass] = useState('י"ב');
     const [age, setAge] = useState("");
     const [socialProfileLink, setSocialProfileLink] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -54,8 +55,8 @@ const Signup = () => {
         'ח\'': 8,
         'ט\'': 9,
         'י\'': 10,
-        'יא\'': 11,
-        'יב\'': 12,
+        'י"א': 11,    
+        'י"ב': 12,    
     };
 
     const handleAddSubject = () => {
@@ -96,7 +97,7 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post('http://127.0.0.1:3001/api/Teachers', teacherData);
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Teachers`, teacherData);
                 if (response.status === 200) {
                     console.log("Teacher created successfully");
                     // Maybe redirect to another page or show a success message
@@ -122,7 +123,7 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post('http://127.0.0.1:3001/api/Students', studentData); // Adjust the endpoint if needed
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); // Adjust the endpoint if needed
                 if (response.status === 200) {
                     console.log("Student created successfully");
                     // Maybe redirect to another page or show a success message
@@ -221,19 +222,19 @@ const Signup = () => {
                                 עד
                             </Col>
                             <Col md={3}>
-                                <Form.Control as="select" value={endClass} onChange={(e) => setEndClass(e.target.value)}>
-                                    <option>א'</option>
-                                    <option>ב'</option>
-                                    <option>ג'</option>
-                                    <option>ד'</option>
-                                    <option>ה'</option>
-                                    <option>ו'</option>
-                                    <option>ז'</option>
-                                    <option>ח'</option>
-                                    <option>ט'</option>
-                                    <option>י'</option>
-                                    <option>י"א</option>
-                                    <option>י"ב</option>
+                                <Form.Control as="select" value={endClass} defaultValue='י"ב' onChange={(e) => setEndClass(e.target.value)}>
+                                <option>א'</option>
+                                <option>ב'</option>
+                                <option>ג'</option>
+                                <option>ד'</option>
+                                <option>ה'</option>
+                                <option>ו'</option>
+                                <option>ז'</option>
+                                <option>ח'</option>
+                                <option>ט'</option>
+                                <option>י'</option>
+                                <option>י"א</option>  
+                                <option>י"ב</option> 
                                 </Form.Control>
                             </Col>
                             <Col md={2}>

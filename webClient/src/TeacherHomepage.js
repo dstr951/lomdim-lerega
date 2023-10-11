@@ -101,7 +101,7 @@ TeacherHomepage.defaultProps = {
         lastName: "לוי",
         age: "30",
         socialProfileLink: "https://www.example.com/",
-        phoneNumber: "050-1234567",
+        phoneNumber: "0501234567",
         profilePicture: "https://via.placeholder.com/150",
         aboutMe: "אני מורה למתמטיקה ופיזיקה עם ניסיון של למעלה מ-10 שנים.",
         canTeach: [

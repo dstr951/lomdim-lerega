@@ -11,8 +11,12 @@ const routerStudents = require("./routes/Students")
 const app = express()
 const http = require('http')
 const server = http.createServer(app);
+try {
+    require('custom-env').env(process.env.NODE_ENV, 'src/config');
+} catch(err) {
+    console.log(err)
+}
 
-require('custom-env').env(process.env.NODE_ENV, 'src/config');
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

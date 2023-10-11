@@ -85,9 +85,10 @@ module.exports={
     },
 	plugins: [new MiniCssExtractPlugin(),
         new NodePolyfillPlugin(),
+        new EnvironmentPlugin(Object.keys(process.env)),
         new Dotenv({
             path: './.env', // Path to .env file (this is the default)
-            safe: true, // load .env.example (defaults to "false" which does not use dotenv-safe)
+            safe: false, // load .env.example (defaults to "false" which does not use dotenv-safe)
           }),
-        new EnvironmentPlugin(Object.keys(process.env))],
+        ],
 }

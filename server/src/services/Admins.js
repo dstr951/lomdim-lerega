@@ -1,17 +1,17 @@
-const { Teacher } = require("../models/Teachers");
+const { Admin } = require("../models/Admins");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 async function loginAdmin(email, password) {
     try {
-      const teacher = await Teacher.findOne({ email });
-      if (!teacher) {
+      const admin = await Admin.findOne({ email });
+      if (!admin) {
         return {
           status: 404,
           error: "We couldn't find a admin with those credentials",
         };
       }
-      const compareResult = await bcrypt.compare(password, teacher.password);
+      const compareResult = await bcrypt.compare(password, admin.password);
       if (!compareResult) {
         return {
           status: 404,
@@ -34,3 +34,7 @@ async function loginAdmin(email, password) {
       };
     }
   }
+
+  module.exports = {
+    loginAdmin
+  };

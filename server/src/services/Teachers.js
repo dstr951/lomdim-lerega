@@ -101,8 +101,31 @@ async function getAllTeachers() {
   }
 }
 
+async function getTeacherByEmail(email) {
+  try {
+    const teacher = await Teacher.findOne({ email });
+    if (!teacher) {
+      return {
+        status: 404,
+        error: "We couldn't find a teacher with this email",
+      };
+    }
+    return {
+      status: 200,
+      body: teacher,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      body: error,
+    };
+  }
+}
+
 module.exports = {
   registerTeacher,
   loginTeacher,
   getAllTeachers,
+  getTeacherByEmail,
 };

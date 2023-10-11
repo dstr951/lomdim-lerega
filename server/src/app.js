@@ -13,7 +13,7 @@ const http = require('http')
 const server = http.createServer(app);
 
 require('custom-env').env(process.env.NODE_ENV, 'src/config');
-mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

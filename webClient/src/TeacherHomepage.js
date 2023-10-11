@@ -59,13 +59,13 @@ const TeacherHomepage = ({ teacher }) => {
 
 TeacherHomepage.defaultProps = {
     teacher: {
-        teacherFirstName: "יוסף",
-        teacherLastName: "לוי",
-        age: "30",
+        teacherFirstName: "פיתה",
+        teacherLastName: "בגביר",
+        age: "15",
         socialProfileLink: "https://www.example.com/",
         phoneNumber: "050-1234567",
-        profilePicture: "https://via.placeholder.com/150", // Placeholder image
-        aboutMe: "אני מורה למתמטיקה ופיזיקה עם ניסיון של למעלה מ-10 שנים.",
+        profilePicture: "https://scontent.ftlv19-2.fna.fbcdn.net/v/t1.6435-9/55627808_613623055749767_8065757477318164480_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=730e14&_nc_ohc=4G5h8eEYhgIAX9qFdBW&_nc_ht=scontent.ftlv19-2.fna&oh=00_AfB-BhtKPZDwTYwfkGLNKU31pTt6xGb4Nsz8yegcIx2OWw&oe=654DCEDC", 
+        aboutMe: "חמש עשרה",
         canTeach: [
             { subject: "מתמטיקה", lowerGrade: "א'", higherGrade: "ז'" },
             { subject: "פיזיקה", lowerGrade: "ג'", higherGrade: "י\"ב" }

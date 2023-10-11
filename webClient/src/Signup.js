@@ -11,7 +11,7 @@ const Signup = () => {
     const [subjects, setSubjects] = useState([]);
     const [selectedSubject, setSelectedSubject] = useState('מתמטיקה');
     const [startClass, setStartClass] = useState("א'");
-    const [endClass, setEndClass] = useState("י'ב");
+    const [endClass, setEndClass] = useState('י"ב');
     const [age, setAge] = useState("");
     const [socialProfileLink, setSocialProfileLink] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -54,8 +54,8 @@ const Signup = () => {
         'ח\'': 8,
         'ט\'': 9,
         'י\'': 10,
-        'יא\'': 11,
-        'יב\'': 12,
+        'י"א': 11,    
+        'י"ב': 12,    
     };
 
     const handleAddSubject = () => {
@@ -221,19 +221,19 @@ const Signup = () => {
                                 עד
                             </Col>
                             <Col md={3}>
-                                <Form.Control as="select" value={endClass} onChange={(e) => setEndClass(e.target.value)}>
-                                    <option>א'</option>
-                                    <option>ב'</option>
-                                    <option>ג'</option>
-                                    <option>ד'</option>
-                                    <option>ה'</option>
-                                    <option>ו'</option>
-                                    <option>ז'</option>
-                                    <option>ח'</option>
-                                    <option>ט'</option>
-                                    <option>י'</option>
-                                    <option>י"א</option>
-                                    <option>י"ב</option>
+                                <Form.Control as="select" value={endClass} defaultValue='י"ב' onChange={(e) => setEndClass(e.target.value)}>
+                                <option>א'</option>
+                                <option>ב'</option>
+                                <option>ג'</option>
+                                <option>ד'</option>
+                                <option>ה'</option>
+                                <option>ו'</option>
+                                <option>ז'</option>
+                                <option>ח'</option>
+                                <option>ט'</option>
+                                <option>י'</option>
+                                <option>י"א</option>  
+                                <option>י"ב</option> 
                                 </Form.Control>
                             </Col>
                             <Col md={2}>

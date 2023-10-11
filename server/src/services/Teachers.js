@@ -71,7 +71,7 @@ async function loginTeacher(email, password) {
         error: "We couldn't find a teacher with those credentials",
       };
     }
-    const data = { email };
+    const data = { email, isAdmin:false};
     // Generate the token.
     const token = jwt.sign(data, process.env.JWT_KEY);
     // Return the token to the browser

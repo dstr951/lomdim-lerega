@@ -18,7 +18,7 @@ async function loginAdmin(email, password) {
           error: "We couldn't find a admin with those credentials",
         };
       }
-      const data = { email, admin:true };
+      const data = { email, isAdmin:true };
       // Generate the token.
       const token = jwt.sign(data, process.env.JWT_KEY);
       // Return the token to the browser

@@ -81,6 +81,9 @@ const App = () => {
                     <p>לסרטון הסבר קצר, לחצו  <a href="#">כאן</a>.</p>
                 </Col>
             </Row>
+            <Row className="mb-4" dir="rtl">
+                <Link to="/admin/panel">עבור לדף אדמינים</Link>
+            </Row>
         </Container>
     );
 }

@@ -85,7 +85,8 @@ const Signup = () => {
             const teacherData = {
                 email,
                 password,
-                name: `${teacherFirstName} ${teacherLastName}`, 
+                firstName: teacherFirstName,
+                lastName: teacherLastName,
                 age: Number(age),
                 socialProfileLink,
                 phoneNumber,

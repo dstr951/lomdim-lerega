@@ -4,11 +4,12 @@ const jwt = require("jsonwebtoken")
 
 const TEACHERS_SERVICE_DEBUG = false
 
-async function registerTeacher(email, hashedPassword, name, age, socialProfileLink, phoneNumber, profilePicture, aboutMe, canTeach) {
+async function registerTeacher(email, hashedPassword, firstName, lastName, age, socialProfileLink, phoneNumber, profilePicture, aboutMe, canTeach) {
     const newTeacher = new Teacher({
         email,
         password: hashedPassword,
-        name,
+        firstName,
+        lastName,
         age,
         socialProfileLink,
         phoneNumber,

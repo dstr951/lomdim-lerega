@@ -1,7 +1,4 @@
-// TeachersListing.js
-import React, { useState } from "react";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   Container,
@@ -10,8 +7,8 @@ import {
   Form,
   ListGroup,
 } from "react-bootstrap";
-import Teachers from "./Teachers";
-const teachers = Teachers;
+import axios from 'axios';
+
 const idToGrade = {
   1: "א'",
   2: "ב'",
@@ -43,31 +40,38 @@ const idToSubject = {
 const TeachersListing = () => {
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
-  //   const [teachers, setTeachers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
+
+  useEffect(() => {
+    getTeachers();
+  }, []);
 
   const getTeachers = () => {
     axios
       .get(`http://127.0.0.1:3001/api/Teachers`)
-      .then((response) => setTeachers(response.data.Teachers))
+      .then((response) => {
+        setTeachers(response.data.Teachers);
+        setFilteredTeachers(response.data.Teachers);
+      })
       .catch((error) => console.error(error));
   };
 
-  const handleFilterChange = (subject, grade) => {
+  const handleFilterChange = () => {
     const params = [];
-    if (subject != 0) {
+    if (subject) {
       params.push(`subject=${subject}`);
     }
-
-    if (grade != 0) {
+    if (grade) {
       params.push(`grade=${grade}`);
     }
 
-    let url = `http://127.0.0.1:3001/api/Teachers/search${
-      params ? `?${params.join("&")}` : ``
-    }`;
+    let url = `http://127.0.0.1:3001/api/Teachers/search`;
+    if (params.length > 0) {
+      url += `?${params.join("&")}`;
+    }
 
-    if (params != []) {
+    if (params.length > 0) {
       axios
         .get(url)
         .then((response) => {
@@ -81,11 +85,12 @@ const TeachersListing = () => {
 
   const handleSubjectChange = (event) => {
     setSubject(event.target.value);
+    handleFilterChange();
   };
 
   const handleGradeChange = (event) => {
-    // prevent default?
     setGrade(event.target.value);
+    handleFilterChange();
   };
 
   return (
@@ -115,17 +120,19 @@ const TeachersListing = () => {
             ))}
           </Form.Select>
         </Col>
+        <Col>
+        </Col>
       </Row>
       <br />
 
       {filteredTeachers.length === 0 ? (
-        <Typography
+        <Row
           variant="body1"
           align="center"
           data-testid="teacherListing-noTeacherssAvailable"
         >
           לא נמצאו מורים.
-        </Typography>
+        </Row>
       ) : (
         <Accordion data-testid={"teacherListing-list"} defaultActiveKey="0">
           {filteredTeachers.map((teacher) => (

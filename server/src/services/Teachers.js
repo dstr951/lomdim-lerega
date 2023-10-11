@@ -82,7 +82,54 @@ async function loginTeacher(email, password) {
     }
 }
 
+async function getTecherByEmail(email){
+    try {
+        const teacher = await Teacher.findOne({email})
+        if(!teacher) {
+            return {
+                status:404,
+                error: "We couldn't find a teacher with this email"
+            }
+        }
+        return{
+            status: 200,
+            body: teacher
+        }       
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            body:error
+        }
+    }
+}
+
+const TEACHERS_LIMIT = 50
+async function getTechersBySubjectAndGrade(subject, grade){
+    try {
+        const teachers = await Teacher.find({ canTeach: { $elemMatch: {subject: subject, lowerGrade: {$lte: grade}, higherGrade: {$gte: grade}}}}).limit(TEACHERS_LIMIT)
+        if(!teachers) {
+            return {
+                status:404,
+                error: "We couldn't find a teachers with those conditions"
+            }
+        }
+        return{
+            status: 200,
+            body: teachers
+        }       
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            body:error
+        }
+    }
+}
+
 module.exports= {
+    getTecherByEmail,
+    getTechersBySubjectAndGrade,
     registerTeacher,
     loginTeacher,
 }

@@ -48,7 +48,41 @@ async function getAllTeachers(req, res) {
   }
 }
 
+async function approveTeacher(req, res) {
+  const email = req.params.email;
+  try {
+    const filter = { email: email };
+    const update = { authenticated: true };
+    const response = await Teacher.findOneAndUpdate(filter, update);
+    if (!response) {
+      return res.status(404).send("Teacher could not update");
+    }
+    return res.json(response);
+  } catch (error) {
+    console.log("error: ", error);
+    return res.status(500).send("Internal Server Error");
+  }
+}
+
+async function rejectTeacher(req, res) {
+  const email = req.params.email;
+  try {
+    const filter = { email: email };
+    const update = { authenticated: false };
+    const response = await Teacher.findOneAndUpdate(filter, update);
+    if (!response) {
+      return res.status(404).send("Teacher could not update");
+    }
+    return res.json(response);
+  } catch (error) {
+    console.log("error: ", error);
+    return res.status(500).send("Internal Server Error");
+  }
+}
+
 module.exports = {
   registerTeacher,
   getAllTeachers,
+  approveTeacher,
+  rejectTeacher,
 };

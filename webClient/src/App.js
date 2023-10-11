@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import jwt from "jwt-decode";
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const App = () => {
@@ -26,12 +27,17 @@ const App = () => {
             
             if (loginResponse.data) {
                 const token = loginResponse.data;
+                const login = jwt(token);
+
                 const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
                  { headers: { Authorization: token} });
+                
                 
                 if (teacherResponse.data) {
                     const teacher = teacherResponse.data;
                     navigate('/teacher-homepage', { state: { teacher } });
+                } else if(login.isAdmin) {
+                    navigate('/admin/panel');
                 } else {
                     alert('Failed to fetch teacher data.');
                 }

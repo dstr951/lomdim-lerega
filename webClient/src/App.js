@@ -23,11 +23,9 @@ const App = () => {
                 email,
                 password
             });
-
-            alert(loginResponse.data.token);
             
             if (loginResponse.data) {
-                const token = loginResponse.data.token;
+                const token = loginResponse.data;
                 const teacherResponse = await axios.get(`http://localhost:3001/api/Teachers/search?email=${email}`,
                  { headers: { Authorization: token} });
                 

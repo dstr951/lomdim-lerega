@@ -39,16 +39,12 @@ async function registerTeacher(req, res) {
   });
 }
 
-async function getAllTeachers() {
-  try {
-    const teachers = await Teacher.find({});
-    if (!teachers) {
-      return { status: 404, error: "No teachers found" };
-    }
-    return { status: 200, body: teachers };
-  } catch (err) {
-    console.log("Error: ", err);
-    return { status: 500, body: err };
+async function getAllTeachers(req, res) {
+  const teacherResponse = await TeachersService.getAllTeachers();
+  if (teacherResponse.status == 200) {
+    res.status(200).send(teacherResponse.body);
+  } else {
+    res.status(teacherResponse.status).send(teacherResponse.error);
   }
 }
 

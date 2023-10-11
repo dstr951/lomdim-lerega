@@ -7,7 +7,7 @@ async function loginAdmin(req, res) {
     if(adminResponseLogin.status === 200) {
         res.status(200).send(adminResponseLogin.body)
     } else {
-        res.status(teacherResponseLogin.status).send(teacherResponseLogin.error)
+        res.status(adminResponseLogin.status).send(adminResponseLogin.error)
     } 
 }
 

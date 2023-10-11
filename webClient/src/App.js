@@ -1,29 +1,47 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+
+    const location = useLocation();
     const navigate = useNavigate();
 
-    const handleLogin = async (event, navigate) => {
-        event.preventDefault();
+    const initialEmail = location.state?.email || '';
+    const [email, setEmail] = useState(initialEmail);
+    const [password, setPassword] = useState('');
 
+    const handleLogin = async (event) => {
+        event.preventDefault();
+    
         try {
-            const response = await axios.post('http://localhost:3001/api/Users/login', {
+            const loginResponse = await axios.post('http://localhost:3001/api/Users/login', {
                 email,
                 password
             });
-            if (response.data) {
-                navigate('/teacher-homepage', { state: { email: email, token: response.data} })
+
+            alert(loginResponse.data.token);
+            
+            if (loginResponse.data) {
+                const token = loginResponse.data.token;
+                const teacherResponse = await axios.get(`http://localhost:3001/api/Teachers/search?email=${email}`,
+                 { headers: { Authorization: token} });
+                
+                if (teacherResponse.data) {
+                    const teacher = teacherResponse.data;
+                    navigate('/teacher-homepage', { state: { teacher } });
+                } else {
+                    alert('Failed to fetch teacher data.');
+                }
+            } else {
+                alert('Failed to login.');
             }
         } catch (error) {
-            console.error('Error logging in:', error);
+            console.error('Error:', error);
         }
     };
 
@@ -47,7 +65,7 @@ const App = () => {
                     <Form>
                         <Form.Group className="mb-4" dir="rtl">
                             <Form.Label>אימייל </Form.Label>
-                            <Form.Control type="email" placeholder="הכנס כתובת אימייל" onChange={e => setEmail(e.target.value)} />
+                            <Form.Control type="email" placeholder="הכנס כתובת אימייל" value={email} onChange={e => setEmail(e.target.value)} />
                         </Form.Group>
 
                         <Form.Group className="mb-4" dir="rtl">

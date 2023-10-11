@@ -1,6 +1,9 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "scripts": {
+    "start": "SET NODE_ENV=local && node src/app.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",

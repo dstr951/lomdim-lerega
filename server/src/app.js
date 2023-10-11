@@ -1,5 +1,4 @@
 const express = require("express");
-require('dotenv').config();
 const mongoose = require('mongoose').default;
 
 console.log("starting mongoose with version: " + mongoose.version);
@@ -13,6 +12,7 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app);
 
+require('custom-env').env(process.env.NODE_ENV, 'src/config');
 mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

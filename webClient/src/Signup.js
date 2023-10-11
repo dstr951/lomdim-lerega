@@ -15,7 +15,7 @@ const Signup = () => {
     const [age, setAge] = useState("");
     const [socialProfileLink, setSocialProfileLink] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [profilePicture, setProfilePicture] = useState(""); // You may want to handle this differently for actual image uploads
+    const [profilePicture, setProfilePicture] = useState(""); 
     const [aboutMe, setAboutMe] = useState("");
     const [teacherFirstName, setTeacherFirstName] = useState("");
     const [teacherLastName, setTeacherLastName] = useState("");
@@ -103,6 +103,32 @@ const Signup = () => {
                 }
             } catch (error) {
                 console.error("Error creating teacher:", error);
+                // Handle error (show an error message or handle it another way)
+            }
+        } else if (userType === "student") {
+            const studentData = {
+                email,
+                password,
+                parent: {
+                    firstName: parentFirstName,
+                    lastName: parentLastName,
+                    phoneNumber: parentPhoneNumber
+                },
+                student: {
+                    firstName: studentFirstName,
+                    lastName: studentLastName,
+                    grade: gradeToId[studentClass]
+                }
+            };
+
+            try {
+                const response = await axios.post('http://127.0.0.1:3001/api/Students', studentData); // Adjust the endpoint if needed
+                if (response.status === 200) {
+                    console.log("Student created successfully");
+                    // Maybe redirect to another page or show a success message
+                }
+            } catch (error) {
+                console.error("Error creating student:", error);
                 // Handle error (show an error message or handle it another way)
             }
         }

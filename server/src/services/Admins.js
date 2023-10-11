@@ -34,3 +34,7 @@ async function loginAdmin(email, password) {
       };
     }
   }
+
+  module.exports = {
+    loginAdmin
+  };

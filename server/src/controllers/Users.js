@@ -1,5 +1,6 @@
 const UserService  = require("../services/Users");
 const TeachersService  = require("../services/Teachers");
+const StudentsService  = require("../services/Students");
 
 async function registerUser(req,res) {
     const registerUserResponse = await UserService.registerUser(
@@ -15,14 +16,20 @@ async function registerUser(req,res) {
 
 async function loginUser(req, res) {
     const {email, password} = req.body
-    const loginTeacherResponse = await TeachersService.loginTeacher(email, password)
-    if(loginTeacherResponse.status === 200) {
-        res.status(200).send(loginTeacherResponse.body)
-    } else if(loginTeacherResponse.status !== 404) {
-        res.status(loginTeacherResponse.status).send(loginTeacherResponse.error)
+    const teacherResponseLogin = await TeachersService.loginTeacher(email, password)
+    if(teacherResponseLogin.status === 200) {
+        res.status(200).send(teacherResponseLogin.body)
+    } else if(teacherResponseLogin.status !== 404) {
+        res.status(teacherResponseLogin.status).send(teacherResponseLogin.error)
     } else {
-        res.status(loginTeacherResponse.status).send(loginTeacherResponse.error)
-        //try logging in as a student
+        const studentResponseLogin = await StudentsService.loginStudent(email, password)
+        if(studentResponseLogin.status === 200) {
+            res.status(200).send(studentResponseLogin.body)
+        } else if(studentResponseLogin.status === 404) {
+            res.status(studentResponseLogin.status).send("couldn't find a user with those credetials")
+        } else {
+            res.status(studentResponseLogin.status).send(studentResponseLogin.error)
+        }
     }
 }
 

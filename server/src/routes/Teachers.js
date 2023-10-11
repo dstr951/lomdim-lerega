@@ -1,7 +1,9 @@
 const express = require('express');
 const TeachersController = require('../controllers/Teachers')
+const TokensService = require('../services/Tokens')
 const router = express.Router();
 
-router.post('/',TeachersController.registerTeacher);
-
 module.exports = router;
+
+router.post('/',TeachersController.registerTeacher);
+router.get('/search', TeachersController.searchTeachers);

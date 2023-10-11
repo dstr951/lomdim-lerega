@@ -15,6 +15,28 @@ async function registerTeacher(req,res){
     });    
 }
 
+async function searchTeachers(req, res){
+    const {email, subject, grade} = req.query
+    if(email) {
+        const teacherResponse = await TeachersService.getTecherByEmail(email)
+        if(teacherResponse.status == 200) {
+            res.status(200).send(teacherResponse.body)
+        } else {
+            res.status(teacherResponse.status).send(teacherResponse.error)
+        }
+    } else if(subject && grade) {
+        const teacherResponse = await TeachersService.getTechersBySubjectAndGrade(subject, grade)
+        if(teacherResponse.status == 200) {
+            res.status(200).send(teacherResponse.body)
+        } else {
+            res.status(teacherResponse.status).send(teacherResponse.error)
+        }
+    } else {
+        res.status(400).send("bad request")
+    }
+}
+
 module.exports = {
     registerTeacher,
+    searchTeachers,
 }

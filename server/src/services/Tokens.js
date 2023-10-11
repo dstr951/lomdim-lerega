@@ -7,9 +7,10 @@ function isLoggedIn(req, res, next) {
         const token = req.headers.authorization;
         try {
         // Verify the token is valid
-            const data = jwt.verify(token, key);
+            const data = jwt.verify(token, process.env.JWT_KEY);
             return next()    
         } catch (err) {
+            console.log(err)
             return res.status(401).send("Invalid Token");
         }           
     }

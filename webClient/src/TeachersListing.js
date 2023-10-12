@@ -7,7 +7,7 @@ import {
   Form,
   ListGroup,
 } from "react-bootstrap";
-import axios from 'axios';
+import axios from "axios";
 
 const idToGrade = {
   1: "א'",
@@ -49,10 +49,10 @@ const TeachersListing = () => {
 
   const getTeachers = () => {
     axios
-      .get(`http://127.0.0.1:3001/api/Teachers`)
+      .get(`http://127.0.0.1:3001/api/Teachers/all`)
       .then((response) => {
-        setTeachers(response.data.Teachers);
-        setFilteredTeachers(response.data.Teachers);
+        setTeachers(response.data);
+        setFilteredTeachers(response.data);
       })
       .catch((error) => console.error(error));
   };
@@ -120,8 +120,7 @@ const TeachersListing = () => {
             ))}
           </Form.Select>
         </Col>
-        <Col>
-        </Col>
+        <Col></Col>
       </Row>
       <br />
 

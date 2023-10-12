@@ -8,9 +8,10 @@ import {
   ListGroup,
   Button,
   Image,
+  Card,
 } from "react-bootstrap";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { idToGrade, idToSubject } from "./Converters";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
@@ -21,7 +22,12 @@ const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
   const location = useLocation();
+  const navigate = useNavigate();
   const token = location?.state?.token;
+
+  const handleDisconnect = () => {
+    navigate("/", {});
+  };
 
   useEffect(() => {
     getTeachers();
@@ -77,6 +83,11 @@ const TeachersListing = () => {
 
   return (
     <Container maxWidth="sm" dir="rtl">
+      <Card.Footer align="left">
+        <Button variant="primary" onClick={() => handleDisconnect()}>
+          התנתק
+        </Button>
+      </Card.Footer>
       <Row>
         <Col>
           <h1>שנתחיל ללמוד?</h1>

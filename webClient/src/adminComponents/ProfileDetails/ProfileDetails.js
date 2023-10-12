@@ -28,11 +28,11 @@ function ProfileDetails({clickedProfile, setApproval}) {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-success" data-bs-dismiss="modal"
-                                onClick={() => setApproval(clickedProfile.id, true)}>
+                                onClick={() => setApproval(clickedProfile.email, true)}>
                             Approve
                         </button>
                         <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
-                                onClick={() => setApproval(clickedProfile.id, false)}>
+                                onClick={() => setApproval(clickedProfile.email, false)}>
                             Disapprove
                         </button>
                     </div>

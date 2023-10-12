@@ -1,5 +1,5 @@
 const mongoose = require('mongoose').default;
-const {validatePassword, validatePhoneNumber} = require('../commonFunctions')
+const {validatePassword, validatePhoneNumber, validateCanTeach} = require('../commonFunctions')
 
 const TeacherSchema = new mongoose.Schema({
     email:{
@@ -63,7 +63,11 @@ const TeacherSchema = new mongoose.Schema({
                 required: true
             },
         })],
-        required: true
+        required: true,
+        validate: {
+            validator: validateCanTeach,
+            message: 'you have to pick at least one subject'
+        }
     },
     authenticated:{
         type:Boolean,

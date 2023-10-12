@@ -12,7 +12,7 @@ const App = () => {
   const [message, setMessage] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (event, navigate) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
@@ -27,7 +27,11 @@ const App = () => {
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      setMessage(true);
+      if (error.response && error.response.status === 404) { 
+        setMessage("כתובת מייל או סיסמא שגויים");
+      } else {
+        setMessage("בעיית שרת, אנא נסה שוב מאוחר יותר");
+      }
     }
   };
 
@@ -90,7 +94,7 @@ const App = () => {
           <div>
             {message ? (
               <p style={{ color: "red", fontSize: "20px" }}>
-                כתובת מייל או סיסמא שגויים
+                {message}
               </p>
             ) : (
               <></>

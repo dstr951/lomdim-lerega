@@ -1,4 +1,5 @@
 const StudentsService = require("../services/Students");
+const UsersService = require("../services/Users");
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
@@ -9,15 +10,22 @@ async function registerStudent(req, res) {
         if(err) {
             return res.status(500).send("Error hashing the password.");
         }
+        const userRegisterResponse = await UsersService.registerUser(email, hashedPassword, "student")
+        if(userRegisterResponse.status !== 200) {
+        res
+            .status(userRegisterResponse.status)
+            .send(userRegisterResponse.error);
+            return;
+        }
 
-        const registerStudentResponse = await StudentsService.registerStudent(
-            email, hashedPassword, parent, student
+        const studentRegisterResponse = await StudentsService.registerStudent(
+            email, parent, student
         );
 
-        if (registerStudentResponse.status == 200) {
-            res.status(200).send(registerStudentResponse.body);
+        if (studentRegisterResponse.status == 200) {
+            res.status(200).send(studentRegisterResponse.body);
         } else {
-            res.status(registerStudentResponse.status).send(registerStudentResponse.error);
+            res.status(studentRegisterResponse.status).send(studentRegisterResponse.error);
         }
     });
 }

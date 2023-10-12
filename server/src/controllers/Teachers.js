@@ -1,4 +1,5 @@
 const TeachersService = require("../services/Teachers");
+const UsersService = require("../services/Users");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
 
@@ -16,9 +17,15 @@ async function registerTeacher(req, res) {
     canTeach,
   } = req.body;
   bcrypt.hash(password, SALT_ROUNDS, async function (err, hashedPassword) {
-    const registerTeacherResponse = await TeachersService.registerTeacher(
+    const userRegisterResponse = await UsersService.registerUser(email, hashedPassword, "teacher")
+    if(userRegisterResponse.status !== 200) {
+      res
+        .status(userRegisterResponse.status)
+        .send(userRegisterResponse.error);
+        return;
+    }
+    const teacherRegisterResponse = await TeachersService.registerTeacher(
       email,
-      hashedPassword,
       firstName,
       lastName,
       age,
@@ -28,12 +35,12 @@ async function registerTeacher(req, res) {
       aboutMe,
       canTeach
     );
-    if (registerTeacherResponse.status == 200) {
-      res.status(200).send(registerTeacherResponse.body);
+    if (teacherRegisterResponse.status == 200) {
+      res.status(200).send(teacherRegisterResponse.body);
     } else {
       res
-        .status(registerTeacherResponse.status)
-        .send(registerTeacherResponse.error);
+        .status(teacherRegisterResponse.status)
+        .send(teacherRegisterResponse.error);
     }
   });
 }
@@ -69,6 +76,15 @@ async function getAllTeachers(req, res) {
     res.status(teacherResponse.status).send(teacherResponse.error);
   }
 }
+async function getAllTeachersAdmin(req, res) {
+  const teacherResponse = await TeachersService.getAllTeachersAdmin();
+  console.log(teacherResponse.length)
+  if (teacherResponse.status == 200) {
+    res.status(200).send(teacherResponse.body);
+  } else {
+    res.status(teacherResponse.status).send(teacherResponse.error);
+  }
+}
 
 async function approveTeacher(req, res) {
   const email = req.params.email;
@@ -94,6 +110,7 @@ module.exports = {
   registerTeacher,
   searchTeachers,
   getAllTeachers,
+  getAllTeachersAdmin,
   approveTeacher,
   rejectTeacher,
 };

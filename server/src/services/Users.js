@@ -1,43 +1,71 @@
 const {User} = require('../models/Users')
+const { registrationServiceErrorHandler } = require('../commonFunctions')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const SALT_ROUNDS = 10;
 const USERS_SERVICE_DEBUG = false
 
-async function registerUser(username, password, displayName) {
+async function registerUser(email, hashedPassword, role) {
     const newUser = new User({
-        username: username,
-        password: password,
-        displayName:displayName
+        email,
+        password: hashedPassword,
+        role
     })
-
     try {
         await newUser.save();
         if(USERS_SERVICE_DEBUG){
-            console.log('User saved successfully:', newUser);
+            console.log('Student saved successfully:', newUser);
         }
         return {
             status:200,
             body:{
-                username:username,
-                displayName:displayName
+                email
             }
         };
-
     }
     catch (error){
         console.log(error);
-        if (error.name === "ValidationError"){
+        return registrationServiceErrorHandler(error)
+    }
+}
+async function loginUser(email, password) {
+    try {
+        const student = await User.findOne({email})
+        if(!student) {
             return {
-                status: 400,
-                error: error.message
+                status:404,
+                error: "We couldn't find a user with those credentials"
             }
         }
-        return {
-            error,
-            status:500
+        const compareResult = await bcrypt.compare(password, student.password) 
+        if(!compareResult) {
+            return {
+                status:404,
+                error: "We couldn't find a user with those credentials"
+            }
         }
-    }
+        const data = {email, role: student.role}
+        // Generate the token.
+        const token = jwt.sign(data, process.env.JWT_KEY)
+        // Return the token to the browser
+        return{
+            status: 200,
+            body: {
+                token
+            }
+        }
+       
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            body:error
+        }
 
+    }
 }
 
 module.exports= {
     registerUser,
+    loginUser,
 }

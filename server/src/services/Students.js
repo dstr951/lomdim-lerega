@@ -1,17 +1,16 @@
 const {Student} = require("../models/Students");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
+const { registrationServiceErrorHandler } = require('../commonFunctions')
+
 const STUDENTS_SERVICE_DEBUG = false
 
-async function registerStudent(email, hashedPassword, parent, student) {
+async function registerStudent(email, parent, student) {
     const newStudent = new Student({
         email,
-        password: hashedPassword,
         student,
         parent
-    })
-
-    
+    })    
     try {
         await newStudent.save();
         if(STUDENTS_SERVICE_DEBUG){
@@ -23,27 +22,10 @@ async function registerStudent(email, hashedPassword, parent, student) {
                 email
             }
         };
-
     }
     catch (error){
         console.log(error);
-        if (error.name === "ValidationError"){
-            return {
-                status: 400,
-                error: error.message
-            }
-        }
-        if(error.code === 11000){
-            console.log("error code is 11000")
-            return {
-                status: 409,
-                error: error.message
-            }
-        }
-        return {
-            error,
-            status:500
-        }
+        return registrationServiceErrorHandler(error)
     }
 }
 
@@ -84,5 +66,4 @@ async function loginStudent(email, password) {
 
 module.exports = {
     registerStudent,
-    loginStudent
 };

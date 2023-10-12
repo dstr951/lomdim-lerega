@@ -17,7 +17,7 @@ function AdminPage() {
 
 
     const getAllProfiles = async () => {        
-        const res = await fetch(`${SERVER_ADDRESS}/api/Teachers/all`, {
+        const res = await fetch(`${SERVER_ADDRESS}/api/Teachers/all/admin`, {
             'method': 'get',
             'headers': {
                 'Content-Type': 'application/json',
@@ -70,7 +70,6 @@ function AdminPage() {
 
 
     function setApproval(id, state) {
-        console.log(profiles)
         const personIndex = profiles.findIndex((person) => person._id === id);
         console.log(personIndex)
         if (personIndex !== -1) {

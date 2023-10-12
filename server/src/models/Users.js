@@ -1,33 +1,41 @@
 const mongoose = require('mongoose').default;
+const {validatePassword} = require('../commonFunctions')
 
 const UserSchema = new mongoose.Schema({
-    username:{
+    email:{
         type:String,
         unique: true,
-        default: null,
         required:true
 
     },
     password:{
         type:String,
-        default: null,
         required:true,
         validate: {
-            validator: function (password) {
-                // Check if the password length is greater than 7
-                if (password.length <= 7) {
-                    return false;
-                }
-
-                return true;
-            },
-            message: 'Password must be at least 8 characters long.'
+            validator: validatePassword,
+            message: 'Password must be at least 8 characters long and contain only english letters, numbers and symbols'
         }
     },
-    displayName:{
+    role:{
         type:String,
-        default: null,
-        required:true
+        required: true,
+        validate:{
+            validator: role => {
+                if(["admin","student", "teacher"].includes(role)){
+                    return true;
+                }
+                return false;
+            },
+            message: `This role doesn't exist`
+        }
+    },
+    registered:{
+        type:Date,
+        default: Date.now
+    },
+    authenticated:{
+        type:Boolean,
+        default:null
     }
 })
 

@@ -6,6 +6,7 @@ import {
   Col,
   Form,
   ListGroup,
+  Button,
 } from "react-bootstrap";
 import axios from "axios";
 
@@ -69,13 +70,15 @@ const TeachersListing = () => {
     let url = `http://127.0.0.1:3001/api/Teachers/search`;
     if (params.length > 0) {
       url += `?${params.join("&")}`;
+    } else {
+      url = `http://127.0.0.1:3001/api/Teachers/all`;
     }
 
     if (params.length > 0) {
       axios
         .get(url)
         .then((response) => {
-          setFilteredTeachers(response.data.Teachers);
+          setFilteredTeachers(response.data);
         })
         .catch((error) => console.error(error));
     } else {
@@ -85,12 +88,10 @@ const TeachersListing = () => {
 
   const handleSubjectChange = (event) => {
     setSubject(event.target.value);
-    handleFilterChange();
   };
 
   const handleGradeChange = (event) => {
     setGrade(event.target.value);
-    handleFilterChange();
   };
 
   return (
@@ -120,11 +121,13 @@ const TeachersListing = () => {
             ))}
           </Form.Select>
         </Col>
-        <Col></Col>
+        <Col>
+          <Button onClick={handleFilterChange}>החל סינון</Button>
+        </Col>
       </Row>
       <br />
-
-      {filteredTeachers.length === 0 ? (
+      {console.log(filteredTeachers)}
+      {filteredTeachers?.length === 0 ? (
         <Row
           variant="body1"
           align="center"
@@ -134,8 +137,8 @@ const TeachersListing = () => {
         </Row>
       ) : (
         <Accordion data-testid={"teacherListing-list"} defaultActiveKey="0">
-          {filteredTeachers.map((teacher) => (
-            <Accordion.Item key={teacher.id} eventKey={teacher.id}>
+          {filteredTeachers?.map((teacher) => (
+            <Accordion.Item key={teacher.email} eventKey={teacher.email}>
               <Accordion.Header>
                 <Container>
                   <Row xs="auto">
@@ -149,32 +152,43 @@ const TeachersListing = () => {
                         </Col>
                         {teacher.isOnline ? <p>מחובר</p> : <p> לא מחובר</p>}
                       </Row>
-                      <Row xs="auto">
-                        <Col xs>
-                          <ListGroup variant="flush">
-                            {teacher.canTeach.map((item, index) => (
-                              <ListGroup.Item key={index}>
-                                {idToSubject[item.subject]} (מכיתה{" "}
-                                {idToGrade[item.lowerGrade]} עד כיתה{" "}
-                                {idToGrade[item.higherGrade]})
-                              </ListGroup.Item>
-                            ))}
-                          </ListGroup>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  <Row xs="auto">
-                    <Col>
-                      <button>{teacher.phoneNumber}</button>
-                    </Col>
-                    <Col>
-                      <button>{teacher.socialProfileLink}</button>
                     </Col>
                   </Row>
                 </Container>
               </Accordion.Header>
-              <Accordion.Body>{teacher.aboutMe}</Accordion.Body>
+              <Accordion.Body>
+                <Container>
+                  <Row>
+                    {teacher.aboutMe}
+
+                    <Row xs="auto">
+                      <Col xs>
+                        <ListGroup variant="flush">
+                          {teacher.canTeach.map((item, index) => (
+                            <ListGroup.Item key={index}>
+                              {idToSubject[item.subject]} (כיתות{" "}
+                              {idToGrade[item.lowerGrade]} עד{" "}
+                              {idToGrade[item.higherGrade]})
+                            </ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                      </Col>
+                    </Row>
+                  </Row>
+                  <Row xs="auto">
+                    <Col>
+                      <Button>
+                        {teacher.phoneNumber.substring(0, 3) +
+                          "-" +
+                          teacher.phoneNumber.substring(2)}
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button>{teacher.socialProfileLink}</Button>
+                    </Col>
+                  </Row>
+                </Container>
+              </Accordion.Body>
             </Accordion.Item>
           ))}
         </Accordion>

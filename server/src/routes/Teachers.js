@@ -5,6 +5,6 @@ const router = express.Router();
 
 module.exports = router;
 
-router.post("/", TeachersController.registerTeacher);
-router.get("/search", TeachersController.searchTeachers);
-router.get("/all", TeachersController.getAllTeachers);
+router.post("/", TokensService.isLoggedIn, TeachersController.registerTeacher);
+router.get("/search", TokensService.isLoggedIn, TeachersController.searchTeachers);
+router.get("/all", TokensService.isLoggedIn, TeachersController.getAllTeachers);

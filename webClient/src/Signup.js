@@ -114,7 +114,7 @@ const Signup = () => {
         }
 
         if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
-            return alert('מספר הטלפון של ההורה צריך להכיל מספרים בלבד.');
+            return alert('מספר הטלפון של ההורה / האפוטרופוס צריך להכיל מספרים בלבד.');
         }
 
         if (userType === "teacher") {
@@ -322,7 +322,7 @@ const Signup = () => {
                         {userType === "student" && (
                             <Row>
                                 <Col md={6}>
-                                    <h4 className="mb-3">פרטי ההורה</h4>
+                                    <h4 className="mb-3">פרטי הורה / אפוטרופוס</h4>
                                     <Form.Group className="mb-4">
                                         <Form.Label>שם:</Form.Label>
                                         <Form.Control type="text" placeholder="הכנס שם ההורה" value={parentFirstName} onChange={(e) => setParentFirstName(e.target.value)} />
@@ -333,7 +333,7 @@ const Signup = () => {
                                     </Form.Group>
                                     <Form.Group className="mb-4">
                                         <Form.Label>טלפון:</Form.Label>
-                                        <Form.Control type="tel" placeholder="הכנס טלפון ההורה" value={parentPhoneNumber} onChange={(e) => setParentPhoneNumber(e.target.value)} />
+                                        <Form.Control type="tel" placeholder="הכנס טלפון הורה / אפוטרופוס" value={parentPhoneNumber} onChange={(e) => setParentPhoneNumber(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
@@ -383,8 +383,11 @@ const Signup = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Button variant="primary" type="submit" className="w-100">
+                        <Button variant="primary" type="submit" className="w-100 mb-3">
                             הרשם
+                        </Button>
+                        <Button variant="secondary" href="/" className="w-100">
+                            חזור
                         </Button>
                     </Form>
                 </Col>

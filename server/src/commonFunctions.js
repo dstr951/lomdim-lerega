@@ -12,7 +12,15 @@ function validatePassword(password){
     return true;
 }
 
+function validateCanTeach(canTeachArray){
+    if(canTeachArray.length === 0){
+        return false
+    }
+    return true
+}
+
 module.exports = {
     validatePassword,
     validatePhoneNumber,
+    validateCanTeach,
 }

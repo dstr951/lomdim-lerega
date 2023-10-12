@@ -7,38 +7,13 @@ import {
   Form,
   ListGroup,
   Button,
+  Image,
 } from "react-bootstrap";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+import { idToGrade, idToSubject } from "./Converters";
 
-const idToGrade = {
-  1: "א'",
-  2: "ב'",
-  3: "ג'",
-  4: "ד'",
-  5: "ה'",
-  6: "ו'",
-  7: "ז'",
-  8: "ח'",
-  9: "ט'",
-  10: "י'",
-  11: 'י"א',
-  12: 'י"ב',
-};
-
-const idToSubject = {
-  1: "מתמטיקה",
-  2: "היסטוריה",
-  3: "אנגלית",
-  4: "לשון",
-  5: "ביולוגיה",
-  6: "פיזיקה",
-  7: "כימיה",
-  8: "ערבית",
-  9: "תנך",
-  10: "מדעי המחשב",
-};
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
 const TeachersListing = () => {
   const [subject, setSubject] = useState("");
@@ -46,7 +21,7 @@ const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
   const location = useLocation();
-  const token = location?.state?.token
+  const token = location?.state?.token;
 
   useEffect(() => {
     getTeachers();
@@ -54,8 +29,9 @@ const TeachersListing = () => {
 
   const getTeachers = () => {
     axios
-      .get(`${SERVER_ADDRESS}/api/Teachers/all`,
-      { headers: { Authorization: token} })
+      .get(`${SERVER_ADDRESS}/api/Teachers/all`, {
+        headers: { Authorization: token },
+      })
       .then((response) => {
         setTeachers(response.data);
         setFilteredTeachers(response.data);
@@ -81,8 +57,7 @@ const TeachersListing = () => {
 
     if (params.length > 0) {
       axios
-        .get(url,
-          { headers: { Authorization: token} })
+        .get(url, { headers: { Authorization: token } })
         .then((response) => {
           setFilteredTeachers(response.data);
         })
@@ -147,7 +122,15 @@ const TeachersListing = () => {
               <Accordion.Header>
                 <Container>
                   <Row xs="auto">
-                    <Col>IMAGE</Col>
+                    <Col>
+                      <Image
+                        src={`data:image/jpeg;base64,${teacher.profilePicture}`}
+                        roundedCircle
+                        width={110}
+                        height={100}
+                        className="mb-3"
+                      />
+                    </Col>
                     <Col>
                       <Row xs="auto">
                         <Col>

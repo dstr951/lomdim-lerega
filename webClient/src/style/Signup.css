@@ -1,0 +1,28 @@
+.row-container{
+    display: flex; 
+    align-items: center;
+    gap: 20px; 
+}
+.buttonsRow {
+    margin: 0 10px;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    gap:20px
+}
+
+
+#teacherButton {
+    background-color: #9139E5;
+}
+
+#studentButton {
+    background-color: #E8701F;
+    width: 2;
+}
+
+.button-container {
+    display: flex; /* Use flexbox to arrange the buttons in a row */
+  }
+  
+

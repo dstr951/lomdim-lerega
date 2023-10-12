@@ -2,6 +2,7 @@ import React, {useEffect} from "react"
 import Checkbox from "./adminComponents/Checkbox/Checkbox";
 import ProfilesList from "./adminComponents/ProfilesList/ProfilesList";
 import ProfileDetails from "./adminComponents/ProfileDetails/ProfileDetails";
+import { useLocation } from "react-router-dom";
 import {useState} from "react";
 
 function AdminPage() {
@@ -11,12 +12,16 @@ function AdminPage() {
     const [disapprovedChecked, setDisapprovedChecked] = useState(true);
     const [clickedProfile, setClickedProfile] = useState({});
     const [profiles, setProfiles] = useState([]);
+    const location = useLocation();
+    const token = location?.state?.token
 
-    const getAllProfiles = async () => {
+
+    const getAllProfiles = async () => {        
         const res = await fetch(`${SERVER_ADDRESS}/api/Teachers/all`, {
             'method': 'get',
             'headers': {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token,
             }
         })
         if (res.ok) {
@@ -30,6 +35,7 @@ function AdminPage() {
             'method': 'post',
             'headers': {
                 'Content-Type': 'application/json',
+                'Authorization': token,
             },
         })
         if (res.ok) {
@@ -45,6 +51,7 @@ function AdminPage() {
             'method': 'post',
             'headers': {
                 'Content-Type': 'application/json',
+                'Authorization': token,
             },
         })
         if (res.ok) {
@@ -88,9 +95,10 @@ function AdminPage() {
                 <Checkbox approvedChecked={approvedChecked} setApprovedChecked={setApprovedChecked}
                           pendingChecked={pendingChecked} setPendingChecked={setPendingChecked}
                           disapprovedChecked={disapprovedChecked} setDisapprovedChecked={setDisapprovedChecked}/>
-                <ProfilesList approvedChecked={approvedChecked} pendingChecked={pendingChecked}
+                {profiles ? <ProfilesList approvedChecked={approvedChecked} pendingChecked={pendingChecked}
                               disapprovedChecked={disapprovedChecked} profiles={profiles} setProfiles={setProfiles}
                               getAllProfiles={getAllProfiles} setClickedProfile={setClickedProfile}/>
+                            : <div>there was an error getting the teachers from the server</div>}
             </div>
             <ProfileDetails clickedProfile={clickedProfile} setApproval={setApproval}/>
         </div>

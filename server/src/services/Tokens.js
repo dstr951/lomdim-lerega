@@ -22,17 +22,19 @@ function isAdmin(req, res, next) {
     const token = req.headers.authorization;
     try {
     // Verify the token is valid
-        const data = jwt.verify(token, key);
-        if(data.admin){
+        const data = jwt.verify(token, process.env.JWT_KEY);
+        if(data.isAdmin){
             return next()
         } else {
             return res.status(403).send("Not an admin");
         }            
     } catch (err) {
+        console.log(err)
         return res.status(401).send("Invalid Token");
     }           
 }
 
 module.exports = {
-    isLoggedIn
+    isLoggedIn,
+    isAdmin,
 }

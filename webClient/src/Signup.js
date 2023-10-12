@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, CloseButton } from "react-bootstrap";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passConfirm, setPassConfirm] = useState("");
 
     // Teacher fields
     const [subjects, setSubjects] = useState([]);
@@ -31,6 +33,39 @@ const Signup = () => {
 
     const [userType, setUserType] = useState("student");
 
+    const idToSubject = {
+        1: 'מתמטיקה',
+        2: 'היסטוריה',
+        3: 'אנגלית',
+        4: "לשון",
+        5: "ביולוגיה",
+        6: "פיזיקה",
+        7: "כימיה",
+        8: "ערבית",
+        9: "תנך",
+        10: "מדעי המחשב",
+        11: 'תכנות',
+        12: 'אלקטרוניקה',
+        13: 'מדעים',
+        14: 'פסיכולוגיה',
+        15: 'עברית',
+        16: 'ספרדית',
+        17: 'צרפתית',
+        18: 'רוסית',
+        19: 'תושבע',
+        20: 'ספרות',
+        21: 'אזרחות',
+        22: 'סוציולוגיה',
+        23: 'גיאוגרפיה',
+        24: 'מוזיקה',
+        25: 'ציור',
+        26: 'קולנוע',
+        27: 'פילוסופיה',
+        28: 'חינוך גופני',
+        29: 'ציור לגיל הרך',
+        30: 'חידות ומשחקי חשיבה'
+    }
+
     const subjectToId = {
         'מתמטיקה': 1,
         'היסטוריה': 2,
@@ -38,10 +73,30 @@ const Signup = () => {
         "לשון": 4,
         "ביולוגיה": 5,
         "פיזיקה": 6,
-        "כימיה": 7, 
+        "כימיה": 7,
         "ערבית": 8,
         "תנך": 9,
-        "מדעי המחשב": 10
+        "מדעי המחשב": 10,
+        'תכנות': 11,
+        'אלקטרוניקה': 12,
+        'מדעים': 13,
+        'פסיכולוגיה': 14,
+        'עברית': 15,
+        'ספרדית': 16,
+        'צרפתית': 17,
+        'רוסית': 18,
+        'תושבע': 19,
+        'ספרות': 20,
+        'אזרחות': 21,
+        'סוציולוגיה': 22,
+        'גיאוגרפיה': 23,
+        'מוזיקה': 24,
+        'ציור': 25,
+        'קולנוע': 26,
+        'פילוסופיה': 27,
+        'חינוך גופני': 28,
+        'ציור לגיל הרך': 29,
+        'חידות ומשחקי חשיבה': 30
     }
 
     const gradeToId = {
@@ -59,6 +114,8 @@ const Signup = () => {
         'י"ב': 12,    
     };
 
+    const navigate = useNavigate();
+
     const handleAddSubject = () => {
         const newSubject = {
             subject: selectedSubject,
@@ -73,8 +130,50 @@ const Signup = () => {
         setSubjects(updatedSubjects);
     }
 
+    const validatePassword = (password) => {
+        return password.length >= 8 && /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/i.test(password);
+    };
+
+    const validatePhoneNumber = (number) => {
+        return /^\d+$/.test(number);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                const base64 = reader.result.split(',')[1];
+                setProfilePicture(base64);  
+            }
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!email || !password || !passConfirm || 
+            (userType === "teacher" && (!teacherFirstName || !teacherLastName || !age || !socialProfileLink || !phoneNumber || subjects.length === 0)) || 
+            (userType === "student" && (!parentFirstName || !parentLastName || !parentPhoneNumber || !studentFirstName || !studentLastName))) {
+            return alert('נא למלא את כל השדות הדרושים.');
+        }
+
+        if (password !== passConfirm) {
+            return alert('הסיסמאות אינן תואמות.')
+        }
+
+        if (!validatePassword(password)) {
+            return alert('הסיסמה צריכה להיות באורך של 8 תווים לפחות ולהכיל אותיות באנגלית, מספרים וסימנים בלבד.');
+        }
+
+        if (userType === "teacher" && !validatePhoneNumber(phoneNumber)) {
+            return alert('מספר הטלפון של המורה צריך להכיל מספרים בלבד.');
+        }
+
+        if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
+            return alert('מספר הטלפון של ההורה / האפוטרופוס צריך להכיל מספרים בלבד.');
+        }
 
         if (userType === "teacher") {
             const canTeachFormatted = subjects.map(sub => ({
@@ -99,13 +198,21 @@ const Signup = () => {
             try {
                 const response = await axios.post(`${SERVER_ADDRESS}/api/Teachers`, teacherData);
                 if (response.status === 200) {
-                    console.log("Teacher created successfully");
-                    // Maybe redirect to another page or show a success message
+                    alert('ההרשמה בוצעה בהצלחה.')
+                    navigate('/', { state: { email } });
+                } else {
+                    alert('תקלה כללית, אנא נסה שנית מאוחר יותר.');
                 }
             } catch (error) {
-                console.error("Error creating teacher:", error);
-                // Handle error (show an error message or handle it another way)
+                if(error.status === 409){
+                    console.log("im at 409 clause")
+                    alert('אימייל זה כבר בשימוש');
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
+                    console.error(error);
+                }
             }
+
         } else if (userType === "student") {
             const studentData = {
                 email,
@@ -123,16 +230,23 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); // Adjust the endpoint if needed
-                if (response.status === 200) {
-                    console.log("Student created successfully");
-                    // Maybe redirect to another page or show a success message
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); 
+               if (response.status === 200) {
+                    alert('ההרשמה בוצעה בהצלחה.')
+                    navigate('/', { state: { email } });
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
                 }
             } catch (error) {
-                console.error("Error creating student:", error);
-                // Handle error (show an error message or handle it another way)
+                if(error.status === 409){
+                    console.log("im at 409 clause")
+                    alert('אימייל זה כבר בשימוש');
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
+                    console.error(error);
+                }
             }
-        }
+        };
     };
 
     return (
@@ -188,20 +302,13 @@ const Signup = () => {
                     <Form.Group className="mb-4">
                         <Form.Label className="mb-2">מקצוע:</Form.Label>
                         <Row className="mb-2">
-                            <Col md={3}>
-                                <Form.Control as="select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
-                                    <option value="מתמטיקה">מתמטיקה</option>
-                                    <option value="היסטוריה">היסטוריה</option>
-                                    <option value="אנגלית">אנגלית</option>
-                                    <option value="לשון">לשון</option>
-                                    <option value="ביולוגיה">ביולוגיה</option>
-                                    <option value="כימיה">פיזיקה</option>
-                                    <option value="כימיה">כימיה</option>
-                                    <option value="ערבית">ערבית</option>
-                                    <option value="תנך">תנ"ך</option>
-                                    <option value="מדעי המחשב">מדעי המחשב</option>
-                                </Form.Control>
-                            </Col>
+                        <Col md={3}>
+                            <Form.Control as="select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
+                                {Object.entries(idToSubject).map(([id, subject]) => (
+                                    <option key={id} value={subject}>{subject}</option>
+                                ))}
+                            </Form.Control>
+                        </Col>
                             <Col md={3}>
                                 <Form.Control as="select" value={startClass} onChange={(e) => setStartClass(e.target.value)}>
                                     <option>א'</option>
@@ -260,7 +367,7 @@ const Signup = () => {
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>תמונה:</Form.Label>
-                        <Form.Control type="file" accept="image/*" value={profilePicture} onChange={(e) => setProfilePicture(e.target.value)} />
+                        <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>קישור לפרופיל חברתי:</Form.Label>
@@ -268,7 +375,7 @@ const Signup = () => {
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>מספר טלפון</Form.Label>
-                        <Form.Control type="text" placeholder="תביא מספר אפס" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                        <Form.Control type="text" placeholder="הכנס מספר טלפון" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                     </Form.Group>
                 </>
             )}
@@ -276,7 +383,7 @@ const Signup = () => {
                         {userType === "student" && (
                             <Row>
                                 <Col md={6}>
-                                    <h4 className="mb-3">פרטי ההורה</h4>
+                                    <h4 className="mb-3">פרטי הורה / אפוטרופוס</h4>
                                     <Form.Group className="mb-4">
                                         <Form.Label>שם:</Form.Label>
                                         <Form.Control type="text" placeholder="הכנס שם ההורה" value={parentFirstName} onChange={(e) => setParentFirstName(e.target.value)} />
@@ -287,7 +394,7 @@ const Signup = () => {
                                     </Form.Group>
                                     <Form.Group className="mb-4">
                                         <Form.Label>טלפון:</Form.Label>
-                                        <Form.Control type="tel" placeholder="הכנס טלפון ההורה" value={parentPhoneNumber} onChange={(e) => setParentPhoneNumber(e.target.value)} />
+                                        <Form.Control type="tel" placeholder="הכנס טלפון הורה / אפוטרופוס" value={parentPhoneNumber} onChange={(e) => setParentPhoneNumber(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
@@ -336,9 +443,18 @@ const Signup = () => {
                                     <Form.Control type="password" placeholder="הכנס סיסמה" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </Form.Group>
                             </Col>
+                            <Col md={6}>
+                                <Form.Group className="mb-4"> 
+                                    <Form.Label className="mb-2">אימות סיסמה:</Form.Label>
+                                    <Form.Control type="password" placeholder="אימות סיסמה" value={passConfirm} onChange={(e) => setPassConfirm(e.target.value)} />
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Button variant="primary" type="submit" className="w-100">
+                        <Button variant="primary" type="submit" className="w-100 mb-3">
                             הרשם
+                        </Button>
+                        <Button variant="secondary" href="/" className="w-100">
+                            חזור
                         </Button>
                     </Form>
                 </Col>

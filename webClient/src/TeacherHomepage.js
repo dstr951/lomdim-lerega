@@ -22,7 +22,27 @@ const TeacherHomepage = () => {
         7: "כימיה",
         8: "ערבית",
         9: "תנך",
-        10: "מדעי המחשב"
+        10: "מדעי המחשב",
+        11: 'תכנות',
+        12: 'אלקטרוניקה',
+        13: 'מדעים',
+        14: 'פסיכולוגיה',
+        15: 'עברית',
+        16: 'ספרדית',
+        17: 'צרפתית',
+        18: 'רוסית',
+        19: 'תושבע',
+        20: 'ספרות',
+        21: 'אזרחות',
+        22: 'סוציולוגיה',
+        23: 'גיאוגרפיה',
+        24: 'מוזיקה',
+        25: 'ציור',
+        26: 'קולנוע',
+        27: 'פילוסופיה',
+        28: 'חינוך גופני',
+        29: 'ציור לגיל הרך',
+        30: 'חידות ומשחקי חשיבה'
     }
 
     const idToGrade = {
@@ -49,11 +69,11 @@ const TeacherHomepage = () => {
                             <h1>פרופיל המורה</h1>
                         </Card.Header>
                         <Card.Body>
-                            <Row className="mb-3">
-                                <Col md={4}>
-                                    <Image src={teacherData.profilePicture} roundedCircle width="200" className="mb-3" />
-                                    <h4>{teacherData.firstName} {teacherData.lastName}</h4>
-                                </Col>
+                        <Row className="mb-3">
+                            <Col md={4}>
+                                <Image src={`data:image/jpeg;base64,${teacherData.profilePicture}`} roundedCircle width="200" className="mb-3" />
+                                <h4>{teacherData.firstName} {teacherData.lastName}</h4>
+                            </Col>
                                 <Col md={8}>
                                     <ListGroup variant="flush">
                                         <ListGroup.Item>גיל: {teacherData.age}</ListGroup.Item>

@@ -48,6 +48,12 @@ async function registerTeacher(
         error: error.message,
       };
     }
+    if(error.code === 11000){
+        return {
+            status: 409,
+            error: error.message
+        }
+    }
     return {
       error,
       status: 500,

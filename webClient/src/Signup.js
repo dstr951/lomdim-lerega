@@ -204,8 +204,13 @@ const Signup = () => {
                     alert('תקלה כללית, אנא נסה שנית מאוחר יותר.');
                 }
             } catch (error) {
-                alert('תקלה כללית, אנא נסה שנית מאוחר יותר');
-                console.error(error);
+                if(error.status === 409){
+                    console.log("im at 409 clause")
+                    alert('אימייל זה כבר בשימוש');
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
+                    console.error(error);
+                }
             }
 
         } else if (userType === "student") {
@@ -233,8 +238,13 @@ const Signup = () => {
                     alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
                 }
             } catch (error) {
-                alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
-                console.error(error);
+                if(error.status === 409){
+                    console.log("im at 409 clause")
+                    alert('אימייל זה כבר בשימוש');
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
+                    console.error(error);
+                }
             }
         };
     };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, CloseButton } from "react-bootstrap";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const Signup = () => {
@@ -59,6 +60,8 @@ const Signup = () => {
         'י"ב': 12,    
     };
 
+    const navigate = useNavigate();
+
     const handleAddSubject = () => {
         const newSubject = {
             subject: selectedSubject,
@@ -73,8 +76,46 @@ const Signup = () => {
         setSubjects(updatedSubjects);
     }
 
+    const validatePassword = (password) => {
+        return password.length >= 8 && /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/i.test(password);
+    };
+
+    const validatePhoneNumber = (number) => {
+        return /^\d+$/.test(number);
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                const base64 = reader.result.split(',')[1];
+                setProfilePicture(base64);  
+            }
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!email || !password || 
+            (userType === "teacher" && (!teacherFirstName || !teacherLastName || !age || !socialProfileLink || !phoneNumber || subjects.length === 0)) || 
+            (userType === "student" && (!parentFirstName || !parentLastName || !parentPhoneNumber || !studentFirstName || !studentLastName))) {
+            return alert('נא למלא את כל השדות הדרושים.');
+        }
+
+        if (!validatePassword(password)) {
+            return alert('הסיסמה צריכה להיות באורך של 8 תווים לפחות ולהכיל אותיות באנגלית, מספרים וסימנים בלבד.');
+        }
+
+        if (userType === "teacher" && !validatePhoneNumber(phoneNumber)) {
+            return alert('מספר הטלפון של המורה צריך להכיל מספרים בלבד.');
+        }
+
+        if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
+            return alert('מספר הטלפון של ההורה צריך להכיל מספרים בלבד.');
+        }
 
         if (userType === "teacher") {
             const canTeachFormatted = subjects.map(sub => ({
@@ -99,13 +140,16 @@ const Signup = () => {
             try {
                 const response = await axios.post(`${SERVER_ADDRESS}/api/Teachers`, teacherData);
                 if (response.status === 200) {
-                    console.log("Teacher created successfully");
-                    // Maybe redirect to another page or show a success message
+                    alert('ההרשמה בוצעה בהצלחה.')
+                    navigate('/', { state: { email } });
+                } else {
+                    alert('תקלה כללית, אנא נסה שנית מאוחר יותר.');
                 }
             } catch (error) {
-                console.error("Error creating teacher:", error);
-                // Handle error (show an error message or handle it another way)
+                alert('תקלה כללית, אנא נסה שנית מאוחר יותר');
+                console.error(error);
             }
+
         } else if (userType === "student") {
             const studentData = {
                 email,
@@ -123,16 +167,18 @@ const Signup = () => {
             };
 
             try {
-                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); // Adjust the endpoint if needed
-                if (response.status === 200) {
-                    console.log("Student created successfully");
-                    // Maybe redirect to another page or show a success message
+                const response = await axios.post(`${SERVER_ADDRESS}/api/Students`, studentData); 
+               if (response.status === 200) {
+                    alert('ההרשמה בוצעה בהצלחה.')
+                    navigate('/', { state: { email } });
+                } else {
+                    alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
                 }
             } catch (error) {
-                console.error("Error creating student:", error);
-                // Handle error (show an error message or handle it another way)
+                alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
+                console.error(error);
             }
-        }
+        };
     };
 
     return (
@@ -260,7 +306,7 @@ const Signup = () => {
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>תמונה:</Form.Label>
-                        <Form.Control type="file" accept="image/*" value={profilePicture} onChange={(e) => setProfilePicture(e.target.value)} />
+                        <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>קישור לפרופיל חברתי:</Form.Label>
@@ -268,7 +314,7 @@ const Signup = () => {
                     </Form.Group>
                     <Form.Group className="mb-4">
                         <Form.Label>מספר טלפון</Form.Label>
-                        <Form.Control type="text" placeholder="תביא מספר אפס" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                        <Form.Control type="text" placeholder="הכנס מספר טלפון" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                     </Form.Group>
                 </>
             )}

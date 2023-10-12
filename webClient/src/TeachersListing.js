@@ -179,11 +179,16 @@ const TeachersListing = () => {
                       <Button>
                         {teacher.phoneNumber.substring(0, 3) +
                           "-" +
-                          teacher.phoneNumber.substring(2)}
+                          teacher.phoneNumber.substring(3)}
                       </Button>
                     </Col>
                     <Col>
-                      <Button>{teacher.socialProfileLink}</Button>
+                      <Button
+                        href={teacher.socialProfileLink}
+                        onClick={() => onClickOpenVacancy(id)}
+                      >
+                        {teacher.socialProfileLink}
+                      </Button>
                     </Col>
                   </Row>
                 </Container>

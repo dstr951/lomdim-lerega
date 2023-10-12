@@ -1,13 +1,13 @@
 .row-container{
     display: flex; 
     align-items: center;
+    justify-content: start;
     gap: 20px; 
 }
 .buttonsRow {
     margin: 0 10px;
     display: flex;
     flex: 1;
-    justify-content: space-between;
     gap:20px
 }
 

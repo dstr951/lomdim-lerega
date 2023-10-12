@@ -39,7 +39,6 @@ function AdminPage() {
             },
         })
         if (res.ok) {
-            console.log(res)
             return res.text();
         }
         return false;
@@ -55,7 +54,6 @@ function AdminPage() {
             },
         })
         if (res.ok) {
-            console.log(res)
             return res.text();
         }
         return false;
@@ -71,7 +69,6 @@ function AdminPage() {
 
     function setApproval(email, state) {
         const personIndex = profiles.findIndex((person) => person.email === email);
-        console.log(personIndex)
         if (personIndex !== -1) {
             const updatedProfiles = [...profiles];
             updatedProfiles[personIndex].authenticated = state;

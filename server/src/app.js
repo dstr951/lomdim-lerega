@@ -18,7 +18,7 @@ try {
 }
 
 mongoose
-  .connect(process.env.MONGO_CONNECTION_STRING, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

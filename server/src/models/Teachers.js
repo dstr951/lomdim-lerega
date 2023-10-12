@@ -13,7 +13,7 @@ const TeacherSchema = new mongoose.Schema({
         required:true,
         validate: {
             validator: validatePassword,
-            message: 'Password must be at least 8 characters long.'
+            message: 'Password must be at least 8 characters long and contain only english letters, numbers and symbols'
         }
     },
     firstName: {
@@ -37,7 +37,7 @@ const TeacherSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: validatePhoneNumber,
-            message: 'phone number must be of length 10'
+            message: 'phone number must be numbers only'
         }
     },
     profilePicture:{

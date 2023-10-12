@@ -19,7 +19,8 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0"
+    "react-router-dom": "^6.16.0",
+    "react-svg": "^16.1.28"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.15",
@@ -36,6 +37,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jest": "^27.4.0",
+    "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.7.6",
     "path": "^0.12.7",
     "style-loader": "^3.3.3",

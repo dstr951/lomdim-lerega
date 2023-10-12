@@ -12,16 +12,17 @@ function ProfileDetails({clickedProfile, setApproval}) {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
                     </div>
                     <div className="modal-body">
-                        <div>First name: {clickedProfile.full_name}</div>
-                        <div>Last name: {clickedProfile.full_name}</div>
-                        <div>Email: {clickedProfile.id}</div>
-                        <div>Age:</div>
-                        <div>Social profile link:</div>
-                        <div>Phone number:</div>
+                        <div><span className="fw-bold">First name:</span> {clickedProfile.firstName}</div>
+                        <div><span className="fw-bold">Last name:</span> {clickedProfile.lastName}</div>
+                        <div><span className="fw-bold">Email:</span> {clickedProfile.email}</div>
+                        <div><span className="fw-bold">Age:</span> {clickedProfile.age}</div>
+                        <div><span className="fw-bold">Social profile link:</span> {clickedProfile.socialProfileLink}</div>
+                        <div><span className="fw-bold">Phone number:</span> {clickedProfile.phoneNumber}</div>
                         <div className="text-break">
-                            About me:
+                            <span className="fw-bold">About me:</span>
                             <br/>
-                            <p className="text-end">
+                            <p className="text-end text-black">
+                                {clickedProfile.aboutMe}
                             </p>
                         </div>
                     </div>

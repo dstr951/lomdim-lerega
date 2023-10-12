@@ -1,7 +1,9 @@
 import React from "react"
 import ListItem from "../ListItem/ListItem";
 
-function ProfilesList({approvedChecked, pendingChecked, disapprovedChecked, profiles, setClickedProfile}) {
+function ProfilesList({approvedChecked, pendingChecked, disapprovedChecked, profiles, setProfiles,
+                          setClickedProfile, getAllProfiles}) {
+
 
     const filteredProfiles = profiles.filter((profile) => {
         if (approvedChecked && profile.authenticated === true) {
@@ -16,10 +18,13 @@ function ProfilesList({approvedChecked, pendingChecked, disapprovedChecked, prof
         return false;
     });
 
-
-    function handleClick(id, full_name, authenticated){
-        setClickedProfile({id: id, full_name: full_name, authenticated: authenticated})
+    function handleClick(_id, firstName, lastName, age, email, phoneNumber, socialProfileLink, aboutMe,
+                         authenticated){
+        setClickedProfile({id: _id, firstName: firstName, lastName:lastName, authenticated: authenticated,
+            age: age, email: email, phoneNumber:phoneNumber, socialProfileLink:socialProfileLink,
+            aboutMe:aboutMe})
     }
+
 
     const profilesArray = filteredProfiles.map((profile, key) => {
         return <ListItem onProfileClick={handleClick} {...profile} key={key}/>

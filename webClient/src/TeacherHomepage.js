@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const TeacherHomepage = () => {
     const location = useLocation();
     const teacherData = location.state ? location.state.teacher : TeacherHomepage.defaultProps.teacher;
+    const token = location.state?.token;
     const navigate = useNavigate();
 
     const handleDisconnect = (email) => {

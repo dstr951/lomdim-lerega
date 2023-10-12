@@ -71,7 +71,7 @@ async function loginTeacher(email, password) {
         error: "We couldn't find a teacher with those credentials",
       };
     }
-    const data = { email };
+    const data = { email, isAdmin:false};
     // Generate the token.
     const token = jwt.sign(data, process.env.JWT_KEY);
     // Return the token to the browser
@@ -156,10 +156,35 @@ async function getAllTeachers() {
   }
 }
 
+async function updateAuthenticationTeacherByEmail(email, newAuthentication){
+    try {
+        const filter = { email: email };
+        const update = { authenticated: newAuthentication };
+        const response = await Teacher.findOneAndUpdate(filter, update);
+        if (!response) {
+          return {
+            status:404,
+            error:"Teacher could not update"
+          }
+        }
+        return {
+            status: 200,
+            body: response
+        }
+      } catch (error) {
+        console.log("error: ", error);
+        return {
+            status: 500,
+            error
+        }
+      }
+}
+
 module.exports = {
   getTeacherByEmail,
   getTeachersBySubjectAndGrade,
   registerTeacher,
   loginTeacher,
   getAllTeachers,
+  updateAuthenticationTeacherByEmail,
 };

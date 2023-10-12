@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import jwt from "jwt-decode";
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+        let token;
         try {
             const loginResponse = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
                 email,
@@ -25,20 +26,31 @@ const App = () => {
             });
             
             if (loginResponse.data) {
-                const token = loginResponse.data;
+                token = loginResponse.data;
+                const login = jwt(token);
+                if(login.isAdmin) {
+                    navigate('/admin/panel', {state: {token}});
+                    return;
+                }
                 const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
                  { headers: { Authorization: token} });
+
                 
                 if (teacherResponse.data) {
                     const teacher = teacherResponse.data;
-                    navigate('/teacher-homepage', { state: { teacher } });
-                } else {
-                    alert('Failed to fetch teacher data.');
+                    navigate('/teacher-homepage', { state: { teacher, token } });
                 }
-            } else {
-                alert('Failed to login.');
-            }
+            } 
         } catch (error) {
+            if(error.response.data === "couldn't find a user with those credetials"){
+                alert('Failed to login.');
+                console.error('Error:', error);
+            } else if(error.response.data === "We couldn't find a teacher with this email"){
+                navigate('/seek-teachers', {state: {token}});
+            }
+            else {
+                alert("there was an error logging in")
+            }
             console.error('Error:', error);
         }
     };
@@ -95,6 +107,9 @@ const App = () => {
                 <Col className="text-center">
                     <p>לסרטון הסבר קצר, לחצו  <a href="#">כאן</a>.</p>
                 </Col>
+            </Row>
+            <Row className="mb-4" dir="rtl">
+                <Link to="/admin/panel">עבור לדף אדמינים</Link>
             </Row>
         </Container>
     );

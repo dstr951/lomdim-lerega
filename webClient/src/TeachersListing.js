@@ -9,6 +9,7 @@ import {
   Button,
 } from "react-bootstrap";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const idToGrade = {
   1: "א'",
@@ -43,6 +44,8 @@ const TeachersListing = () => {
   const [grade, setGrade] = useState("");
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
+  const location = useLocation();
+  const token = location?.state?.token
 
   useEffect(() => {
     getTeachers();
@@ -50,7 +53,8 @@ const TeachersListing = () => {
 
   const getTeachers = () => {
     axios
-      .get(`http://127.0.0.1:3001/api/Teachers/all`)
+      .get(`http://127.0.0.1:3001/api/Teachers/all`,
+      { headers: { Authorization: token} })
       .then((response) => {
         setTeachers(response.data);
         setFilteredTeachers(response.data);
@@ -76,7 +80,8 @@ const TeachersListing = () => {
 
     if (params.length > 0) {
       axios
-        .get(url)
+        .get(url,
+          { headers: { Authorization: token} })
         .then((response) => {
           setFilteredTeachers(response.data);
         })

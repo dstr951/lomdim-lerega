@@ -67,7 +67,7 @@ const TeacherSchema = new mongoose.Schema({
     },
     authenticated:{
         type:Boolean,
-        default:false
+        default:null
     },
     registered:{
         type:Date,

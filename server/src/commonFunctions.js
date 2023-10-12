@@ -3,10 +3,8 @@ function validatePhoneNumber(phoneNumber){
 }
 function validatePassword(password){
     // Check if the password length is greater than 7
-    if (password.length <= 7) {
-        return false;
-    }
-    return true;
+    
+    return password.match(/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/i) !== null;
 }
 
 function validateCanTeach(canTeachArray){

@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const idToGrade = {
   1: "א'",
@@ -53,7 +54,7 @@ const TeachersListing = () => {
 
   const getTeachers = () => {
     axios
-      .get(`http://127.0.0.1:3001/api/Teachers/all`,
+      .get(`${SERVER_ADDRESS}/api/Teachers/all`,
       { headers: { Authorization: token} })
       .then((response) => {
         setTeachers(response.data);
@@ -71,11 +72,11 @@ const TeachersListing = () => {
       params.push(`grade=${grade}`);
     }
 
-    let url = `http://127.0.0.1:3001/api/Teachers/search`;
+    let url = `${SERVER_ADDRESS}/api/Teachers/search`;
     if (params.length > 0) {
       url += `?${params.join("&")}`;
     } else {
-      url = `http://127.0.0.1:3001/api/Teachers/all`;
+      url = `${SERVER_ADDRESS}/api/Teachers/all`;
     }
 
     if (params.length > 0) {

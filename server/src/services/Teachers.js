@@ -1,4 +1,5 @@
 const { Teacher } = require("../models/Teachers");
+const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { registrationServiceErrorHandler } = require('../commonFunctions');
@@ -182,9 +183,9 @@ async function getAllTeachersAdmin() {
 
 async function updateAuthenticationTeacherByEmail(email, newAuthentication){
     try {
-        const filter = { email: email };
+        const filter = { email: email, role:"teacher" };
         const update = { authenticated: newAuthentication };
-        const response = await Teacher.findOneAndUpdate(filter, update);
+        const response = await User.findOneAndUpdate(filter, update);
         if (!response) {
           return {
             status:404,

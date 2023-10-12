@@ -8,6 +8,7 @@ const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [passConfirm, setPassConfirm] = useState("");
 
     // Teacher fields
     const [subjects, setSubjects] = useState([]);
@@ -32,6 +33,39 @@ const Signup = () => {
 
     const [userType, setUserType] = useState("student");
 
+    const idToSubject = {
+        1: 'מתמטיקה',
+        2: 'היסטוריה',
+        3: 'אנגלית',
+        4: "לשון",
+        5: "ביולוגיה",
+        6: "פיזיקה",
+        7: "כימיה",
+        8: "ערבית",
+        9: "תנך",
+        10: "מדעי המחשב",
+        11: 'תכנות',
+        12: 'אלקטרוניקה',
+        13: 'מדעים',
+        14: 'פסיכולוגיה',
+        15: 'עברית',
+        16: 'ספרדית',
+        17: 'צרפתית',
+        18: 'רוסית',
+        19: 'תושבע',
+        20: 'ספרות',
+        21: 'אזרחות',
+        22: 'סוציולוגיה',
+        23: 'גיאוגרפיה',
+        24: 'מוזיקה',
+        25: 'ציור',
+        26: 'קולנוע',
+        27: 'פילוסופיה',
+        28: 'חינוך גופני',
+        29: 'ציור לגיל הרך',
+        30: 'חידות ומשחקי חשיבה'
+    }
+
     const subjectToId = {
         'מתמטיקה': 1,
         'היסטוריה': 2,
@@ -39,10 +73,30 @@ const Signup = () => {
         "לשון": 4,
         "ביולוגיה": 5,
         "פיזיקה": 6,
-        "כימיה": 7, 
+        "כימיה": 7,
         "ערבית": 8,
         "תנך": 9,
-        "מדעי המחשב": 10
+        "מדעי המחשב": 10,
+        'תכנות': 11,
+        'אלקטרוניקה': 12,
+        'מדעים': 13,
+        'פסיכולוגיה': 14,
+        'עברית': 15,
+        'ספרדית': 16,
+        'צרפתית': 17,
+        'רוסית': 18,
+        'תושבע': 19,
+        'ספרות': 20,
+        'אזרחות': 21,
+        'סוציולוגיה': 22,
+        'גיאוגרפיה': 23,
+        'מוזיקה': 24,
+        'ציור': 25,
+        'קולנוע': 26,
+        'פילוסופיה': 27,
+        'חינוך גופני': 28,
+        'ציור לגיל הרך': 29,
+        'חידות ומשחקי חשיבה': 30
     }
 
     const gradeToId = {
@@ -99,10 +153,14 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!email || !password || 
+        if (!email || !password || !passConfirm || 
             (userType === "teacher" && (!teacherFirstName || !teacherLastName || !age || !socialProfileLink || !phoneNumber || subjects.length === 0)) || 
             (userType === "student" && (!parentFirstName || !parentLastName || !parentPhoneNumber || !studentFirstName || !studentLastName))) {
             return alert('נא למלא את כל השדות הדרושים.');
+        }
+
+        if (password !== passConfirm) {
+            return alert('הסיסמאות אינן תואמות.')
         }
 
         if (!validatePassword(password)) {
@@ -234,20 +292,13 @@ const Signup = () => {
                     <Form.Group className="mb-4">
                         <Form.Label className="mb-2">מקצוע:</Form.Label>
                         <Row className="mb-2">
-                            <Col md={3}>
-                                <Form.Control as="select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
-                                    <option value="מתמטיקה">מתמטיקה</option>
-                                    <option value="היסטוריה">היסטוריה</option>
-                                    <option value="אנגלית">אנגלית</option>
-                                    <option value="לשון">לשון</option>
-                                    <option value="ביולוגיה">ביולוגיה</option>
-                                    <option value="כימיה">פיזיקה</option>
-                                    <option value="כימיה">כימיה</option>
-                                    <option value="ערבית">ערבית</option>
-                                    <option value="תנך">תנ"ך</option>
-                                    <option value="מדעי המחשב">מדעי המחשב</option>
-                                </Form.Control>
-                            </Col>
+                        <Col md={3}>
+                            <Form.Control as="select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
+                                {Object.entries(idToSubject).map(([id, subject]) => (
+                                    <option key={id} value={subject}>{subject}</option>
+                                ))}
+                            </Form.Control>
+                        </Col>
                             <Col md={3}>
                                 <Form.Control as="select" value={startClass} onChange={(e) => setStartClass(e.target.value)}>
                                     <option>א'</option>
@@ -380,6 +431,12 @@ const Signup = () => {
                                 <Form.Group className="mb-4">
                                     <Form.Label className="mb-2">סיסמה:</Form.Label>
                                     <Form.Control type="password" placeholder="הכנס סיסמה" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                                <Form.Group className="mb-4"> 
+                                    <Form.Label className="mb-2">אימות סיסמה:</Form.Label>
+                                    <Form.Control type="password" placeholder="אימות סיסמה" value={passConfirm} onChange={(e) => setPassConfirm(e.target.value)} />
                                 </Form.Group>
                             </Col>
                         </Row>

@@ -1,9 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container, Row, Col, ListGroup, Image, Button, Card } from "react-bootstrap";
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const TeacherHomepage = ({ teacher }) => {
+const TeacherHomepage = () => {
+    const location = useLocation();
+    const teacherData = location.state ? location.state.teacher : TeacherHomepage.defaultProps.teacher;
+    const navigate = useNavigate();
+
+    const handleDisconnect = (email) => {
+        navigate('/', { state: { email } });
+    }
+
+    const idToSubject = {
+        1: 'מתמטיקה',
+        2: 'היסטוריה',
+        3: 'אנגלית',
+        4: "לשון",
+        5: "ביולוגיה",
+        6: "פיזיקה",
+        7: "כימיה",
+        8: "ערבית",
+        9: "תנך",
+        10: "מדעי המחשב"
+    }
+
+    const idToGrade = {
+        1: 'א\'',
+        2: 'ב\'',
+        3: 'ג\'',
+        4: 'ד\'',
+        5: 'ה\'',
+        6: 'ו\'',
+        7: 'ז\'',
+        8: 'ח\'',
+        9: 'ט\'',
+        10: 'י\'',
+        11: 'יא\'',
+        12: 'יב\'',
+    };
+
     return (
         <Container className="mt-3" dir="rtl">
             <Row className="mb-3 justify-content-center">
@@ -15,32 +50,32 @@ const TeacherHomepage = ({ teacher }) => {
                         <Card.Body>
                             <Row className="mb-3">
                                 <Col md={4}>
-                                    <Image src={teacher.profilePicture} roundedCircle width="200" className="mb-3" />
-                                    <h4>{teacher.teacherFirstName} {teacher.teacherLastName}</h4>
+                                    <Image src={teacherData.profilePicture} roundedCircle width="200" className="mb-3" />
+                                    <h4>{teacherData.firstName} {teacherData.lastName}</h4>
                                 </Col>
                                 <Col md={8}>
                                     <ListGroup variant="flush">
-                                        <ListGroup.Item>גיל: {teacher.age}</ListGroup.Item>
+                                        <ListGroup.Item>גיל: {teacherData.age}</ListGroup.Item>
                                         <ListGroup.Item>
-                                            <a href={teacher.socialProfileLink} target="_blank" rel="noopener noreferrer">קישור לפרופיל החברתי</a>
+                                            <a href={teacherData.socialProfileLink} target="_blank" rel="noopener noreferrer">קישור לפרופיל החברתי</a>
                                         </ListGroup.Item>
-                                        <ListGroup.Item>טלפון: {teacher.phoneNumber}</ListGroup.Item>
+                                        <ListGroup.Item>טלפון: {teacherData.phoneNumber}</ListGroup.Item>
                                     </ListGroup>
                                 </Col>
                             </Row>
                             <Row className="mt-4">
                                 <Col>
                                     <h4>על עצמי:</h4>
-                                    <p>{teacher.aboutMe}</p>
+                                    <p>{teacherData.aboutMe}</p>
                                 </Col>
                             </Row>
                             <Row className="mt-4">
                                 <Col>
                                     <h4>מקצועות שאני מלמד:</h4>
                                     <ListGroup variant="flush">
-                                        {teacher.canTeach.map((item, index) => (
+                                        {teacherData.canTeach.map((item, index) => (
                                             <ListGroup.Item key={index}>
-                                                {item.subject} (מכיתה {item.lowerGrade} עד כיתה {item.higherGrade})
+                                                {idToSubject[item.subject]} (מכיתה {idToGrade[item.lowerGrade]} עד כיתה {idToGrade[item.higherGrade]})
                                             </ListGroup.Item>
                                         ))}
                                     </ListGroup>
@@ -48,7 +83,10 @@ const TeacherHomepage = ({ teacher }) => {
                             </Row>
                         </Card.Body>
                         <Card.Footer className="text-center">
-                            <Button variant="primary">ערוך פרופיל</Button>
+                            {/* <Button variant="primary">ערוך פרופיל</Button> */}
+                        </Card.Footer>
+                        <Card.Footer className="text-center">
+                            <Button variant="primary" onClick={() => handleDisconnect(teacherData.email)}>התנתק</Button>
                         </Card.Footer>
                     </Card>
                 </Col>
@@ -59,13 +97,13 @@ const TeacherHomepage = ({ teacher }) => {
 
 TeacherHomepage.defaultProps = {
     teacher: {
-        teacherFirstName: "פיתה",
-        teacherLastName: "בגביר",
-        age: "15",
+        firstName: "יוסי",
+        lastName: "לוי",
+        age: "30",
         socialProfileLink: "https://www.example.com/",
-        phoneNumber: "050-1234567",
-        profilePicture: "https://scontent.ftlv19-2.fna.fbcdn.net/v/t1.6435-9/55627808_613623055749767_8065757477318164480_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=730e14&_nc_ohc=4G5h8eEYhgIAX9qFdBW&_nc_ht=scontent.ftlv19-2.fna&oh=00_AfB-BhtKPZDwTYwfkGLNKU31pTt6xGb4Nsz8yegcIx2OWw&oe=654DCEDC", 
-        aboutMe: "חמש עשרה",
+        phoneNumber: "0501234567",
+        profilePicture: "https://via.placeholder.com/150",
+        aboutMe: "אני מורה למתמטיקה ופיזיקה עם ניסיון של למעלה מ-10 שנים.",
         canTeach: [
             { subject: "מתמטיקה", lowerGrade: "א'", higherGrade: "ז'" },
             { subject: "פיזיקה", lowerGrade: "ג'", higherGrade: "י\"ב" }

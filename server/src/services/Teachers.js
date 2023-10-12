@@ -122,10 +122,58 @@ async function getTeacherByEmail(email) {
     };
   }
 }
+const TEACHERS_LIMIT = 50
+async function getTeachersBySubjectAndGrade(subject, grade){
+    try {
+        const teachers = await Teacher.find({ canTeach: { $elemMatch: {subject: subject, lowerGrade: {$lte: grade}, higherGrade: {$gte: grade}}}}).limit(TEACHERS_LIMIT)
+        if(!teachers) {
+            return {
+                status:404,
+                error: "We couldn't find a teachers with those conditions"
+            }
+        }
+        return{
+            status: 200,
+            body: teachers
+        }       
+    } catch (error) {
+        console.log(error)
+        return {
+            status:500,
+            body:error
+        }
+    }
+}
+
+async function updateAuthenticationTeacherByEmail(email, newAuthentication){
+    try {
+        const filter = { email: email };
+        const update = { authenticated: newAuthentication };
+        const response = await Teacher.findOneAndUpdate(filter, update);
+        if (!response) {
+          return {
+            status:404,
+            error:"Teacher could not update"
+          }
+        }
+        return {
+            status: 200,
+            body: response
+        }
+      } catch (error) {
+        console.log("error: ", error);
+        return {
+            status: 500,
+            error
+        }
+      }
+}
 
 module.exports = {
   registerTeacher,
   loginTeacher,
   getAllTeachers,
   getTeacherByEmail,
+  getTeachersBySubjectAndGrade,
+  updateAuthenticationTeacherByEmail,
 };

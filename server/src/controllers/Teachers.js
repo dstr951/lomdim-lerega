@@ -1,4 +1,4 @@
-const { Teacher } = require("../models/Teachers");
+
 const TeachersService = require("../services/Teachers");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
@@ -50,38 +50,48 @@ async function getAllTeachers(req, res) {
 
 async function approveTeacher(req, res) {
   const email = req.params.email;
-  try {
-    const filter = { email: email };
-    const update = { authenticated: true };
-    const response = await Teacher.findOneAndUpdate(filter, update);
-    if (!response) {
-      return res.status(404).send("Teacher could not update");
-    }
-    return res.json(response);
-  } catch (error) {
-    console.log("error: ", error);
-    return res.status(500).send("Internal Server Error");
+  const approvalResponse = await TeachersService.updateAuthenticationTeacherByEmail(email, true)
+  if(approvalResponse.status == 200) {
+    res.status(200).send(approvalResponse.body)
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error)
   }
 }
 
 async function rejectTeacher(req, res) {
-  const email = req.params.email;
-  try {
-    const filter = { email: email };
-    const update = { authenticated: false };
-    const response = await Teacher.findOneAndUpdate(filter, update);
-    if (!response) {
-      return res.status(404).send("Teacher could not update");
+    const email = req.params.email;
+    const approvalResponse = await TeachersService.updateAuthenticationTeacherByEmail(email, false)
+    if(approvalResponse.status == 200) {
+      res.status(200).send(approvalResponse.body)
+    } else {
+      res.status(approvalResponse.status).send(approvalResponse.error)
     }
-    return res.json(response);
-  } catch (error) {
-    console.log("error: ", error);
-    return res.status(500).send("Internal Server Error");
-  }
+}
+
+async function searchTeachers(req, res){
+    const {email, subject, grade} = req.query
+    if(email) {
+        const teacherResponse = await TeachersService.getTeacherByEmail(email)
+        if(teacherResponse.status == 200) {
+            res.status(200).send(teacherResponse.body)
+        } else {
+            res.status(teacherResponse.status).send(teacherResponse.error)
+        }
+    } else if(subject && grade) {
+        const teacherResponse = await TeachersService.getTeachersBySubjectAndGrade(subject, grade)
+        if(teacherResponse.status == 200) {
+            res.status(200).send(teacherResponse.body)
+        } else {
+            res.status(teacherResponse.status).send(teacherResponse.error)
+        }
+    } else {
+        res.status(400).send("bad request")
+    }
 }
 
 module.exports = {
   registerTeacher,
+  searchTeachers,
   getAllTeachers,
   approveTeacher,
   rejectTeacher,

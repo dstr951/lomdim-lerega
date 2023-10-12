@@ -1,5 +1,5 @@
 const mongoose = require('mongoose').default;
-const {validatePassword, validatePhoneNumber} = require('../commonFunctions')
+const {validatePassword, validatePhoneNumber, validateCanTeach} = require('../commonFunctions')
 
 const TeacherSchema = new mongoose.Schema({
     email:{
@@ -7,14 +7,6 @@ const TeacherSchema = new mongoose.Schema({
         unique: true,
         required:true
 
-    },
-    password:{
-        type:String,
-        required:true,
-        validate: {
-            validator: validatePassword,
-            message: 'Password must be at least 8 characters long.'
-        }
     },
     firstName: {
         type: String,
@@ -37,7 +29,7 @@ const TeacherSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: validatePhoneNumber,
-            message: 'phone number must be of length 10'
+            message: 'phone number must be numbers only'
         }
     },
     profilePicture:{
@@ -63,17 +55,12 @@ const TeacherSchema = new mongoose.Schema({
                 required: true
             },
         })],
-        required: true
-    },
-    authenticated:{
-        type:Boolean,
-        default:false
-    },
-    registered:{
-        type:Date,
-        default: Date.now
+        required: true,
+        validate: {
+            validator: validateCanTeach,
+            message: 'you have to pick at least one subject'
+        }
     }
-
 })
 
 const Teacher = mongoose.model('teachers', TeacherSchema)

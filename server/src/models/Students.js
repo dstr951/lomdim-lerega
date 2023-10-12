@@ -7,14 +7,6 @@ const StudentSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    password: {
-        type: String,
-        required: true,
-        validate: {
-            validator: validatePassword,
-            message: 'Password must be at least 8 characters long.'
-        }
-    },
     parent: {
         firstName: {
             type: String,

@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import './style/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import jwt from "jwt-decode";
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+        let token;
         try {
             const loginResponse = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
                 email,
@@ -25,20 +26,38 @@ const App = () => {
             });
             
             if (loginResponse.data) {
-                const token = loginResponse.data;
-                const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
-                 { headers: { Authorization: token} });
-                
-                if (teacherResponse.data) {
-                    const teacher = teacherResponse.data;
-                    navigate('/teacher-homepage', { state: { teacher } });
-                } else {
-                    alert('Failed to fetch teacher data.');
+                token = loginResponse.data.token;
+                const login = jwt(token);
+                switch(login.role){
+                    case "teacher":
+                        const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
+                        { headers: { Authorization: token} });                        
+                        if (teacherResponse.data) {
+                            const teacher = teacherResponse.data;
+                            navigate('/teacher-homepage', { state: { teacher, token } });
+                        }                        
+                        break;
+                    case "student":
+                        navigate('/seek-teachers', {state: {token}});
+                        break;
+                    case "admin":
+                        navigate('/admin/panel', {state: {token}});
+                        break;
+                    default:
+                        alert("there was an error")
+                        break;
                 }
-            } else {
-                alert('Failed to login.');
-            }
+            } 
         } catch (error) {
+            if(error.response.data === "couldn't find a user with those credetials"){
+                alert('Failed to login.');
+                console.error('Error:', error);
+            } else if(error.response.data === "We couldn't find a teacher with this email"){
+                
+            }
+            else {
+                alert("there was an error logging in")
+            }
             console.error('Error:', error);
         }
     };

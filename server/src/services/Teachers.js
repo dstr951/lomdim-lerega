@@ -138,7 +138,24 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
 
 async function getAllTeachers() {
   try {
-    const teachers = await Teacher.find({});
+    const teachersWithUsers = await Teacher.aggregate([{"$lookup": {
+      from: "users",
+      localField: 'email',
+      foreignField: 'email',
+      as: 'userFields',  
+    }}]);
+    const teachers = teachersWithUsers.filter(teacher => teacher.userFields[0].authenticated).map(teacher => {return({
+      email: teacher.email,
+      firstName: teacher.firstName,
+      lastName: teacher.lastName,
+      age: teacher.age,
+      socialProfileLink: teacher.socialProfileLink,
+      phoneNumber: teacher.phoneNumber,
+      profilePicture: teacher.profilePicture,
+      aboutMe: teacher.aboutMe,
+      canTeach: teacher.canTeach,
+      authenticated: teacher.userFields[0].authenticated
+    })})
     if (!teachers) {
       return { status: 404, error: "No teachers found" };
     }

@@ -126,7 +126,6 @@ const TeachersListing = () => {
         </Col>
       </Row>
       <br />
-      {console.log(filteredTeachers)}
       {filteredTeachers?.length === 0 ? (
         <Row
           variant="body1"

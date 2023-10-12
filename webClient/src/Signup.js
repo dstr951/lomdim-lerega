@@ -238,7 +238,8 @@ const Signup = () => {
                     alert('ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.');
                 }
             } catch (error) {
-                if(error.status === 409){
+                console.log(error)
+                if(error.response?.status === 409){
                     console.log("im at 409 clause")
                     alert('אימייל זה כבר בשימוש');
                 } else {

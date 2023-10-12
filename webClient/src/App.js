@@ -26,19 +26,26 @@ const App = () => {
             });
             
             if (loginResponse.data) {
-                token = loginResponse.data;
+                token = loginResponse.data.token;
                 const login = jwt(token);
-                if(login.isAdmin) {
-                    navigate('/admin/panel', {state: {token}});
-                    return;
-                }
-                const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
-                 { headers: { Authorization: token} });
-
-                
-                if (teacherResponse.data) {
-                    const teacher = teacherResponse.data;
-                    navigate('/teacher-homepage', { state: { teacher, token } });
+                switch(login.role){
+                    case "teacher":
+                        const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
+                        { headers: { Authorization: token} });                        
+                        if (teacherResponse.data) {
+                            const teacher = teacherResponse.data;
+                            navigate('/teacher-homepage', { state: { teacher, token } });
+                        }                        
+                        break;
+                    case "student":
+                        navigate('/seek-teachers', {state: {token}});
+                        break;
+                    case "admin":
+                        navigate('/admin/panel', {state: {token}});
+                        break;
+                    default:
+                        alert("there was an error")
+                        break;
                 }
             } 
         } catch (error) {
@@ -46,7 +53,7 @@ const App = () => {
                 alert('Failed to login.');
                 console.error('Error:', error);
             } else if(error.response.data === "We couldn't find a teacher with this email"){
-                navigate('/seek-teachers', {state: {token}});
+                
             }
             else {
                 alert("there was an error logging in")

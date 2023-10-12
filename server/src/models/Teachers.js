@@ -8,14 +8,6 @@ const TeacherSchema = new mongoose.Schema({
         required:true
 
     },
-    password:{
-        type:String,
-        required:true,
-        validate: {
-            validator: validatePassword,
-            message: 'Password must be at least 8 characters long and contain only english letters, numbers and symbols'
-        }
-    },
     firstName: {
         type: String,
         required: true
@@ -68,16 +60,7 @@ const TeacherSchema = new mongoose.Schema({
             validator: validateCanTeach,
             message: 'you have to pick at least one subject'
         }
-    },
-    authenticated:{
-        type:Boolean,
-        default:null
-    },
-    registered:{
-        type:Date,
-        default: Date.now
     }
-
 })
 
 const Teacher = mongoose.model('teachers', TeacherSchema)

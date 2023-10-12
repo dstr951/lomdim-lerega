@@ -14,8 +14,29 @@ function validateCanTeach(canTeachArray){
     return true
 }
 
+function registrationServiceErrorHandler(error){
+    if (error.name === "ValidationError"){
+        return {
+            status: 400,
+            error: error.message
+        }
+    }
+    if(error.code === 11000){
+        console.log("error code is 11000")
+        return {
+            status: 409,
+            error: error.message
+        }
+    }
+    return {
+        error,
+        status:500
+    }
+}
+
 module.exports = {
     validatePassword,
     validatePhoneNumber,
     validateCanTeach,
+    registrationServiceErrorHandler,
 }

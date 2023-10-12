@@ -1,12 +1,14 @@
 const { Teacher } = require("../models/Teachers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { registrationServiceErrorHandler } = require('../commonFunctions');
+const { lookup } = require("dns");
+
 
 const TEACHERS_SERVICE_DEBUG = false;
 
 async function registerTeacher(
   email,
-  hashedPassword,
   firstName,
   lastName,
   age,
@@ -18,7 +20,6 @@ async function registerTeacher(
 ) {
   const newTeacher = new Teacher({
     email,
-    password: hashedPassword,
     firstName,
     lastName,
     age,
@@ -42,22 +43,7 @@ async function registerTeacher(
     };
   } catch (error) {
     console.log(error);
-    if (error.name === "ValidationError") {
-      return {
-        status: 400,
-        error: error.message,
-      };
-    }
-    if(error.code === 11000){
-        return {
-            status: 409,
-            error: error.message
-        }
-    }
-    return {
-      error,
-      status: 500,
-    };
+    return registrationServiceErrorHandler(error);
   }
 }
 
@@ -162,6 +148,38 @@ async function getAllTeachers() {
   }
 }
 
+async function getAllTeachersAdmin() {
+  try {
+    const teachers = await Teacher.aggregate([{"$lookup": {
+      from: "users",
+      localField: 'email',
+      foreignField: 'email',
+      as: 'userFields',  
+    }}]);
+    const formattedTeachers = teachers.map(teacher => {
+      return {
+        "email": teacher.email,
+        "firstName": teacher.firstName,
+        "lastName": teacher.lastName,
+        "age": teacher.age,
+        "socialProfileLink": teacher.socialProfileLink,
+        "phoneNumber": teacher.phoneNumber,
+        "profilePicture": teacher.profilePicture,
+        "aboutMe": teacher.aboutMe,
+        "canTeach": teacher.canTeach,
+        "authenticated": teacher.userFields[0].authenticated
+      }
+    })
+    if (!formattedTeachers) {
+      return { status: 404, error: "No teachers found" };
+    }
+    return { status: 200, body: formattedTeachers };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, body: error };
+  }
+}
+
 async function updateAuthenticationTeacherByEmail(email, newAuthentication){
     try {
         const filter = { email: email };
@@ -190,7 +208,7 @@ module.exports = {
   getTeacherByEmail,
   getTeachersBySubjectAndGrade,
   registerTeacher,
-  loginTeacher,
   getAllTeachers,
   updateAuthenticationTeacherByEmail,
+  getAllTeachersAdmin,
 };

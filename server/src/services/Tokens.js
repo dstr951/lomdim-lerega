@@ -23,7 +23,7 @@ function isAdmin(req, res, next) {
     try {
     // Verify the token is valid
         const data = jwt.verify(token, process.env.JWT_KEY);
-        if(data.isAdmin){
+        if(data.role === "admin"){
             return next()
         } else {
             return res.status(403).send("Not an admin");

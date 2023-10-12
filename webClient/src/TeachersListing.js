@@ -154,7 +154,7 @@ const TeachersListing = () => {
                             {teacher.firstName} {teacher.lastName}{" "}
                           </h6>
                         </Col>
-                        {teacher.isOnline ? <p>מחובר</p> : <p> לא מחובר</p>}
+                        {/* {teacher.isOnline ? <p>מחובר</p> : <p> לא מחובר</p>} */}
                       </Row>
                     </Col>
                   </Row>

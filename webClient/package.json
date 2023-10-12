@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mui/icons-material": "^5.14.13",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "node-polyfill-webpack-plugin": "^2.0.1",

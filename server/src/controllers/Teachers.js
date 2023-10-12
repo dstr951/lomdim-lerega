@@ -47,7 +47,7 @@ async function searchTeachers(req, res) {
     } else {
       res.status(teacherResponse.status).send(teacherResponse.error);
     }
-  } else if (subject && grade) {
+  } else if (subject || grade) {
     const teacherResponse = await TeachersService.getTechersBySubjectAndGrade(
       subject,
       grade

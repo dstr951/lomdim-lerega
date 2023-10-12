@@ -137,7 +137,7 @@ const TeachersListing = () => {
                       <Image
                         src={`data:image/jpeg;base64,${teacher.profilePicture}`}
                         roundedCircle
-                        width={110}
+                        width={100}
                         height={100}
                         className="mb-3"
                       />

@@ -39,6 +39,13 @@ async function registerTeacher(email, hashedPassword, firstName, lastName, age, 
                 error: error.message
             }
         }
+        if(error.code === 11000){
+            console.log("error code is 11000")
+            return {
+                status: 409,
+                error: error.message
+            }
+        }
         return {
             error,
             status:500

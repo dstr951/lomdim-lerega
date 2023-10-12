@@ -18,7 +18,7 @@ const App = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-    
+        let token;
         try {
             const loginResponse = await axios.post(`${SERVER_ADDRESS}/api/Users/login`, {
                 email,
@@ -26,23 +26,31 @@ const App = () => {
             });
             
             if (loginResponse.data) {
-                const token = loginResponse.data;
+                token = loginResponse.data;
                 const login = jwt(token);
+                if(login.isAdmin) {
+                    navigate('/admin/panel', {state: {token}});
+                    return;
+                }
                 const teacherResponse = await axios.get(`${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
                  { headers: { Authorization: token} });
+
                 
                 if (teacherResponse.data) {
                     const teacher = teacherResponse.data;
-                    navigate('/teacher-homepage', { state: { teacher } });
-                } else if(login.isAdmin) {
-                    navigate('/admin/panel');
-                } else {
-                    alert('Failed to fetch teacher data.');
+                    navigate('/teacher-homepage', { state: { teacher, token } });
                 }
-            } else {
-                alert('Failed to login.');
-            }
+            } 
         } catch (error) {
+            if(error.response.data === "couldn't find a user with those credetials"){
+                alert('Failed to login.');
+                console.error('Error:', error);
+            } else if(error.response.data === "We couldn't find a teacher with this email"){
+                navigate('/seek-teachers', {state: {token}});
+            }
+            else {
+                alert("there was an error logging in")
+            }
             console.error('Error:', error);
         }
     };

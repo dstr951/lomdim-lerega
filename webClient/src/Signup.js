@@ -343,7 +343,7 @@ const Signup = () => {
                         <p>סיסמה-</p>
                         <Form.Control type="password" placeholder="הכנס סיסמה" value={password} onChange={(e) => setPassword(e.target.value)} />     
                         <p>אימות סיסמה-</p>
-                        <Form.Control type="password" placeholder="אימות סיסמה" value={password} onChange={(e) => setPassword(e.target.value)} />     
+                        <Form.Control type="password" placeholder="אימות סיסמה" value={passConfirm} onChange={(e) => setPassConfirm(e.target.value)} />     
                         
                         <br/>
                         {userType === "teacher" && teacherSignUp}

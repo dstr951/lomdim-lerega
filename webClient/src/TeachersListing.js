@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Accordion,
-  Container,
-  Row,
-  Col,
-  Form,
-  ListGroup,
-  Button,
-  Image,
-  Card,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { idToGrade, idToSubject } from "./Converters";
 import TeacherAccordion from "./component/TeacherAccordion";
 import FilterTeachers from "./component/FilterTeachers";
 

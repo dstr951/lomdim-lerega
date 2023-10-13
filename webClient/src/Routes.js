@@ -9,7 +9,7 @@ import TeacherHomepage from "./TeacherHomepage";
 function Routes() {
     return (
         <Router>
-            <Route path="/" element={<Signup/>} />
+            <Route path="/" element={<TeacherHomepage />} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/teacher-homepage" element={<TeacherHomepage/>} /> 
         </Router>

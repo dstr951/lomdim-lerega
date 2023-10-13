@@ -7,7 +7,7 @@ import { idToGrade, idToSubject, subjectToId } from "../Converters";
 
 function ContactTeacherModal(props) {
   const navigate = useNavigate();
-  const [selectedSubject, setSelectedSubject] = useState(0);
+  const [selectedSubject, setSelectedSubject] = useState("נא לבחור מקצוע");
   const [messageContent, setMessageContent] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
   const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
@@ -28,11 +28,10 @@ function ContactTeacherModal(props) {
       .catch((error) => console.error(error));
   };
 
-  console.log(props.teacher?.teacher?.email);
   const sendMessageToTeacher = async (e) => {
     e.preventDefault();
 
-    if (selectedSubject === 0 || messageContent === "") {
+    if (selectedSubject === "נא לבחור מקצוע" || messageContent === "") {
       return alert("נא למלא את כל השדות הדרושים.");
     }
 
@@ -49,14 +48,26 @@ function ContactTeacherModal(props) {
           headers: { Authorization: props.token },
         }
       );
+      props.onHide();
+      setMessageContent("");
+      setSelectedSubject("נא לבחור מקצוע");
       if (response.status === 200) {
         alert("ההודעה נשלחה.");
-        navigate("/seek-teachers", { state: { token } });
       } else {
         alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
       }
     } catch (error) {
-      alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      props.onHide();
+      setSelectedSubject("נא לבחור מקצוע");
+      setMessageContent("");
+      if (error.message === "Request failed with status code 409") {
+        alert(
+          "כבר נשלחה בקשה למורה עם מקצוע זה, יכולים לנסות אצל מורים אחרים."
+        );
+      } else {
+        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      }
+
       console.error(error);
     }
   };
@@ -86,16 +97,11 @@ function ContactTeacherModal(props) {
                   <Form.Control
                     as="select"
                     value={selectedSubject}
-                    onChange={(e) =>
-                      setSelectedSubject(subjectToId[e.target.value])
-                    }
+                    onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    <option value={0}>בחר מקצוע</option>
+                    <option value={"נא לבחור מקצוע"}>נא לבחור מקצוע</option>
                     {props.teacher?.teacher?.canTeach.map((record) => (
-                      <option
-                        value={subjectToId[record.subject]}
-                        key={record.subject}
-                      >
+                      <option value={record.subject} key={record.subject}>
                         {idToSubject[record.subject]}
                       </option>
                     ))}

@@ -64,6 +64,29 @@ async function loginStudent(email, password) {
     }
 }
 
+async function getStudentByEmail(email) {
+    try {
+      const student = await Student.findOne({ email });
+      if (!student) {
+        return {
+          status: 404,
+          error: "We couldn't find a student with this email",
+        };
+      }
+      return {
+        status: 200,
+        body: student,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: 500,
+        body: error,
+      };
+    }
+  }
+
 module.exports = {
     registerStudent,
+    getStudentByEmail,
 };

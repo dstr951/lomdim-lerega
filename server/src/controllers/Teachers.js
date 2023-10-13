@@ -107,7 +107,6 @@ async function rejectTeacher(req, res) {
 }
 
 module.exports = {
-  registerTeacher,
   searchTeachers,
   getAllTeachers,
   getAllTeachersAdmin,

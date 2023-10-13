@@ -64,7 +64,7 @@ const TeachersListing = () => {
   };
 
   return (
-    <Container maxWidth="sm" dir="rtl">
+    <Container dir="rtl">
       <Card.Footer align="left">
         <Button variant="primary" onClick={() => handleDisconnect()}>
           התנתק

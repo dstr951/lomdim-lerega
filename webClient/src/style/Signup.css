@@ -85,7 +85,7 @@
     margin: 0 10px;
     display: flex;
     flex: 1;
-    justify-content: stretch  ;
+    justify-content: center  ;
     align-content: baseline;
     gap:20px;
 }

@@ -1,14 +1,14 @@
 .row-container{
     display: flex; 
     align-items: center;
-    justify-content: start;
     gap: 20px; 
 }
 .buttonsRow {
     margin: 0 10px;
     display: flex;
     flex: 1;
-    gap:20px
+    justify-content: center;
+    gap:20px;
 }
 
 
@@ -25,4 +25,54 @@
     display: flex; /* Use flexbox to arrange the buttons in a row */
   }
   
+
+.select-container {
+    margin: 0 0px;
+    display: flex;
+    flex: 1;
+    justify-content: stretch;
+    gap:20px;
+}
+
+.select-container>div {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+}
+.addButton{
+    margin-bottom: 15px;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.listItem{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: center;
+
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16px; 
+    margin-bottom: 17px;
+    height: 40px;
+    
+    margin: 0px;
+    background-color: #D5E0E6;
+}
+
+.closeButton{
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    align-self: center;
+}
+
 

@@ -1,0 +1,67 @@
+#header{
+    background-color: #016BA6;
+    height: 80px;
+    width: 100%;
+
+    padding-right: 200px;
+    padding-left: 200px;
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+
+    position: fixed;
+    top: 0;
+    z-index: 100;
+
+}
+
+#headerDiv{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#headerBottom{
+    width: 200px;
+    background-color: #E1EAEF;
+    color: #0096FF;
+}
+#headerBottom:hover {
+    background-color: #d5e0e5;
+    transition: 0.3s;
+}
+
+.teacher-homepage-wrapper {
+    padding-top: 80px;  
+}
+
+
+/* Central alignment for the content */
+.content-container {
+    text-align: center; /* Centralizes most inline elements */
+    padding: 20px;
+}
+
+/* Button styling to make it look similar to the 1st image */
+.custom-button {
+    background-color: orange; /* Matches the color scheme of the 1st image */
+    padding: 10px 20px;
+    color: white; /* Text color for the button */
+    border: none;
+    border-radius: 5px; /* Gives it slightly rounded corners */
+    cursor: pointer; /* Hand cursor on hover */
+    margin-top: 20px; /* Spacing from the content above */
+}
+
+.custom-button:hover {
+    background-color: darkorange; /* Darker shade on hover */
+}
+
+/* Adjusting the spacing and size for the contact info */
+.contact-info {
+    font-size: 14px;
+    margin-top: 10px; /* Provides spacing between contact info and other elements */
+}
+

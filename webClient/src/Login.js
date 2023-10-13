@@ -10,7 +10,6 @@ const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 const Login = () => {
 
 
-
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -84,9 +83,7 @@ const Login = () => {
                             </Row>
                         </Form>
                         <br/>
-                        <p className="pCenter"><a href="#">שכחתי סיסמה</a></p>
-                    
-                        <br/>
+                        <p className="pCenter"><a href="#">שכחתי סיסמה</a></p>                    
                         <p className="pCenter">הסתבכתם? לחצו  <a href="#">כאן</a> לסרטון הסבר קצר.</p>
                     </div>
                 </div>

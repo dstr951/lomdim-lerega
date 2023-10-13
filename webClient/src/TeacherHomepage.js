@@ -70,10 +70,11 @@ const TeacherHomepage = () => {
                                         </ListGroup>
                                     </Col>
                                     <Col md={8}>
-                                        <h4 className="font-weight-bold">על עצמי:</h4>
+                                    <ListGroup variant="flush">
+                                        <h4 className="font-weight-bold">על עצמי</h4>
                                         <p>{teacherData.aboutMe}</p>
-    
-                                        <h4 className="font-weight-bold mt-4">מקצועות שאני מלמד:</h4>
+                                    </ListGroup>
+                                        <h4 className="font-weight-bold mt-4">מקצועות שאני מלמד</h4>
                                         <ListGroup variant="flush">
                                             {teacherData.canTeach.map((item, index) => (
                                                 <ListGroup.Item key={index}>
@@ -83,13 +84,8 @@ const TeacherHomepage = () => {
                                         </ListGroup>
                                     </Col>
                                 </Row>
-                            </Card.Body>
-                            <Card.Footer className="text-center">
-                                {/* <Button variant="primary">ערוך פרופיל</Button> */}
-                            </Card.Footer>
-                            <Card.Footer className="text-center">
                                 <Button variant="primary" className="custom-button" onClick={() => handleDisconnect(teacherData.email)}>התנתק</Button>
-                            </Card.Footer>
+                            </Card.Body>
                         </Card>
                     </Col>
                 </Row>

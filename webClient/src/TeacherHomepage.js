@@ -8,8 +8,12 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { idToGrade, idToSubject } from "./Converters";
+import Header from "./component/Header";
+import './style/TeacherHomepage.css';
+import './style/App.css';
+
 const TeacherHomepage = () => {
   const location = useLocation();
   const teacherData = location.state
@@ -22,82 +26,53 @@ const TeacherHomepage = () => {
     navigate("/", { state: { email } });
   };
 
-  return (
-    <Container className="mt-3" dir="rtl">
-      <Row className="mb-3 justify-content-center">
-        <Col md={8}>
-          <Card>
-            <Card.Header className="text-center">
-              <h1>פרופיל המורה</h1>
-            </Card.Header>
-            <Card.Body>
-              <Row className="mb-3">
-                <Col md={4}>
-                  <Image
-                    src={`data:image/jpeg;base64,${teacherData.profilePicture}`}
-                    roundedCircle
-                    width="200"
-                    className="mb-3"
-                  />
-                  <h4>
-                    {teacherData.firstName} {teacherData.lastName}
-                  </h4>
-                </Col>
-                <Col md={8}>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>גיל: {teacherData.age}</ListGroup.Item>
-                    <ListGroup.Item>
-                      <a
-                        href={teacherData.socialProfileLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        קישור לפרופיל החברתי
-                      </a>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      טלפון: {teacherData.phoneNumber}
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Col>
-                  <h4>על עצמי:</h4>
-                  <p>{teacherData.aboutMe}</p>
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Col>
-                  <h4>מקצועות שאני מלמד:</h4>
-                  <ListGroup variant="flush">
-                    {teacherData.canTeach.map((item, index) => (
-                      <ListGroup.Item key={index}>
-                        {idToSubject[item.subject]} (מכיתה{" "}
-                        {idToGrade[item.lowerGrade]} עד כיתה{" "}
-                        {idToGrade[item.higherGrade]})
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </Col>
-              </Row>
-            </Card.Body>
-            <Card.Footer className="text-center">
-              {/* <Button variant="primary">ערוך פרופיל</Button> */}
-            </Card.Footer>
-            <Card.Footer className="text-center">
-              <Button
-                variant="primary"
-                onClick={() => handleDisconnect(teacherData.email)}
-              >
-                התנתק
-              </Button>
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+
+    return (
+        <div className="teacher-homepage-wrapper">
+            <Header/>
+            <div className="main">
+                <div className="section">
+                    <div className="title" id="orange-background">
+                        הפרופיל שלי
+                    </div>    
+                    <div className="text-section">
+                        <div className='two-cols-container'>
+                            <div className="right-section">
+                                <Image src={`data:image/jpeg;base64,${teacherData.profilePicture}`} roundedCircle width="250" className="profile-img" />
+                                    <div className='info-box'>
+                                    <div className='text-box'>
+                                        <h2 id="h2-orange">{teacherData.firstName} {teacherData.lastName}</h2>
+                                        <p>
+                                            <strong>גיל:</strong> {teacherData.age} <br/>
+                                            <strong>טלפון:</strong> {teacherData.phoneNumber}<br/><br/>
+                                            <a id="orange-text" href={teacherData.socialProfileLink} target="_blank" rel="noopener noreferrer">
+                                                        קישור לפרופיל החברתי</a><br/>
+                                        </p>
+                                    </div>
+                                    <Link to="/login">
+                                    <button id="orange-button">התנתקות</button>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="left-section">
+                                <h2 id="h2-orange">על עצמי:</h2>
+                                <p className="list-item">{teacherData.aboutMe}</p>
+                                <br/>
+                                <h2 id="h2-orange">מקצועות שאני מלמד</h2>
+                                    <ListGroup variant="flush" className="list">
+                                        {teacherData.canTeach.map((item, index) => (
+                                            <ListGroup.Item key={index} className="list-item">
+                                                {idToSubject[item.subject]} (מכיתה {idToGrade[item.lowerGrade]} עד כיתה {idToGrade[item.higherGrade]})
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 TeacherHomepage.defaultProps = {

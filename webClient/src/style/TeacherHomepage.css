@@ -1,0 +1,99 @@
+
+
+
+.profile-img{
+    align-self: center;
+    justify-self: flex-start;
+}
+
+.text-box{
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+
+.list{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16pt; 
+    margin-bottom: 17px;
+    height: 40px;
+
+    padding: 10px;
+    
+    margin: 0px;
+    background-color: #D5E0E6;
+}
+
+
+
+  /* For large screens (e.g., tablets) */
+  @media screen and (min-width: 700px){
+    .two-cols-container{
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        gap: 20px; 
+    }
+    .right-section{
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .left-section{
+        width: 70%;
+        display: flex;
+        align-self: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        
+    }
+    
+  }
+  
+    /* For medium screens (e.g., tablets) */
+  @media screen and (max-width: 1000px) {
+    .two-cols-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: stretch;
+        gap: 20px; 
+    }
+    .right-section{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .left-section{
+        width: 100%;
+        display: flex;
+        align-self: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        
+    }
+
+    .info-box{
+        margin-right: 80px;
+    }
+  }
+  

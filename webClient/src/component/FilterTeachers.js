@@ -22,7 +22,9 @@ const FilterTeachers = ({ handleFilterChange }) => {
           <Form.Select size="sm" value={subject} onChange={handleSubjectChange}>
             <option value={0}>כל המקצועות</option>
             {Object.keys(idToSubject).map((id) => (
-              <option value={id}>{idToSubject[id]}</option>
+              <option value={id} key={id}>
+                {idToSubject[id]}
+              </option>
             ))}
           </Form.Select>
         </Col>
@@ -30,7 +32,9 @@ const FilterTeachers = ({ handleFilterChange }) => {
           <Form.Select size="sm" value={grade} onChange={handleGradeChange}>
             <option value={0}>כל הכיתות</option>
             {Object.keys(idToGrade).map((id) => (
-              <option value={id}>{idToGrade[id]}</option>
+              <option value={id} key={id}>
+                {idToGrade[id]}
+              </option>
             ))}
           </Form.Select>
         </Col>

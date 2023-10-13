@@ -1,17 +1,76 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 import { idToGrade, idToSubject, subjectToId } from "../Converters";
 
 function ContactTeacherModal(props) {
   const navigate = useNavigate();
-  const [selectedSubject, setSelectedSubject] = useState("מתמטיקה");
+  const [selectedSubject, setSelectedSubject] = useState("נא לבחור מקצוע");
   const [messageContent, setMessageContent] = useState("");
+  const [studentEmail, setStudentEmail] = useState("");
+  const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
-  const sendMessageToTeacher = (studentToken, clickedProfile) => {
-    navigate("/seek-teachers", { state: { token } });
+  useEffect(() => {
+    getStudentEmail();
+  }, []);
+
+  const getStudentEmail = () => {
+    axios
+      .get(`${SERVER_ADDRESS}/api/Students/myself `, {
+        headers: { Authorization: props.token },
+      })
+      .then((response) => {
+        setStudentEmail(response.data.email);
+        console.log(studentEmail);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const sendMessageToTeacher = async (e) => {
+    e.preventDefault();
+
+    if (selectedSubject === "נא לבחור מקצוע" || messageContent === "") {
+      return alert("נא למלא את כל השדות הדרושים.");
+    }
+
+    try {
+      console.log(selectedSubject);
+      const response = await axios.post(
+        `${SERVER_ADDRESS}/api/TeachingRequests/`,
+        {
+          studentEmail: studentEmail,
+          teacherEmail: props.teacher?.teacher?.email,
+          subject: selectedSubject,
+          messageContent: messageContent,
+        },
+        {
+          headers: { Authorization: props.token },
+        }
+      );
+      props.onHide();
+      setMessageContent("");
+      setSelectedSubject("נא לבחור מקצוע");
+      if (response.status === 200) {
+        alert("ההודעה נשלחה.");
+      } else {
+        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      }
+    } catch (error) {
+      props.onHide();
+      setSelectedSubject("נא לבחור מקצוע");
+      setMessageContent("");
+      if (error.message === "Request failed with status code 409") {
+        alert(
+          "כבר נשלחה בקשה למורה עם מקצוע זה, יכולים לנסות אצל מורים אחרים."
+        );
+      } else {
+        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      }
+
+      console.error(error);
+    }
   };
 
   return (
@@ -41,11 +100,9 @@ function ContactTeacherModal(props) {
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
-                    {props.teacher.teacher?.canTeach.map((record) => (
-                      <option
-                        value={subjectToId[record.subject]}
-                        key={record.subject}
-                      >
+                    <option value={"נא לבחור מקצוע"}>נא לבחור מקצוע</option>
+                    {props.teacher?.teacher?.canTeach.map((record) => (
+                      <option value={record.subject} key={record.subject}>
                         {idToSubject[record.subject]}
                       </option>
                     ))}

@@ -10,9 +10,9 @@ const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
-  const location = useLocation();
   const [clickedProfile, setClickedProfile] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
   const token = location?.state?.token;
 
   const handleDisconnect = () => {
@@ -86,7 +86,7 @@ const TeachersListing = () => {
           לא נמצאו מורים.
         </Row>
       ) : (
-        <TeacherAccordion filteredTeachers={filteredTeachers} />
+        <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
       )}
     </Container>
   );

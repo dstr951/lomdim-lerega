@@ -3,7 +3,16 @@ const StudentService = require("../services/Students");
 const { creationServiceErrorHandler } = require("../commonFunctions");
 const TEACHING_REQUESTS_SERVICE_DEBUG = false;
 
+<<<<<<< HEAD
 async function createTeachingRequest(studentEmail, teacherEmail, subject) {
+=======
+async function createTeachingRequest(
+  studentEmail,
+  teacherEmail,
+  subject,
+  messageContent
+) {
+>>>>>>> 55a70f8644f016c21bf2015ac992b0fb43dc8fa3
   const getStudentResponse = await StudentService.getStudentByEmail(
     studentEmail
   );
@@ -15,6 +24,10 @@ async function createTeachingRequest(studentEmail, teacherEmail, subject) {
     studentEmail,
     teacherEmail,
     subject,
+<<<<<<< HEAD
+=======
+    messageContent,
+>>>>>>> 55a70f8644f016c21bf2015ac992b0fb43dc8fa3
     grade: getStudentResponse.body.student.grade,
   });
   try {
@@ -34,6 +47,7 @@ async function createTeachingRequest(studentEmail, teacherEmail, subject) {
   }
 }
 
+<<<<<<< HEAD
 async function updateTeachingRequest(requestId, status) {
   try {
     const filter = { _id: requestId };
@@ -59,3 +73,6 @@ async function updateTeachingRequest(requestId, status) {
 }
 
 module.exports = { createTeachingRequest, updateTeachingRequest };
+=======
+module.exports = { createTeachingRequest };
+>>>>>>> 55a70f8644f016c21bf2015ac992b0fb43dc8fa3

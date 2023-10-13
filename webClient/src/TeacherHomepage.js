@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -20,11 +20,29 @@ const TeacherHomepage = () => {
     ? location.state.teacher
     : TeacherHomepage.defaultProps.teacher;
   const token = location.state?.token;
+  const [teachingRequests, setTeachingRequests] = useState([]);
+  useEffect(() => {
+    fetch("/api/TeachingRequests/myRequests", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        setTeachingRequests(data);
+    })
+    .catch((error) => {
+        console.error("Error fetching teaching requests:", error);
+    });
+}, [token]);
   const navigate = useNavigate();
-
   const handleDisconnect = (email) => {
     navigate("/", { state: { email } });
   };
+
+  
 
 
     return (

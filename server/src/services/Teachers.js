@@ -3,7 +3,14 @@ const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { registrationServiceErrorHandler } = require('../commonFunctions');
-const { lookup } = require("dns");
+
+const lookupUsersOnEmailExpression = {"$lookup": {
+  from: "users",
+  localField: 'email',
+  foreignField: 'email',
+  as: 'userFields',  
+}}
+const matchTeachersOnAuthentication = {$match: {userFields: {$elemMatch: {authenticated: true}}}}
 
 
 const TEACHERS_SERVICE_DEBUG = false;
@@ -107,6 +114,8 @@ const TEACHERS_LIMIT = 50;
 async function getTeachersBySubjectAndGrade(subject, grade) {
   try {
     const matcher = {};
+    subject=parseInt(subject)
+    grade=parseInt(grade)
     if (subject && subject > 0) {
       matcher.subject = subject;
     }
@@ -114,9 +123,11 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
       matcher.lowerGrade = { $lte: grade };
       matcher.higherGrade = { $gte: grade };
     }
-    const teachers = await Teacher.find({
-      canTeach: { $elemMatch: matcher },
-    }).limit(TEACHERS_LIMIT);
+    const teachers = await Teacher.aggregate([
+      lookupUsersOnEmailExpression, 
+      matchTeachersOnAuthentication, 
+      {$match: {canTeach: { $elemMatch: matcher }}}
+    ]).limit(TEACHERS_LIMIT);
     if (!teachers) {
       return {
         status: 404,
@@ -138,24 +149,8 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
 
 async function getAllTeachers() {
   try {
-    const teachersWithUsers = await Teacher.aggregate([{"$lookup": {
-      from: "users",
-      localField: 'email',
-      foreignField: 'email',
-      as: 'userFields',  
-    }}]);
-    const teachers = teachersWithUsers.filter(teacher => teacher.userFields[0].authenticated).map(teacher => {return({
-      email: teacher.email,
-      firstName: teacher.firstName,
-      lastName: teacher.lastName,
-      age: teacher.age,
-      socialProfileLink: teacher.socialProfileLink,
-      phoneNumber: teacher.phoneNumber,
-      profilePicture: teacher.profilePicture,
-      aboutMe: teacher.aboutMe,
-      canTeach: teacher.canTeach,
-      authenticated: teacher.userFields[0].authenticated
-    })})
+    const authenticatedTeachers = await Teacher.aggregate([lookupUsersOnEmailExpression, matchTeachersOnAuthentication])
+    const teachers = createTeacherObjectAfterUsersAggregation(authenticatedTeachers)
     if (!teachers) {
       return { status: 404, error: "No teachers found" };
     }
@@ -220,6 +215,21 @@ async function updateAuthenticationTeacherByEmail(email, newAuthentication){
             error
         }
       }
+}
+
+function createTeacherObjectAfterUsersAggregation(teachers){
+  return teachers.map(teacher => {return({
+    email: teacher.email,
+    firstName: teacher.firstName,
+    lastName: teacher.lastName,
+    age: teacher.age,
+    socialProfileLink: teacher.socialProfileLink,
+    phoneNumber: teacher.phoneNumber,
+    profilePicture: teacher.profilePicture,
+    aboutMe: teacher.aboutMe,
+    canTeach: teacher.canTeach,
+    authenticated: teacher.userFields[0].authenticated
+  })})
 }
 
 module.exports = {

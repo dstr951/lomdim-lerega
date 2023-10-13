@@ -27,7 +27,7 @@ const TeachingRequestsSchema = new mongoose.Schema({
     }
 })
 
-TeachingRequestsSchema.index( { student: 1, teacher: 1 }, { unique: true } )
+TeachingRequestsSchema.index( { studentEmail: 1, teacherEmail: 1 }, { unique: true } )
 
 const TeachingRequests = mongoose.model('teachingRequest', TeachingRequestsSchema)
 

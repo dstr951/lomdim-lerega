@@ -74,6 +74,10 @@
     
 }
 
+.fileInput {
+    width: 300%;
+}
+
 .addFile {
     margin: 0px;
     display: flex;
@@ -86,4 +90,19 @@
 #cert {
     margin-right: 20px;
     width: 200px;
+}
+
+.back-button {
+    background-color: #807070; 
+    color: #e5e2e2;      
+    margin-top: 10px;       
+ 
+}
+
+.back-button:hover {
+
+
+    background-color: #8b7b7b; 
+    color: #ffffff;         
+              
 }

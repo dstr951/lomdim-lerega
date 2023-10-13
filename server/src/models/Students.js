@@ -38,10 +38,6 @@ const StudentSchema = new mongoose.Schema({
             type: Number,
             required: true
         }
-    },
-    registered: {
-        type: Date,
-        default: Date.now
     }
 });
 

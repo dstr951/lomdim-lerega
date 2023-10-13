@@ -2,7 +2,7 @@ const { Teacher } = require("../models/Teachers");
 const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { registrationServiceErrorHandler } = require('../commonFunctions');
+const { creationServiceErrorHandler } = require('../commonFunctions');
 
 const lookupUsersOnEmailExpression = {"$lookup": {
   from: "users",
@@ -51,7 +51,7 @@ async function registerTeacher(
     };
   } catch (error) {
     console.log(error);
-    return registrationServiceErrorHandler(error);
+    return creationServiceErrorHandler(error);
   }
 }
 

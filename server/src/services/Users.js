@@ -1,5 +1,5 @@
 const {User} = require('../models/Users')
-const { registrationServiceErrorHandler } = require('../commonFunctions')
+const { creationServiceErrorHandler } = require('../commonFunctions')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SALT_ROUNDS = 10;
@@ -25,7 +25,7 @@ async function registerUser(email, hashedPassword, role) {
     }
     catch (error){
         console.log(error);
-        return registrationServiceErrorHandler(error)
+        return creationServiceErrorHandler(error)
     }
 }
 async function loginUser(email, password) {

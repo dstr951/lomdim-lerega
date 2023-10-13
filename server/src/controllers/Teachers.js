@@ -17,12 +17,14 @@ async function registerTeacher(req, res) {
     canTeach,
   } = req.body;
   bcrypt.hash(password, SALT_ROUNDS, async function (err, hashedPassword) {
-    const userRegisterResponse = await UsersService.registerUser(email, hashedPassword, "teacher")
-    if(userRegisterResponse.status !== 200) {
-      res
-        .status(userRegisterResponse.status)
-        .send(userRegisterResponse.error);
-        return;
+    const userRegisterResponse = await UsersService.registerUser(
+      email,
+      hashedPassword,
+      "teacher"
+    );
+    if (userRegisterResponse.status !== 200) {
+      res.status(userRegisterResponse.status).send(userRegisterResponse.error);
+      return;
     }
     const teacherRegisterResponse = await TeachersService.registerTeacher(
       email,
@@ -78,7 +80,7 @@ async function getAllTeachers(req, res) {
 }
 async function getAllTeachersAdmin(req, res) {
   const teacherResponse = await TeachersService.getAllTeachersAdmin();
-  console.log(teacherResponse.length)
+  console.log(teacherResponse.length);
   if (teacherResponse.status == 200) {
     res.status(200).send(teacherResponse.body);
   } else {
@@ -88,29 +90,31 @@ async function getAllTeachersAdmin(req, res) {
 
 async function approveTeacher(req, res) {
   const email = req.params.email;
-  const approvalResponse = await TeachersService.updateAuthenticationTeacherByEmail(email, true)
-  if(approvalResponse.status == 200) {
-    res.status(200).send(approvalResponse.body)
+  const approvalResponse =
+    await TeachersService.updateAuthenticationTeacherByEmail(email, true);
+  if (approvalResponse.status == 200) {
+    res.status(200).send(approvalResponse.body);
   } else {
-    res.status(approvalResponse.status).send(approvalResponse.error)
+    res.status(approvalResponse.status).send(approvalResponse.error);
   }
 }
 
 async function rejectTeacher(req, res) {
-    const email = req.params.email;
-    const approvalResponse = await TeachersService.updateAuthenticationTeacherByEmail(email, false)
-    if(approvalResponse.status == 200) {
-      res.status(200).send(approvalResponse.body)
-    } else {
-      res.status(approvalResponse.status).send(approvalResponse.error)
-    }
+  const email = req.params.email;
+  const approvalResponse =
+    await TeachersService.updateAuthenticationTeacherByEmail(email, false);
+  if (approvalResponse.status == 200) {
+    res.status(200).send(approvalResponse.body);
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error);
+  }
 }
 
 module.exports = {
-  registerTeacher,
   searchTeachers,
   getAllTeachers,
   getAllTeachersAdmin,
   approveTeacher,
   rejectTeacher,
+  registerTeacher,
 };

@@ -9,8 +9,6 @@ import Header from "./component/Header";
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const Login = () => {
-
-
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -29,7 +27,6 @@ const Login = () => {
             
             if (loginResponse.data) {
                 token = loginResponse.data.token;
-                console.log(token)
                 const login = jwt(token);
                 switch(login.role){
                     case "teacher":
@@ -52,7 +49,6 @@ const Login = () => {
                 }
             } 
         } catch (error) {
-            console.log(error)
             if(error.response?.data === "couldn't find a user with those credetials"){
                 alert('Failed to login.');
                 console.error('Error:', error);

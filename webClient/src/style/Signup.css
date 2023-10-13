@@ -4,11 +4,7 @@
     flex: 1;
     justify-content: center;
     gap:20px;
-}
-
-
-
-  
+}  
 
 .select-container {
     margin: 0 0px;
@@ -100,9 +96,6 @@
 }
 
 .back-button:hover {
-
-
     background-color: #8b7b7b; 
-    color: #ffffff;         
-              
+    color: #ffffff;
 }

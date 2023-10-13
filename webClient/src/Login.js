@@ -54,7 +54,7 @@ const Login = () => {
                 <div className="title">
                     התחברות
                 </div>
-                    <div className="textSection">
+                    <div className="text-section">
                         <Form>
                             <Form.Group className="mb-4" dir="rtl">
                                 <p>אימייל </p>

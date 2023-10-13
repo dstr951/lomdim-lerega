@@ -17,13 +17,13 @@ h2{
     color: #016BA6;
     font-family: liebling, 'Segoe UI', sans-serif;
     font-size: 34pt;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 p {
     color: #112A35;
     font-family: Segoe UI;
-    font-size: 21pt;
+    font-size: 16pt;
     font-weight: 400;
     margin-bottom: 10px;
 }
@@ -68,16 +68,44 @@ button {
     font-family: liebling;
     font-size: 24pt;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: normal;
 }
 button:hover {
     background-color: #007bffc5; 
+    font-weight: 500;
     transition: 0.3s;
+    
 }
 
 
+#orange-background {
+    background-color: #E8701F;
+}
+#orange-button {
+    background-color: #E8701F;
+}
+#orange-button:hover{
+    background-color: #c95c14;
+}
+#orange-text{
+    color:#E8701F
+}
 
+#purple-background {
+    background-color: #9139E5 ;
+    width: 2;
+}
+#purple-button {
+    background-color: #9139E5 ;
+    width: 2;
+}
+#purple-button:hover{
+    background-color: #6d24b1;
+}
+#purple-text{
+    color:#9139E5
+}
 
 
 .header{
@@ -170,12 +198,13 @@ button:hover {
 .main{
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    margin: auto;
     gap: 45px;
     margin-top: 45px;
-    margin-left: 200px;
-    margin-right: 200px;
+    overflow: auto;
+    margin-bottom: 45px;
 }
 
 .main-narrow{
@@ -200,7 +229,7 @@ button:hover {
     box-shadow: 0px 2px 10px rgba(182, 198, 206, 0.30);;
 }
 
-.textSection{
+.text-section{
     padding: 24px;
 }
 
@@ -210,8 +239,15 @@ button:hover {
     color: white;
     font-family: 'liebling';
     font-size: 48pt;
-    font-weight: 500;
+    font-weight: 400;
     text-align: center;
+}
+
+.row-container {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    gap: 20px; 
 }
 
 /* For small screens (e.g., mobile phones) */
@@ -241,4 +277,5 @@ button:hover {
     .header-in{
         width: 80%;
     }
+    
   }

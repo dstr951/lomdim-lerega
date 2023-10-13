@@ -3,6 +3,7 @@ import { Container, Row, Col, ListGroup, Image, Button, Card } from "react-boots
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from "./component/Header";
 import './style/TeacherHomepage.css';
+import './style/App.css';
 
 
 
@@ -45,51 +46,47 @@ const TeacherHomepage = () => {
 
     return (
         <div className="teacher-homepage-wrapper">
-            <Header className="header-teacher" />
-            <Container className="mt-5 content-container" dir="rtl">
-                <Row className="mb-5 justify-content-center" id='profile'>
-                    <Col md={12}>
-                        <Card>
-                            <Card.Header className="bg-warning text-center">
-                                <h1 className="text-white">הפרופיל שלי</h1>
-                            </Card.Header>
-                            <Card.Body className="bg-light">
-                                <Row className="mb-3">
-                                    <Col md={4} className="text-center">
-                                        <Image src={teacherData.profilePicture} roundedCircle width="250" className="mb-3 profile-image" />
-                                        <h4 className="font-weight-bold">{teacherData.firstName} {teacherData.lastName}</h4>
-                                        
-                                        <ListGroup variant="flush" className="mt-2">
-                                            <ListGroup.Item className="contact-info"><strong>גיל:</strong> {teacherData.age}</ListGroup.Item>
-                                            <ListGroup.Item className="contact-info">
-                                                <a href={teacherData.socialProfileLink} target="_blank" rel="noopener noreferrer">
-                                                    <strong>קישור לפרופיל החברתי</strong>
-                                                </a>
+            <Header/>
+            <div className="main">
+                <div className="section">
+                    <div className="title" id="orange-background">
+                        הפרופיל שלי
+                    </div>    
+                    <div className="text-section">
+                        <div className='two-cols-container'>
+                            <div className="right-section">
+                                <Image src={teacherData.profilePicture} roundedCircle width="250" className="profile-img" />
+                                    <div className='info-box'>
+                                    <div className='text-box'>
+                                        <h2 id="h2-orange">{teacherData.firstName} {teacherData.lastName}</h2>
+                                        <p>
+                                            <strong>גיל:</strong> {teacherData.age} <br/>
+                                            <strong>טלפון:</strong> {teacherData.phoneNumber}<br/><br/>
+                                            <a id="orange-text" href={teacherData.socialProfileLink} target="_blank" rel="noopener noreferrer">
+                                                        קישור לפרופיל החברתי</a><br/>
+                                        </p>
+                                    </div>
+                                    <button id="orange-button">התנתקות</button>
+                                    פססס לא לשכוח לתת פונקציונליות
+                                </div>
+                            </div>
+                            <div className="left-section">
+                                <h2 id="h2-orange">על עצמי:</h2>
+                                <p className="list-item">{teacherData.aboutMe}</p>
+                                <br/>
+                                <h2 id="h2-orange">מקצועות שאני מלמד</h2>
+                                    <ListGroup variant="flush" className="list">
+                                        {teacherData.canTeach.map((item, index) => (
+                                            <ListGroup.Item key={index} className="list-item">
+                                                {idToSubject[item.subject]} (מכיתה {idToGrade[item.lowerGrade]} עד כיתה {idToGrade[item.higherGrade]})
                                             </ListGroup.Item>
-                                            <ListGroup.Item className="contact-info"><strong>טלפון:</strong> {teacherData.phoneNumber}</ListGroup.Item>
-                                        </ListGroup>
-                                    </Col>
-                                    <Col md={8}>
-                                    <ListGroup variant="flush">
-                                        <h4 className="font-weight-bold">על עצמי</h4>
-                                        <p>{teacherData.aboutMe}</p>
+                                        ))}
                                     </ListGroup>
-                                        <h4 className="font-weight-bold mt-4">מקצועות שאני מלמד</h4>
-                                        <ListGroup variant="flush">
-                                            {teacherData.canTeach.map((item, index) => (
-                                                <ListGroup.Item key={index}>
-                                                    {idToSubject[item.subject]} (מכיתה {idToGrade[item.lowerGrade]} עד כיתה {idToGrade[item.higherGrade]})
-                                                </ListGroup.Item>
-                                            ))}
-                                        </ListGroup>
-                                    </Col>
-                                </Row>
-                                <Button variant="primary" className="custom-button" onClick={() => handleDisconnect(teacherData.email)}>התנתק</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

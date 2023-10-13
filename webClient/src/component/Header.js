@@ -20,7 +20,7 @@ const Header = () => {
     return (
         <div className="header">
             <div className="header-in">
-            <Link to="/"><ReactSVG src="./assets/logo.svg"/></Link>
+            <Link to="/"><ReactSVG src="./assets/long-logo.svg"/></Link>
             <div>{details}</div>
             </div>
         </div>

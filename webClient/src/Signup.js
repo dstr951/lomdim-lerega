@@ -137,8 +137,10 @@ const Signup = () => {
         }
     };
 
+    const color = userType == "teacher" ? "orange-text" : "purple-text"
+    
     const teacherSignUp = (<div>
-        <h2>פרטים אישיים</h2>
+        <h2 id={color}>פרטים אישיים</h2>
         <FormGroup>
             <p>שם פרטי-</p>
             <Form.Control type="text" placeholder="השם הפרטי שלך" value={teacherFirstName} onChange={(e) => setTeacherFirstName(e.target.value)} />
@@ -149,7 +151,7 @@ const Signup = () => {
             <p>מספר טלפון</p>
             <Form.Control type="text" placeholder="מספר הטלפון שלך" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
             <br/>
-            <h2>פרטים מקצועיים</h2>
+            <h2 id={color}>פרטים מקצועיים</h2>
             <div className="select-container">
             <div className="select">
             <p>מקצוע - </p>
@@ -200,12 +202,12 @@ const Signup = () => {
                 <option>י"ב</option> 
                 </Form.Control>
             </div>
-            <button className="addButton" onClick={handleAddSubject}>הוסף</button>
+            <button id="orange-background" className="addButton" onClick={handleAddSubject}>הוסף</button>
             
             </div>
             <ListGroup className="list">
                     {subjects.map((item, index) => (
-                        <ListGroup.Item key={index} className="listItem">
+                        <ListGroup.Item key={index} className="list-item">
                             {`${item.subject} (${item.range})`}
                             <div><ReactSVG src="./assets/close.svg" className="closeButton" onClick={() => handleRemoveSubject(index)}/></div>
                         </ListGroup.Item>
@@ -232,7 +234,7 @@ const Signup = () => {
         </FormGroup>
     </div>)
     const studentSignUp=(<div>
-        <h2>פרטי תלמיד</h2>
+        <h2 id={color}>פרטי תלמיד</h2>
         <FormGroup>
             <p>שם פרטי תלמיד-</p>
             <Form.Control type="text" placeholder="שם פרטי תלמיד" value={studentFirstName} onChange={(e) => setStudentFirstName(e.target.value)} />
@@ -254,7 +256,7 @@ const Signup = () => {
                         <option>י"ב</option>
                     </Form.Control>
             <br/>
-            <h2>פרטי הורה</h2>
+            <h2 id={color}>פרטי הורה</h2>
             <p>שם משפחה הורה-</p>
             <Form.Control type="text" placeholder="שם פרטי ההורה" value={parentFirstName} onChange={(e) => setParentFirstName(e.target.value)} />
             <p>שם משפחה הורה-</p>
@@ -271,24 +273,24 @@ const Signup = () => {
             <Header/>
             <div className="main-narrow">
                     <div className="section">
-                    <div className="title" style={{backgroundColor: userType == "teacher" ? "#9139E5" : "#E8701F",}}>
+                    <div className="title" style={{backgroundColor: userType == "teacher" ? "#E8701F" : "#9139E5" ,}}>
                         {userType == "teacher" ? "הרשמה - מורים" : "הרשמה - תלמידים"}
                     </div>
-                    <div className="textSection">
+                    <div className="text-section">
                         <Form.Group>
                         <div className="row-container">
                         <p>אני</p>
                             <button 
-                                className="buttonsRow"
-                                id="teacherButton"
+                                className="item-row"
+                                id="orange-button"
                                 label="מורה"
                                 name="userType"
                                 inline
                                 onClick={() => setUserType("teacher")}
                             >מורה</button>
                             <button
-                                className="buttonsRow"
-                                id="studentButton"
+                                className="item-row"
+                                id="purple-button"
                                 label="תלמיד"
                                 name="userType"
                                 inline
@@ -299,7 +301,7 @@ const Signup = () => {
                         </Form.Group>
                         <Form onSubmit={handleSubmit}>
                         <br/>
-                        <h2>פרטי התחברות</h2>
+                        <h2 id={color}>פרטי התחברות</h2>
                         <p>אימייל-</p>
                         <Form.Control type="email" placeholder="הכנס כתובת אימייל" value={email} onChange={(e) => setEmail(e.target.value)} />
                         <p>סיסמה-</p>
@@ -311,7 +313,12 @@ const Signup = () => {
                         {userType === "teacher" && teacherSignUp}
                         {userType === "student" && studentSignUp}
                         <br/>
-                        <button variant="primary" type="submit" className="w-100"> הרשם </button>
+                        <button 
+                            variant="primary" 
+                            type="submit" 
+                            className="w-100" 
+                            id={userType == "teacher" ? "orange-button" : "purple-button"}
+                            > {userType == "teacher" ? "הרשם כמורה" : "הרשם כתלמיד"} </button>
                         </Form>
                     </div>
                     </div>

@@ -1,9 +1,4 @@
-.row-container{
-    display: flex; 
-    align-items: center;
-    gap: 20px; 
-}
-.buttonsRow {
+.item-row {
     margin: 0 10px;
     display: flex;
     flex: 1;
@@ -11,18 +6,8 @@
     gap:20px;
 }
 
-#teacherButton {
-    background-color: #9139E5;
-}
 
-#studentButton {
-    background-color: #E8701F;
-    width: 2;
-}
 
-.button-container {
-    display: flex;
-  }
   
 
 .select-container {
@@ -41,7 +26,9 @@
     justify-content: center;
 }
 .addButton{
-    margin-bottom: 15px;
+    margin-bottom: 22px;
+    align-self: flex-end;
+    height: 34pt;
 }
 
 .list{
@@ -50,7 +37,7 @@
     gap:8px;
 }
 
-.listItem{
+.list-item{
     display: flex;
     justify-content: space-between;
     align-items: stretch;
@@ -59,7 +46,7 @@
     border-radius: 10px; 
     background-color: #D5E0E6;
     font-family: 'Segoe UI',  sans-serif;
-    font-size: 16px; 
+    font-size: 16pt; 
     margin-bottom: 17px;
     height: 40px;
     

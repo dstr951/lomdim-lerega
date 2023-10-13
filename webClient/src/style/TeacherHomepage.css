@@ -1,75 +1,99 @@
-#header{
-    background-color: #016BA6;
-    height: 80px;
-    width: 100%;
 
-    padding-right: 200px;
-    padding-left: 200px;
 
+
+.profile-img{
+    align-self: center;
+    justify-self: flex-start;
+}
+
+.text-box{
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+
+.list{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
+    gap:8px;
+}
+
+.list-item{
+    display: flex;
     justify-content: space-between;
     align-items: center;
 
-    position: fixed;
-    top: 0;
-    z-index: 100;
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16pt; 
+    margin-bottom: 17px;
+    height: 40px;
 
-}
-
-#headerDiv{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#headerBottom{
-    width: 200px;
-    background-color: #E1EAEF;
-    color: #0096FF;
-}
-#headerBottom:hover {
-    background-color: #d5e0e5;
-    transition: 0.3s;
-}
-
-.teacher-homepage-wrapper {
-    padding-top: 80px;  
+    padding: 10px;
+    
+    margin: 0px;
+    background-color: #D5E0E6;
 }
 
 
-.content-container {
-    text-align: center; 
-    padding: 20px;
-}
 
-.custom-button {
-    background-color: orange; 
-    padding: 10px 20px;
-    color: white; 
-    border: none;
-    border-radius: 5px; 
-    cursor: pointer; 
-    margin-top: 20px; 
-}
+  /* For large screens (e.g., tablets) */
+  @media screen and (min-width: 700px){
+    .two-cols-container{
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        gap: 20px; 
+    }
+    .right-section{
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .left-section{
+        width: 70%;
+        display: flex;
+        align-self: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        
+    }
+    
+  }
+  
+    /* For medium screens (e.g., tablets) */
+  @media screen and (max-width: 1000px) {
+    .two-cols-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: stretch;
+        gap: 20px; 
+    }
+    .right-section{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .left-section{
+        width: 100%;
+        display: flex;
+        align-self: flex-start;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        
+    }
 
-.custom-button:hover {
-    background-color: darkorange;
-}
-
-
-.contact-info {
-    font-size: 14px;
-    margin-top: 10px; 
-}
-
-.teacher-homepage-wrapper .bg-light h4, .teacher-homepage-wrapper .bg-light p {
-    text-align: right;
-}
-
-/* Align to the right for the subjects */
-.teacher-homepage-wrapper .bg-light .list-group-item {
-    text-align: right;
-}
-
-
+    .info-box{
+        margin-right: 80px;
+    }
+  }
+  

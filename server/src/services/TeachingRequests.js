@@ -1,5 +1,6 @@
 const { TeachingRequests } = require("../models/TeachingRequests")
 const StudentService = require("../services/Students")
+const { creationServiceErrorHandler } = require("../commonFunctions")
 const TEACHING_REQUESTS_SERVICE_DEBUG = false
 
 async function createTeachingRequest(studentEmail, teacherEmail, subject){
@@ -28,10 +29,7 @@ async function createTeachingRequest(studentEmail, teacherEmail, subject){
     }
     catch (error){
         console.log(error);
-        return {
-            status: 500,
-            error,
-        }
+        return creationServiceErrorHandler(error);
     }
 }
 

@@ -75,4 +75,17 @@
     align-self: center;
 }
 
+.addFile-container{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px;
+}
 
+.addFile {
+    margin: 0 10px;
+    display: flex;
+    flex: 1;
+    justify-content: stretch  ;
+    align-content: baseline;
+    gap:20px;
+}

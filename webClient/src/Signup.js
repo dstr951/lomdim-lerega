@@ -307,6 +307,22 @@ const Signup = () => {
                         </ListGroup.Item>
                     ))}
                 </ListGroup>
+            <div className="addFile-container">
+
+                    <p className="addFile" >תמונה-</p>
+                    <Form.Control type="file" id="imageInput" accept="image/*" style={{display: "none"}}/>
+                    <button className="addFile" >העלאת תמונה</button>
+
+                    <p className="addFile" >תעודת הוראה-</p>
+                    <Form.Control type="file" id="imageInput" accept="image/*" style={{display: "none"}}/>
+                    <button className="addFile">העלאת קובץ</button>
+                <div>
+                <div>
+                
+                </div>
+            </div>
+
+            </div>
         </FormGroup>
     </div>)
     const studentSignUp=(<div>

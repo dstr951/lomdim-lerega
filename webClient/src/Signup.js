@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from "./component/Header";
 import './style/Signup.css';
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+import { ReactSVG } from 'react-svg'
 
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -246,10 +247,10 @@ const Signup = () => {
             <Form.Control type="text" placeholder="הכנס שם פרטי" value={teacherFirstName} onChange={(e) => setTeacherFirstName(e.target.value)} />
             <p>שם משפחה-</p>
             <Form.Control type="text" placeholder="הכנס שם משפחה" value={teacherLastName} onChange={(e) => setTeacherLastName(e.target.value)} />
-            <div className="row-container">
+            <div className="select-container">
             <div className="select">
             <p>מקצוע - </p>
-                <Form.Control as="select" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
+                <Form.Control as="select" className="selectForm" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
                     <option value="מתמטיקה">מתמטיקה</option>
                     <option value="היסטוריה">היסטוריה</option>
                     <option value="אנגלית">אנגלית</option>
@@ -264,7 +265,7 @@ const Signup = () => {
             </div>
             <div>
             <p> מ-  </p>
-                <Form.Control as="select" value={startClass} onChange={(e) => setStartClass(e.target.value)}>
+                <Form.Control as="select" className="selectForm" value={startClass} onChange={(e) => setStartClass(e.target.value)}>
                     <option>א'</option>
                     <option>ב'</option>
                     <option>ג'</option>
@@ -281,7 +282,7 @@ const Signup = () => {
             </div>
             <div>
                 <p> עד- </p>
-                <Form.Control as="select" value={endClass} defaultValue='י"ב' onChange={(e) => setEndClass(e.target.value)}>
+                <Form.Control as="select" className="selectForm" value={endClass} defaultValue='י"ב' onChange={(e) => setEndClass(e.target.value)}>
                 <option>א'</option>
                 <option>ב'</option>
                 <option>ג'</option>
@@ -296,13 +297,13 @@ const Signup = () => {
                 <option>י"ב</option> 
                 </Form.Control>
             </div>
-            <button onClick={handleAddSubject}>הוסף</button>
+            <button className="addButton" onClick={handleAddSubject}>הוסף</button>
             </div>
-            <ListGroup className="mt-3">
+            <ListGroup className="list">
                     {subjects.map((item, index) => (
-                        <ListGroup.Item key={index}>
+                        <ListGroup.Item key={index} className="listItem">
                             {`${item.subject} (${item.range})`}
-                            <CloseButton size="sm" onClick={() => handleRemoveSubject(index)} />
+                            <div><ReactSVG src="./assets/close.svg" className="closeButton" onClick={() => handleRemoveSubject(index)}/></div>
                         </ListGroup.Item>
                     ))}
                 </ListGroup>
@@ -376,10 +377,9 @@ const Signup = () => {
                     <div className="textSection">
                         <Form.Group>
                         <div className="row-container">
-                        <div className="buttonsRow"><p>אני</p></div>
-                        <div className="buttonsRow">
-                            <button
-                                className="w-100 m-0" 
+                        <p>אני</p>
+                            <button 
+                                className="buttonsRow"
                                 id="teacherButton"
                                 label="מורה"
                                 name="userType"
@@ -387,7 +387,7 @@ const Signup = () => {
                                 onClick={() => setUserType("teacher")}
                             >מורה</button>
                             <button
-                                className="w-100 m-0" 
+                                className="buttonsRow"
                                 id="studentButton"
                                 label="תלמיד"
                                 name="userType"
@@ -395,7 +395,6 @@ const Signup = () => {
                                 checked={userType === "student"}
                                 onClick={() => setUserType("student")}
                             >תלמיד</button>
-                        </div>
                         </div>
                         </Form.Group>
                         <Form onSubmit={handleSubmit}>

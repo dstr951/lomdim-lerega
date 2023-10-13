@@ -9,8 +9,9 @@ import TeacherHomepage from "./TeacherHomepage";
 function Routes() {
     return (
         <Router>
-            <Route path="/" element={<TeacherHomepage />} />
+            <Route path="/" element={<App />} />
             <Route path="/signup" element={<Signup/>} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/teacher-homepage" element={<TeacherHomepage/>} /> 
         </Router>
     );

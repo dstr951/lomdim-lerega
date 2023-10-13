@@ -34,20 +34,20 @@ h1 {
     font-family: 'liebling', 'Segoe UI', sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 64px;
+    font-size: 48pt;
 }
 
 h2{
     color: #016BA6;
     font-family: liebling, 'Segoe UI', sans-serif;
-    font-size: 34px;
+    font-size: 34pt;
     font-weight: 500;
 }
 
 p {
     color: #112A35;
     font-family: Segoe UI;
-    font-size: 21px;
+    font-size: 21pt;
     font-weight: 400;
     margin-bottom: 10px;
 }
@@ -64,19 +64,19 @@ a {
     border-radius: 10px; 
     background-color: #D5E0E6;
     font-family: 'Segoe UI',  sans-serif;
-    font-size: 16px; 
-    margin-bottom: 17px;
-    height: 40px;
+    font-size: 16pt; 
+    margin-bottom: 17pt;
+    height: 34pt;
 }
 
 .form-control::placeholder {
     color: #B6C6CE;
-    font-size: 16px; 
+    font-size: 16pt; 
 }
 
 .form-control:focus {
     color: #112A35;
-    font-size: 16px; 
+    font-size: 16pt; 
     background-color: #D5E0E6;
 }
 
@@ -91,7 +91,7 @@ button {
     color: #FFF;
     text-align: center;
     font-family: liebling;
-    font-size: 24px;
+    font-size: 24pt;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -105,37 +105,24 @@ button:hover {
 
 
 
-#header{
+.header{
+    display: flex;
+    justify-content: center;
     background-color: #016BA6;
-    height: 80px;
+    height: 80pt;
     width: 100%;
+}
 
-    padding-right: 10%;
-    padding-left: 10%;
-
+.header-in{
+    width: 100%;
     display: flex;
     flex-direction: row-reverse;
-    justify-content: space-between;
     align-items: center;
-
-}
-
-.selectForm{
-    cursor: pointer;
-
-    background-image: url('./assets/downArrow.svg');
-    background-size: 10px; /* Adjust the size of the icon as needed */
-    background-repeat: no-repeat; /* Prevent repeating the icon */
-    background-position: 5% 50%; /* Adjust the icon's position */
-}
-
-
-#headerDiv{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    justify-content: space-around;
     gap: 32px;
 }
+
+
 
 #headerBottom{
     width: 200px;
@@ -147,6 +134,60 @@ button:hover {
     transition: 0.3s;
 }
 
+.header {
+    background-color: #016BA6;
+    height: 80px;
+  }
+  
+  .header-in {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #headerDiv{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    align-items: center;
+    gap: 32px;
+}
+
+.selectForm{
+    cursor: pointer;
+
+    background-image: url('./assets/downArrow.svg');
+    background-size: 10px; /* Adjust the size of the icon as needed */
+    background-repeat: no-repeat; /* Prevent repeating the icon */
+    background-position: 20px 50%; /* Adjust the icon's position */
+}
+
+
+.fileInput{
+    background-color: #D5E0E6;
+    border-radius: 10px;
+    max-width: 220px;
+}
+.fileInput>button {
+    border-radius: 10px; 
+    background-color: #007bff; 
+    border: none;
+    padding: 7px 20px 7px 20px;
+    text-align: center;
+
+    color: #FFF;
+    text-align: center;
+    font-family: liebling;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.fileInput>button:hover {
+    background-color: #007bffc5; 
+    transition: 0.3s;
+}
+
 .pCenter{
     text-align: center;
 }
@@ -155,6 +196,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 45px;
     margin-top: 45px;
     margin-left: 10%;
@@ -164,13 +206,16 @@ button:hover {
 .main-narrow{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin: auto;
     gap: 45px;
     margin-top: 45px;
-    margin-left: 30%;
-    margin-right: 30%;
+    overflow: auto;
     margin-bottom: 45px;
 }
+
+
 
 .section{
     width: 100%;
@@ -189,8 +234,36 @@ button:hover {
     border-radius: 10px 10px 0px 0px;
     color: white;
     font-family: 'liebling';
-    font-size: 64px;
+    font-size: 48pt;
     font-weight: 500;
     text-align: center;
 }
 
+/* For small screens (e.g., mobile phones) */
+@media screen and (max-width: 1249px) {
+    .main{
+        margin-right: 45px;
+        margin-left: 45px;
+    }
+    .main-narrow{
+        margin-right: 45px;
+        margin-left: 45px;
+    }
+    .header-in{
+        margin-right: 45px;
+        margin-left: 45px;
+    }
+  }
+  
+  /* For large screens (e.g., desktops) */
+  @media screen and (min-width: 1250px) {
+    .main{
+        width: 80%;
+    }
+    .main-narrow{
+        width: 50%
+    }
+    .header-in{
+        width: 80%;
+    }
+  }

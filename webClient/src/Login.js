@@ -84,7 +84,7 @@ const Login = () => {
                             </Row>
                         </Form>
                         <br/>
-                        <p className="pCenter"><a href="#">שכחתי סיסמה</a></p>
+                        {/* <p className="pCenter"><a href="#">שכחתי סיסמה</a></p> */}
                     
                         <br/>
                         <p className="pCenter">הסתבכתם? לחצו  <a href="#">כאן</a> לסרטון הסבר קצר.</p>

@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import '../style/App.css';
 import { ReactSVG } from 'react-svg'
+import { Link } from 'react-router-dom';
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+
 
 const Header = () => {
 
     const details = (
         <div id="headerDiv">
-            <div><button id="headerBottom">הרשמה</button></div>  
-            <div><button id="headerBottom">התחברות</button></div>        
+            <Link to="/signup"><button id="headerBottom">הרשמה</button>  </Link>
+            <Link to="/login"><button id="headerBottom">התחברות</button> </Link>      
         </div>
         
     )
     return (
-        <div id="header">
-            <div><ReactSVG src="./assets/logo.svg"/></div>
+        <div className="header">
+            <div className="header-in">
+            <Link to="/"><ReactSVG src="./assets/logo.svg"/></Link>
             <div>{details}</div>
+            </div>
         </div>
     )
 

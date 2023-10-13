@@ -1,27 +1,3 @@
-/*
- * The Typekit service used to deliver this font or fonts for use on websites
- * is provided by Adobe and is subject to these Terms of Use
- * http://www.adobe.com/products/eulas/tou_typekit. For font license
- * information, see the list below.
- *
- * liebling:
- *   - http://typekit.com/eulas/0000000000000000774ba14e
- *
- * © 2009-2023 Adobe Systems Incorporated. All Rights Reserved.
- */
-/*{"last_published":"2023-10-12 20:39:37 UTC"}*/
-
-@import url("https://p.typekit.net/p.css?s=1&k=dcu5cbh&ht=tk&f=51840&a=42529487&app=typekit&e=css");
-
-@font-face {
-font-family:"liebling";
-src:url("https://use.typekit.net/af/bbe2b5/0000000000000000774ba14e/30/l?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n5&v=3") format("woff2"),url("https://use.typekit.net/af/bbe2b5/0000000000000000774ba14e/30/d?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n5&v=3") format("woff"),url("https://use.typekit.net/af/bbe2b5/0000000000000000774ba14e/30/a?primer=f592e0a4b9356877842506ce344308576437e4f677d7c9b78ca2162e6cad991a&fvd=n5&v=3") format("opentype");
-font-display:auto;font-style:normal;font-weight:500;font-stretch:normal;
-}
-
-.tk-liebling { font-family: "liebling",sans-serif; }
-
-
 body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #D5E0E6; 
@@ -53,10 +29,9 @@ p {
 }
 
 a {
-    color: #007bff; /* Set the link color */
-    text-decoration: none; /* Remove the default underline */
-    font-weight: bold; /* Make the link text bold */
-    /* You can add more styles like hover, focus, and visited states below */
+    color: #007bff; 
+    text-decoration: none; 
+    font-weight: bold; 
   }
 
 
@@ -199,8 +174,8 @@ button:hover {
     justify-content: center;
     gap: 45px;
     margin-top: 45px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 200px;
+    margin-right: 200px;
 }
 
 .main-narrow{

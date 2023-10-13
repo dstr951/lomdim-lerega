@@ -38,30 +38,38 @@
 }
 
 
-/* Central alignment for the content */
 .content-container {
-    text-align: center; /* Centralizes most inline elements */
+    text-align: center; 
     padding: 20px;
 }
 
-/* Button styling to make it look similar to the 1st image */
 .custom-button {
-    background-color: orange; /* Matches the color scheme of the 1st image */
+    background-color: orange; 
     padding: 10px 20px;
-    color: white; /* Text color for the button */
+    color: white; 
     border: none;
-    border-radius: 5px; /* Gives it slightly rounded corners */
-    cursor: pointer; /* Hand cursor on hover */
-    margin-top: 20px; /* Spacing from the content above */
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-top: 20px; 
 }
 
 .custom-button:hover {
-    background-color: darkorange; /* Darker shade on hover */
+    background-color: darkorange;
 }
 
-/* Adjusting the spacing and size for the contact info */
+
 .contact-info {
     font-size: 14px;
-    margin-top: 10px; /* Provides spacing between contact info and other elements */
+    margin-top: 10px; 
 }
+
+.teacher-homepage-wrapper .bg-light h4, .teacher-homepage-wrapper .bg-light p {
+    text-align: right;
+}
+
+/* Align to the right for the subjects */
+.teacher-homepage-wrapper .bg-light .list-group-item {
+    text-align: right;
+}
+
 

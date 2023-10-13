@@ -11,7 +11,7 @@ import {
 import { idToGrade, idToSubject } from "../Converters";
 import ContactTeacherModal from "../component/ContactTeacherModal";
 
-const TeacherAccordion = ({ filteredTeachers }) => {
+const TeacherAccordion = ({ filteredTeachers, token }) => {
   const [modalShow, setModalShow] = React.useState(false);
   const [selectedTeacher, setSelectedTeacher] = React.useState({});
   return (
@@ -92,6 +92,7 @@ const TeacherAccordion = ({ filteredTeachers }) => {
         show={modalShow}
         onHide={() => setModalShow(false)}
         teacher={selectedTeacher}
+        token={token}
       />
     </Container>
   );

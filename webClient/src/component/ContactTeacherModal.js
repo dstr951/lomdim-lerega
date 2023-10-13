@@ -43,6 +43,7 @@ function ContactTeacherModal(props) {
           studentEmail: studentEmail,
           teacherEmail: props.teacher?.teacher?.email,
           subject: selectedSubject,
+          messageContent: messageContent,
         },
         {
           headers: { Authorization: props.token },

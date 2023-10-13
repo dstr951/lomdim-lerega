@@ -42,7 +42,10 @@ function ContactTeacherModal(props) {
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
                     {props.teacher.teacher?.canTeach.map((record) => (
-                      <option value={subjectToId[record.subject]}>
+                      <option
+                        value={subjectToId[record.subject]}
+                        key={record.subject}
+                      >
                         {idToSubject[record.subject]}
                       </option>
                     ))}

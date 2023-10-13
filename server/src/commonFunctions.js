@@ -14,7 +14,7 @@ function validateCanTeach(canTeachArray){
     return true
 }
 
-function registrationServiceErrorHandler(error){
+function creationServiceErrorHandler(error){
     if (error.name === "ValidationError"){
         return {
             status: 400,
@@ -38,5 +38,5 @@ module.exports = {
     validatePassword,
     validatePhoneNumber,
     validateCanTeach,
-    registrationServiceErrorHandler,
+    creationServiceErrorHandler,
 }

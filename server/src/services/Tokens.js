@@ -51,9 +51,28 @@ function isStudent(req, res, next) {
         return res.status(401).send("Invalid Token");
     }           
 }
+function isTeacher(req, res, next) {
+    if (!req.headers.authorization) {
+        return res.status(401).send("No authorization header");
+    }
+    const token = req.headers.authorization;
+    try {
+    // Verify the token is valid
+        const data = jwt.verify(token, process.env.JWT_KEY);
+        if(data.role === "teacher"){
+            return next()
+        } else {
+            return res.status(403).send("Not a teacher");
+        }            
+    } catch (err) {
+        console.log(err)
+        return res.status(401).send("Invalid Token");
+    }           
+}
 
 module.exports = {
     isLoggedIn,
     isAdmin,
     isStudent,
+    isTeacher,
 }

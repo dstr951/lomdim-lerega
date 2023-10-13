@@ -1,7 +1,7 @@
 const {Student} = require("../models/Students");
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
-const { registrationServiceErrorHandler } = require('../commonFunctions')
+const { creationServiceErrorHandler } = require('../commonFunctions')
 
 const STUDENTS_SERVICE_DEBUG = false
 
@@ -25,7 +25,7 @@ async function registerStudent(email, parent, student) {
     }
     catch (error){
         console.log(error);
-        return registrationServiceErrorHandler(error)
+        return creationServiceErrorHandler(error)
     }
 }
 

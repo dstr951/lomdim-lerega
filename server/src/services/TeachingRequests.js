@@ -33,4 +33,23 @@ async function createTeachingRequest(studentEmail, teacherEmail, subject){
     }
 }
 
-module.exports = {createTeachingRequest}
+async function getTeachingRequestsOfTeacher(teacherEmail){
+    try {
+        const teachingRequest = await TeachingRequests.find({ teacherEmail });
+        return {
+          status: 200,
+          body: teachingRequest,
+        };
+      } catch (error) {
+        console.log(error);
+        return {
+          status: 500,
+          body: error,
+        };
+    }
+}
+
+module.exports = {
+    createTeachingRequest,
+    getTeachingRequestsOfTeacher,
+}

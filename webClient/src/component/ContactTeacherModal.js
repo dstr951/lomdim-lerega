@@ -1,17 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 import { idToGrade, idToSubject, subjectToId } from "../Converters";
 
 function ContactTeacherModal(props) {
   const navigate = useNavigate();
-  const [selectedSubject, setSelectedSubject] = useState("מתמטיקה");
+  const [selectedSubject, setSelectedSubject] = useState(0);
   const [messageContent, setMessageContent] = useState("");
+  const [studentEmail, setStudentEmail] = useState("");
+  const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
-  const sendMessageToTeacher = (studentToken, clickedProfile) => {
-    navigate("/seek-teachers", { state: { token } });
+  useEffect(() => {
+    getStudentEmail();
+  }, []);
+
+  const getStudentEmail = () => {
+    axios
+      .get(`${SERVER_ADDRESS}/api/Students/myself `, {
+        headers: { Authorization: props.token },
+      })
+      .then((response) => {
+        setStudentEmail(response.data.email);
+        console.log(studentEmail);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  console.log(props.teacher?.teacher?.email);
+  const sendMessageToTeacher = async (e) => {
+    e.preventDefault();
+
+    if (selectedSubject === 0 || messageContent === "") {
+      return alert("נא למלא את כל השדות הדרושים.");
+    }
+
+    try {
+      console.log(selectedSubject);
+      const response = await axios.post(
+        `${SERVER_ADDRESS}/api/TeachingRequests/`,
+        {
+          studentEmail: studentEmail,
+          teacherEmail: props.teacher?.teacher?.email,
+          subject: selectedSubject,
+        },
+        {
+          headers: { Authorization: props.token },
+        }
+      );
+      if (response.status === 200) {
+        alert("ההודעה נשלחה.");
+        navigate("/seek-teachers", { state: { token } });
+      } else {
+        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      }
+    } catch (error) {
+      alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+      console.error(error);
+    }
   };
 
   return (
@@ -39,9 +86,12 @@ function ContactTeacherModal(props) {
                   <Form.Control
                     as="select"
                     value={selectedSubject}
-                    onChange={(e) => setSelectedSubject(e.target.value)}
+                    onChange={(e) =>
+                      setSelectedSubject(subjectToId[e.target.value])
+                    }
                   >
-                    {props.teacher.teacher?.canTeach.map((record) => (
+                    <option value={0}>בחר מקצוע</option>
+                    {props.teacher?.teacher?.canTeach.map((record) => (
                       <option
                         value={subjectToId[record.subject]}
                         key={record.subject}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,8 +9,8 @@ const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
-  const [filteredTeachers, setFilteredTeachers] = useState(teachers);
-  const [clickedProfile, setClickedProfile] = useState({});
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const token = location?.state?.token;
@@ -19,23 +19,8 @@ const TeachersListing = () => {
     navigate("/", {});
   };
 
-  useEffect(() => {
-    getTeachers();
-  }, []);
-
-  const getTeachers = () => {
-    axios
-      .get(`${SERVER_ADDRESS}/api/Teachers/all`, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        setTeachers(response.data);
-        setFilteredTeachers(response.data);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const handleFilterChange = (subject, grade) => {
+  const handleSearch = (subject, grade) => {
+    setHasSearched(true); 
     const params = [];
     if (subject) {
       params.push(`subject=${subject}`);
@@ -51,16 +36,13 @@ const TeachersListing = () => {
       url = `${SERVER_ADDRESS}/api/Teachers/all`;
     }
 
-    if (params.length > 0) {
-      axios
-        .get(url, { headers: { Authorization: token } })
-        .then((response) => {
-          setFilteredTeachers(response.data);
-        })
-        .catch((error) => console.error(error));
-    } else {
-      setFilteredTeachers(teachers);
-    }
+    axios
+      .get(url, { headers: { Authorization: token } })
+      .then((response) => {
+        setTeachers(response.data);
+        setFilteredTeachers(response.data);
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -75,18 +57,24 @@ const TeachersListing = () => {
           <h1>שנתחיל ללמוד?</h1>
         </Col>
       </Row>
-      <FilterTeachers handleFilterChange={handleFilterChange} />
+      <FilterTeachers handleFilterChange={handleSearch} />
       <br />
-      {filteredTeachers?.length === 0 ? (
-        <Row
-          variant="body1"
-          align="center"
-          data-testid="teacherListing-noTeacherssAvailable"
-        >
-          לא נמצאו מורים.
-        </Row>
+      {hasSearched ? (
+        filteredTeachers?.length === 0 ? (
+          <Row
+            variant="body1"
+            align="center"
+            data-testid="teacherListing-noTeacherssAvailable"
+          >
+            לא נמצאו מורים.
+          </Row>
+        ) : (
+          <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
+        )
       ) : (
-        <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
+        <Row variant="body1" align="center">
+          כדי לחפש, בחרו בקטוגריות המתאימות לכם ולחצו על כפתור החיפוש.
+        </Row>
       )}
     </Container>
   );

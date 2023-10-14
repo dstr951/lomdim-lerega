@@ -44,8 +44,8 @@ const FilterTeachers = ({ handleFilterChange }) => {
               handleFilterChange(subject, grade);
             }}
           >
-            החל סינון
-          </Button>
+            חפש!          
+            </Button>
         </Col>
       </Row>
     </>

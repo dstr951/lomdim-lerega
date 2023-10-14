@@ -15,7 +15,7 @@ const FilterTeachers = ({ handleFilterChange }) => {
     setGrade(event.target.value);
   };
   return (
-    <div className="row-container" id="search-teacher">
+    <div className="filter-container" id="search-teacher">
       <Form.Select
         size="sm"
         className="selectForm"

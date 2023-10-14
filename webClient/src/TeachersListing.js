@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TeacherAccordion from "./component/TeacherAccordion";
 import FilterTeachers from "./component/FilterTeachers";
 import Header from "./component/Header";
+import { ReactSVG } from "react-svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -75,14 +76,15 @@ const TeachersListing = () => {
   );
   return (
     <div>
-      <Header status={"loggedIn"} />
-      <div className="main">
-        <div className="section">
-          <div className="text-section">
+      <Header mode="1" />
+      <div className="main-section">
+        <div className="section" id="top-section">
+          <div className="text-section" id="search-section">
             <h1>שנתחיל ללמוד?</h1>
             <h2>חיפוש מורה לפי נושא</h2>
             <FilterTeachers handleFilterChange={handleFilterChange} />
           </div>
+          <ReactSVG src="./assets/apple-img.svg" />
         </div>
         {filteredTeachers?.length === 0 ? (
           noTeachers

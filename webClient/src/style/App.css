@@ -11,12 +11,13 @@ h1 {
     font-weight: 400;
     font-style: normal;
     font-size: 48pt;
+    margin-bottom: 0;
 }
 
 h2{
     color: #016BA6;
     font-family: liebling, 'Segoe UI', sans-serif;
-    font-size: 34pt;
+    font-size: 28pt;
     font-weight: 400;
 }
 
@@ -70,10 +71,11 @@ button {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    height: 34pt;
 }
 button:hover {
     background-color: #007bffc5; 
-    font-weight: 500;
+    font-weight: 400;
     transition: 0.3s;
     
 }
@@ -158,6 +160,12 @@ button:hover {
 
 .selectForm{
     cursor: pointer;
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16pt; 
+    margin-bottom: 17pt;
+    height: 34pt;
 
     background-image: url('./assets/downArrow.svg');
     background-size: 10px; /* Adjust the size of the icon as needed */
@@ -195,19 +203,22 @@ button:hover {
     text-align: center;
 }
 
-.main{
+.main-section{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     margin: auto;
     gap: 45px;
     margin-top: 45px;
     overflow: auto;
     margin-bottom: 45px;
+    min-height: 1000px;
+    height: 100%;
+    width: 100%;
 }
 
-.main-narrow{
+.main-section-narrow{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -245,7 +256,7 @@ button:hover {
 
 .row-container {
     display: flex; 
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
     gap: 20px; 
 }

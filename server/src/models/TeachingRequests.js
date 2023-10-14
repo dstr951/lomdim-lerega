@@ -1,6 +1,14 @@
 const mongoose = require("mongoose").default;
 
 const TeachingRequestsSchema = new mongoose.Schema({
+  studentFirstName: {
+    type: String,
+    required: true,
+  },
+  studentLastName: {
+    type: String,
+    required: true,
+  },
   studentEmail: {
     type: String,
     required: true,

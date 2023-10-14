@@ -14,6 +14,10 @@ const http = require("http");
 const server = http.createServer(app);
 try {
   require("custom-env").env(process.env.NODE_ENV, "src/config");
+  console.log(
+    ".env file loaded with these parameters: ",
+    process.env.MONGODB_URI
+  );
 } catch (err) {
   console.log(err);
 }

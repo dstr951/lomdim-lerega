@@ -7,7 +7,9 @@ async function createTeachingRequest(
   studentEmail,
   teacherEmail,
   subject,
-  messageContent
+  messageContent,
+  studentFirstName,
+  studentLastName
 ) {
   const getStudentResponse = await StudentService.getStudentByEmail(
     studentEmail
@@ -18,6 +20,8 @@ async function createTeachingRequest(
   }
   const newTeachingRequests = new TeachingRequests({
     studentEmail,
+    studentFirstName,
+    studentLastName,
     teacherEmail,
     subject,
     messageContent,
@@ -40,20 +44,20 @@ async function createTeachingRequest(
   }
 }
 
-async function getTeachingRequestsOfTeacher(teacherEmail){
-    try {
-        const teachingRequest = await TeachingRequests.find({ teacherEmail });
-        return {
-          status: 200,
-          body: teachingRequest,
-        };
-      } catch (error) {
-        console.log(error);
-        return {
-          status: 500,
-          body: error,
-        };
-    }
+async function getTeachingRequestsOfTeacher(teacherEmail) {
+  try {
+    const teachingRequest = await TeachingRequests.find({ teacherEmail });
+    return {
+      status: 200,
+      body: teachingRequest,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      body: error,
+    };
+  }
 }
 async function updateTeachingRequest(requestId, status) {
   try {
@@ -79,8 +83,8 @@ async function updateTeachingRequest(requestId, status) {
   }
 }
 
-module.exports = { 
-    createTeachingRequest,
-    updateTeachingRequest, 
-    getTeachingRequestsOfTeacher
+module.exports = {
+  createTeachingRequest,
+  updateTeachingRequest,
+  getTeachingRequestsOfTeacher,
 };

@@ -37,19 +37,19 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, firstName }) => {
     ) : null;
 };
 
-const TeachingRequest = ({ request, token }) => {
+const TeachingRequest = ({ request, token, onActionComplete }) => {
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
     const approveRequest = () => {
-        alert(`Approve ${request._id}`);
-        axios.post(`${SERVER_ADDRESS}/api/TeachingRequests/${request._id}/approve`, {}, {
-            headers: {
-                "Authorization": token
-            }
-        }).then(() => { 
-        }).catch((error) => {
-            console.error("Error approving the request:", error);
-        });
+      axios.post(`${SERVER_ADDRESS}/api/TeachingRequests/${request._id}/approve`, {}, {
+          headers: {
+              "Authorization": token
+          }
+      }).then(() => { 
+          onActionComplete(request._id);
+      }).catch((error) => {
+          console.error("Error approving the request:", error);
+      });
     };
 
     const rejectRequest = () => {
@@ -59,6 +59,7 @@ const TeachingRequest = ({ request, token }) => {
             }
         }).then(() => {
             setIsConfirmationModalOpen(false);
+            onActionComplete(request._id);
         }).catch((error) => {
             console.error("Error rejecting the request:", error);
             setIsConfirmationModalOpen(false);
@@ -90,7 +91,7 @@ const TeachingRequest = ({ request, token }) => {
     );
 };
 
-const NotificationButton = ({ notifications, teachingRequests, token }) => {
+const NotificationButton = ({ notifications, teachingRequests, token, handleRequestAction }) => {
     const [showRequests, setShowRequests] = useState(false);
     return (
       <>
@@ -102,7 +103,12 @@ const NotificationButton = ({ notifications, teachingRequests, token }) => {
         {showRequests && (
           <div className="requests-modal">
           {teachingRequests.map(request => (
-            <TeachingRequest key={request._id} request={request} token={token} />
+            <TeachingRequest 
+                key={request._id} 
+                request={request} 
+                token={token} 
+                onActionComplete={handleRequestAction}
+            />
         ))}
           <div className="d-flex justify-content-center mt-2">
             <button onClick={() => setShowRequests(false)}>סגור</button>
@@ -121,6 +127,12 @@ const NotificationButton = ({ notifications, teachingRequests, token }) => {
     const token = location.state?.token;
     
     const [teachingRequests, setTeachingRequests] = useState([]);
+
+    const handleRequestAction = (requestId) => {
+      setTeachingRequests(prevRequests => 
+          prevRequests.filter(request => request._id !== requestId)
+      );
+  };
     
     useEffect(() => {
       axios.get(`${SERVER_ADDRESS}/api/TeachingRequests/myRequests`, {
@@ -176,7 +188,12 @@ const NotificationButton = ({ notifications, teachingRequests, token }) => {
                                     <Link to="/login">
                                     <button id="orange-button">התנתקות</button>
                                     </Link>
-                                    <NotificationButton notifications={teachingRequests.length} teachingRequests={teachingRequests} token={token} />
+                                    <NotificationButton 
+                                        notifications={teachingRequests.length} 
+                                        teachingRequests={teachingRequests} 
+                                        token={token}
+                                        handleRequestAction={handleRequestAction} 
+                                    />                                
                                 </div>
                             </div>
                             <div className="left-section">

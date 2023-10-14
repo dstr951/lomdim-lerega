@@ -18,9 +18,15 @@ import axios from 'axios';
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
 
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, firstName }) => {
+
+
+    const preventBackgroundClick = (e) => {
+        e.stopPropagation();
+    };
+
     return isOpen ? (
-        <div className="confirmation-modal-overlay">
-            <div className="confirmation-modal">
+        <div className="confirmation-modal-overlay" onClick={onClose} shouldCloseOnOverlayClick={false}>
+            <div className="confirmation-modal" onClick={preventBackgroundClick}>
                 <p>האם את/ה בטוח/ה שברצונך לדחות את הבקשה של {firstName}?</p>
                 <div className="confirmation-buttons">
                     <Button variant="danger" onClick={onConfirm}>אני בטוח</Button>
@@ -194,6 +200,7 @@ const NotificationButton = ({ notifications, teachingRequests, token }) => {
         </div>
     );
 };
+
 
 TeacherHomepage.defaultProps = {
   teacher: {

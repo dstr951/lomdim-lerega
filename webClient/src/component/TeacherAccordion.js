@@ -44,7 +44,7 @@ const TeacherAccordion = ({props, filteredTeachers, token }) => {
             />
             <div>
               <h2 id="personal-title">{teacher.firstName} {teacher.lastName}{" "}</h2>
-              <div>
+              <div className="row-container">
               <button
                           href={teacher.socialProfileLink}
                           onClick={() => onClickOpenVacancy(id)}

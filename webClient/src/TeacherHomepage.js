@@ -69,8 +69,8 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
     return (
       <Card className="mb-3">
         <Card.Body>
-          {request.studentFirstName + " " + request.studentLastName}
             <Card.Text>
+                <strong>שם:</strong> {request.studentFirstName + " " + request.studentLastName} <br />
                 <strong>תאריך:</strong> {new Date(request.created).toLocaleDateString()} <br />
                 <strong>מקצוע:</strong> {idToSubject[request.subject]} <br />
                 <strong>כיתה:</strong> {idToGrade[request.grade]} <br />

@@ -166,7 +166,7 @@ function notifyMatch(request, student, teacher) {
   );
   resend.emails.send({
     to: [`${student.email}`, `${teacher.email}`],
-    from: "notifications@lomdim-lerega.info",
+    from: `${process.env.RESEND_SENDER_NAME}@lomdim-lerega.info`,
     html: HTMLstring,
     subject,
   });

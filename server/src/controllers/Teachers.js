@@ -42,7 +42,13 @@ async function registerTeacher(req, res) {
 async function searchTeachers(req, res) {
   const { email, subject, grade } = req.query;
   if (email) {
-    const teacherResponse = await TeachersService.getTeacherByEmail(email);
+    const authorized = false;
+    const sensitive = false;
+    const teacherResponse = await TeachersService.getTeacherByEmail(
+      email,
+      authorized,
+      sensitive
+    );
     if (teacherResponse.status == 200) {
       res.status(200).send(teacherResponse.body);
     } else {

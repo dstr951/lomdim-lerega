@@ -135,7 +135,7 @@ async function loginTeacher(email, password) {
   }
 }
 
-async function getTeacherByEmail(email) {
+async function getTeacherByEmail(email, authorized, sensitive) {
   try {
     const teacher = await Teacher.findOne({ email });
     if (!teacher) {
@@ -144,7 +144,11 @@ async function getTeacherByEmail(email) {
         error: "We couldn't find a teacher with this email",
       };
     }
-    const formattedTeachers = createTeacherObject(teacher, false, false);
+    const formattedTeachers = createTeacherObject(
+      teacher,
+      authorized,
+      sensitive
+    );
     return {
       status: 200,
       body: formattedTeachers,

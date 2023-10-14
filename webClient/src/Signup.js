@@ -41,14 +41,14 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAddSubject = () => {
+    if (gradeToId[startClass] > gradeToId[endClass]) {
+      alert("שגיאה: טווח הכיתות אינו תקין");
+      return; 
+    }
     const newSubject = {
-      subject: selectedSubject,
+      subject: selectedSubject, 
       range: `${startClass} עד ${endClass}`,
     };
-    const i = subjects.findIndex((item) => item.subject === selectedSubject);
-    if (i != -1) {
-      handleRemoveSubject(i);
-    }
     setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
   };
 
@@ -409,7 +409,7 @@ const Signup = () => {
   return (
     <div>
       <Header />
-      <div className="main-narrow">
+      <div className="main-section-narrow">
         <div className="section">
           <div
             className="title"

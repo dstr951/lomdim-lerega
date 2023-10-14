@@ -99,5 +99,4 @@ const TeachersListing = () => {
     </div>
   );
 };
-
 export default TeachersListing;

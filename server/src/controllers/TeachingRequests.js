@@ -1,7 +1,7 @@
 const TeachingRequestsService = require("../services/TeachingRequests");
 const TeachersService = require("../services/Teachers");
 const StudentsService = require("../services/Students");
-const EmailingService = require("../services/Emailing");
+const EmailingService = require("../services/EmailingResend");
 const jwt = require("jsonwebtoken");
 
 async function createTeachingRequest(req, res) {
@@ -34,9 +34,15 @@ async function approveTeachingRequest(req, res) {
     if (requestResponse.status !== 200) {
       return res.status(requestResponse.status).send(requestResponse.error);
     }
+    const authorized = false;
+    const sensitive = true;
     const dbResponses = await Promise.all([
       StudentsService.getStudentByEmail(requestResponse.body.studentEmail),
-      TeachersService.getTeacherByEmail(requestResponse.body.teacherEmail),
+      TeachersService.getTeacherByEmail(
+        requestResponse.body.teacherEmail,
+        authorized,
+        sensitive
+      ),
     ]);
     const student = dbResponses[0].body;
     const teacher = dbResponses[1].body;

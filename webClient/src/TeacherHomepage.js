@@ -77,7 +77,7 @@ const TeachingRequest = ({ request, token }) => {
             </Card.Text>
             <div className="card-buttons d-flex justify-content-center">
                 <Button variant="success" className="mr-2" onClick={approveRequest}>אשר</Button>
-                <Button variant="danger" onClick={() => setIsConfirmationModalOpen(true)}>דחה</Button>
+                <Button variant="danger" onClick={rejectRequest}>דחה</Button>
             </div>
             <ConfirmationModal 
                 isOpen={isConfirmationModalOpen} 
@@ -169,7 +169,6 @@ const NotificationButton = ({ notifications, teachingRequests, token }) => {
                                         <h2 id="h2-orange">{teacherData.firstName} {teacherData.lastName}</h2>
                                         <p>
                                             <strong>גיל:</strong> {teacherData.age} <br/>
-                                            <strong>טלפון:</strong> {teacherData.phoneNumber}<br/><br/>
                                             <a id="orange-text" href={teacherData.socialProfileLink} target="_blank" rel="noopener noreferrer">
                                                         קישור לפרופיל החברתי</a><br/>
                                         </p>

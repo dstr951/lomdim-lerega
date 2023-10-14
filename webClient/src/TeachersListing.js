@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import TeacherAccordion from "./component/TeacherAccordion";
 import FilterTeachers from "./component/FilterTeachers";
+import Header from "./component/Header";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
-  const [clickedProfile, setClickedProfile] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   const token = location?.state?.token;
@@ -62,33 +61,36 @@ const TeachersListing = () => {
       setFilteredTeachers(teachers);
     }
   };
-
+  const noTeachers = (
+    <div
+      variant="body1"
+      align="center"
+      data-testid="teacherListing-noTeacherssAvailable"
+      className="section"
+    >
+      <div className="text-section">
+        <p>לא נמצאו מורים.</p>
+      </div>
+    </div>
+  );
   return (
-    <Container dir="rtl">
-      <Card.Footer align="left">
-        <Button variant="primary" onClick={() => handleDisconnect()}>
-          התנתק
-        </Button>
-      </Card.Footer>
-      <Row>
-        <Col>
-          <h1>שנתחיל ללמוד?</h1>
-        </Col>
-      </Row>
-      <FilterTeachers handleFilterChange={handleFilterChange} />
-      <br />
-      {filteredTeachers?.length === 0 ? (
-        <Row
-          variant="body1"
-          align="center"
-          data-testid="teacherListing-noTeacherssAvailable"
-        >
-          לא נמצאו מורים.
-        </Row>
-      ) : (
-        <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
-      )}
-    </Container>
+    <div>
+      <Header status={"loggedIn"} />
+      <div className="main">
+        <div className="section">
+          <div className="text-section">
+            <h1>שנתחיל ללמוד?</h1>
+            <h2>חיפוש מורה לפי נושא</h2>
+            <FilterTeachers handleFilterChange={handleFilterChange} />
+          </div>
+        </div>
+        {filteredTeachers?.length === 0 ? (
+          noTeachers
+        ) : (
+          <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
+        )}
+      </div>
+    </div>
   );
 };
 

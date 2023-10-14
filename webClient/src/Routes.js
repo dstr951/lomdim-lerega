@@ -12,7 +12,7 @@ import Blank from "./Blank";
 function Routes() {
   return (
     <Router>
-      <Route path="/" element={<Blank />} />
+      <Route path="/" element={<TeachersListing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/teacher-homepage" element={<TeacherHomepage />} />

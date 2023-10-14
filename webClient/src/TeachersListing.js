@@ -79,7 +79,7 @@ const TeachersListing = () => {
   console.log(filteredTeachers)
   return (
     <div>
-      <Header/>
+      <Header mode="1"/>
       <div className="main-section">
         <div className="section" id="top-section">
           <div className="text-section" id="search-section">
@@ -101,11 +101,6 @@ const TeachersListing = () => {
 
 
 
-{/*
-לטפל בזה
-<Button variant="primary" onClick={() => handleDisconnect()}>
-          התנתק
-        </Button> */}
 
 
         

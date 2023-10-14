@@ -29,8 +29,8 @@ const TeacherHomepage = () => {
 
     return (
         <div className="teacher-homepage-wrapper">
-            <Header/>
-            <div className="main">
+            <Header mode="1"/>
+            <div className="main-section">
                 <div className="section">
                     <div className="title" id="orange-background">
                         הפרופיל שלי

@@ -203,19 +203,22 @@ button:hover {
     text-align: center;
 }
 
-.main{
+.main-section{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     margin: auto;
     gap: 45px;
     margin-top: 45px;
     overflow: auto;
     margin-bottom: 45px;
+    min-height: 1000px;
+    height: 100%;
+    width: 100%;
 }
 
-.main-narrow{
+.main-section-narrow{
     display: flex;
     flex-direction: column;
     justify-content: center;

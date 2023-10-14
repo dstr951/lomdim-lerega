@@ -409,7 +409,7 @@ const Signup = () => {
   return (
     <div>
       <Header />
-      <div className="main-narrow">
+      <div className="main-section-narrow">
         <div className="section">
           <div
             className="title"

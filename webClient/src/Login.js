@@ -103,7 +103,7 @@ const Login = () => {
                         {/* <p className="pCenter"><a href="#">שכחתי סיסמה</a></p> */}
                     
                         <br/>
-                        <p className="pCenter">הסתבכתם? לחצו  <a href="#">כאן</a> לסרטון הסבר קצר.</p>
+                        {/* <p className="pCenter">הסתבכתם? לחצו  <a href="#">כאן</a> לסרטון הסבר קצר.</p> */}
                     </div>
                 </div>
             </div>

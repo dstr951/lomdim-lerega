@@ -295,6 +295,7 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
     firstName: teacher.firstName,
     lastName: teacher.lastName,
     age: teacher.age,
+    email: teacher.email,
     socialProfileLink: teacher.socialProfileLink,
     profilePicture: teacher.profilePicture,
     aboutMe: teacher.aboutMe,
@@ -304,7 +305,6 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
     newTeacher.authenticated = teacher.userFields[0].authenticated;
   }
   if (sendSensitive) {
-    newTeacher.email = teacher.email;
     newTeacher.phoneNumber = teacher.phoneNumber;
   }
   return newTeacher;

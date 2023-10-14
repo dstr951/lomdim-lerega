@@ -48,43 +48,46 @@ async function registerTeacher(
           password: hashedPassword,
           role: "teacher",
         });
-        return newUser.save({ session });
-      })
-      .then(() => {
-        const newTeacher = new Teacher({
-          email,
-          firstName,
-          lastName,
-          age,
-          socialProfileLink,
-          phoneNumber,
-          profilePicture,
-          aboutMe,
-          canTeach,
-        });
-        return newTeacher.save({ session }).then(async () => {
-          await session.commitTransaction();
-          if (TEACHERS_SERVICE_DEBUG) {
-            console.log("in then clause of creating teacher");
-          }
-
-          return {
-            status: 200,
-            body: {
+        return newUser
+          .save({ session })
+          .then(() => {
+            if (TEACHERS_SERVICE_DEBUG) {
+              console.log("in then clause of creating user");
+            }
+            const newTeacher = new Teacher({
               email,
-            },
-          };
-        });
-      })
-      .catch(async (err) => {
-        if (TEACHERS_SERVICE_DEBUG) {
-          console.log("I catched the error in the teacher");
-        }
-        console.log("I catched the error in the teacher");
-        await session.abortTransaction();
-        await session.endSession();
-        return creationServiceErrorHandler(err);
+              firstName,
+              lastName,
+              age,
+              socialProfileLink,
+              phoneNumber,
+              profilePicture,
+              aboutMe,
+              canTeach,
+            });
+            return newTeacher.save({ session }).then(async () => {
+              await session.commitTransaction();
+              if (TEACHERS_SERVICE_DEBUG) {
+                console.log("in then clause of creating teacher");
+              }
+              return {
+                status: 200,
+                body: {
+                  email,
+                },
+              };
+            });
+          })
+          .catch(async (err) => {
+            if (TEACHERS_SERVICE_DEBUG) {
+              console.log("I catched the error in the teacher");
+            }
+            await session.abortTransaction();
+            await session.endSession();
+            return creationServiceErrorHandler(err);
+          });
       });
+
     if (TEACHERS_SERVICE_DEBUG) {
       console.log("finished transaction", registerTeacherResponse);
     }

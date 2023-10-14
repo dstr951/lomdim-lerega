@@ -61,6 +61,11 @@ async function rejectTeachingRequest(req, res) {
 
 async function getTeachingRequestsOfTeacher(req, res) {
   const token = req.headers.authorization;
+  const { approved } = req.query;
+  let boolApproved = null;
+  if (approved) {
+    boolApproved = approved === "true";
+  }
   let email;
   try {
     // Verify the token is valid
@@ -75,14 +80,17 @@ async function getTeachingRequestsOfTeacher(req, res) {
     res.status(401).send("Invalid Token");
     return;
   }
-  const reachingRequestsResponse =
-    await TeachingRequestsService.getTeachingRequestsOfTeacher(email);
-  if (reachingRequestsResponse.status == 200) {
-    res.status(200).send(reachingRequestsResponse.body);
+  const teachingRequestsResponse =
+    await TeachingRequestsService.getTeachingRequestsOfTeacher(
+      email,
+      boolApproved
+    );
+  if (teachingRequestsResponse.status == 200) {
+    res.status(200).send(teachingRequestsResponse.body);
   } else {
     res
-      .status(reachingRequestsResponse.status)
-      .send(reachingRequestsResponse.error);
+      .status(teachingRequestsResponse.status)
+      .send(teachingRequestsResponse.error);
   }
 }
 

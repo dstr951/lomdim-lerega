@@ -40,12 +40,16 @@ async function createTeachingRequest(
   }
 }
 
-async function getTeachingRequestsOfTeacher(teacherEmail) {
+async function getTeachingRequestsOfTeacher(teacherEmail, approved) {
   try {
-    const teachingRequest = await TeachingRequests.find({ teacherEmail });
+    const teachingRequests = await TeachingRequests.find({ teacherEmail });
+    const filteredRequests = teachingRequests?.filter(
+      (item) => item.approved === approved
+    );
+    console.log(filteredRequests);
     return {
       status: 200,
-      body: teachingRequest,
+      body: filteredRequests,
     };
   } catch (error) {
     console.log(error);

@@ -244,8 +244,7 @@ const Signup = () => {
                         ))}
                 </Form.Control>
             </div>
-            <button id="orange-background" className="addButton" onClick={handleAddSubject}>הוסף</button>
-            
+            type="button"
             </div>
             <ListGroup className="list">
                     {subjects.map((item, index) => (

@@ -21,9 +21,11 @@
 
 #filter-lesson {
   width: 30%;
+  min-width: 150pt;
 }
 #filter-class {
   width: 30%;
+  min-width: 130pt;
 }
 
 .accordion-list {

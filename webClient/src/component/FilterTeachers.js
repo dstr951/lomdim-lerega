@@ -50,7 +50,7 @@ const FilterTeachers = ({ handleFilterChange }) => {
           handleFilterChange(subject, grade);
         }}
       >
-        החל סינון
+        חיפוש
       </button>
     </div>
   );

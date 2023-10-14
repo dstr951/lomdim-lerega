@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import TeacherAccordion from "./component/TeacherAccordion";
 import FilterTeachers from "./component/FilterTeachers";
+import Header from "./component/Header";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -62,34 +63,49 @@ const TeachersListing = () => {
       setFilteredTeachers(teachers);
     }
   };
-
-  return (
-    <Container dir="rtl">
-      <Card.Footer align="left">
-        <Button variant="primary" onClick={() => handleDisconnect()}>
-          התנתק
-        </Button>
-      </Card.Footer>
-      <Row>
-        <Col>
-          <h1>שנתחיל ללמוד?</h1>
-        </Col>
-      </Row>
-      <FilterTeachers handleFilterChange={handleFilterChange} />
-      <br />
-      {filteredTeachers?.length === 0 ? (
-        <Row
+  console.log(token);
+  const noTeachers = (
+    <div 
           variant="body1"
           align="center"
           data-testid="teacherListing-noTeacherssAvailable"
-        >
-          לא נמצאו מורים.
-        </Row>
-      ) : (
-        <TeacherAccordion filteredTeachers={filteredTeachers} token={token} />
+          className="section">
+          <div className="text-section">
+            <p>לא נמצאו מורים.</p>
+          </div>
+        </div>
+  )
+  console.log(filteredTeachers)
+  return (
+    <div>
+      <Header/>
+      <div className="main">
+        <div className="section">
+          <div className="text-section">
+            <h1>שנתחיל ללמוד?</h1>
+            <h2>חיפוש מורה לפי נושא</h2>
+            <FilterTeachers handleFilterChange={handleFilterChange} />
+          </div>
+        </div>
+        {filteredTeachers?.length === 0 ? noTeachers : (
+        <TeacherAccordion 
+        filteredTeachers={filteredTeachers} 
+        token={token} />
       )}
-    </Container>
+      </div>
+    </div>
   );
 };
+
+
+
+{/*
+לטפל בזה
+<Button variant="primary" onClick={() => handleDisconnect()}>
+          התנתק
+        </Button> */}
+
+
+        
 
 export default TeachersListing;

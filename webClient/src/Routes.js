@@ -6,12 +6,13 @@ import Login from "./Login";
 import Signup from "./Signup";
 import TeacherHomepage from "./TeacherHomepage";
 import TeachersListing from "./TeachersListing";
+import Blank from "./Blank";
 
 
 function Routes() {
   return (
     <Router>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Blank />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/teacher-homepage" element={<TeacherHomepage />} />

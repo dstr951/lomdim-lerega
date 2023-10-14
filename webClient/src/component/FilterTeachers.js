@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { idToGrade, idToSubject } from "../Converters";
+import '../style/App.css';
+import '../style/TeachersListing.css'
 
 const FilterTeachers = ({ handleFilterChange }) => {
   const [subject, setSubject] = useState("");
@@ -13,13 +15,8 @@ const FilterTeachers = ({ handleFilterChange }) => {
     setGrade(event.target.value);
   };
   return (
-    <>
-      <Row>
-        <Col>חיפוש מורה פרטי לפי נושא:</Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form.Select size="sm" value={subject} onChange={handleSubjectChange}>
+    <div className="row-container" id="search-teacher">
+          <Form.Select size="sm" className="selectForm" id="filter-lesson" value={subject} onChange={handleSubjectChange}>
             <option value={0}>כל המקצועות</option>
             {Object.keys(idToSubject).map((id) => (
               <option value={id} key={id}>
@@ -27,28 +24,23 @@ const FilterTeachers = ({ handleFilterChange }) => {
               </option>
             ))}
           </Form.Select>
-        </Col>
-        <Col>
-          <Form.Select size="sm" value={grade} onChange={handleGradeChange}>
+          <Form.Select size="sm" className="selectForm" id="filter-class" value={grade} onChange={handleGradeChange}>
             <option value={0}>כל הכיתות</option>
             {Object.keys(idToGrade).map((id) => (
               <option value={id} key={id}>
                 {idToGrade[id]}
               </option>
             ))}
-          </Form.Select>
-        </Col>
-        <Col>
-          <Button
+            </Form.Select>
+
+            <button
             onClick={() => {
               handleFilterChange(subject, grade);
             }}
           >
             החל סינון
-          </Button>
-        </Col>
-      </Row>
-    </>
+          </button>
+    </div>
   );
 };
 export default FilterTeachers;

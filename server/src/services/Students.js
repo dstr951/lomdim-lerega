@@ -1,6 +1,6 @@
 const { Student } = require("../models/Students");
 const { User } = require("../models/Users");
-const UsersService = require("../services/Users");
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { creationServiceErrorHandler } = require("../commonFunctions");
@@ -8,32 +8,67 @@ const { creationServiceErrorHandler } = require("../commonFunctions");
 const STUDENTS_SERVICE_DEBUG = false;
 
 async function registerStudent(email, hashedPassword, parent, student) {
-  const userRegisterResponse = await UsersService.registerUser(
-    email,
-    hashedPassword,
-    "student"
-  );
-  if (userRegisterResponse.status !== 200) {
-    return userRegisterResponse;
-  }
-  const newStudent = new Student({
-    email,
-    student,
-    parent,
-  });
+  const db = await mongoose
+    .createConnection(process.env.MONGODB_URI)
+    .asPromise();
   try {
-    await newStudent.save();
+    const registerStudentResponse = await db
+      .startSession()
+      .then((_session) => {
+        session = _session;
+        session.startTransaction();
+      })
+      .then(() => {
+        const newUser = new User({
+          email,
+          password: hashedPassword,
+          role: "student",
+        });
+        return newUser
+          .save({ session })
+          .then(() => {
+            if (STUDENTS_SERVICE_DEBUG) {
+              console.log("in then clause of creating user");
+            }
+            const newStudent = new Student({
+              email,
+              student,
+              parent,
+            });
+            return newStudent.save({ session }).then(async () => {
+              //use await to return values and not promises
+              await session.commitTransaction();
+              if (STUDENTS_SERVICE_DEBUG) {
+                console.log("in then clause of creating student");
+              }
+              return {
+                status: 200,
+                body: {
+                  email,
+                },
+              };
+            });
+          })
+          .catch(async (err) => {
+            if (STUDENTS_SERVICE_DEBUG) {
+              console.log("I catched an error of creating user or student");
+            }
+            //use await to return values and not promises
+            await session.abortTransaction();
+            await session.endSession();
+            return creationServiceErrorHandler(err);
+          });
+      });
+
     if (STUDENTS_SERVICE_DEBUG) {
-      console.log("Student saved successfully:", newStudent);
+      console.log("finished transaction", registerStudentResponse);
     }
-    return {
-      status: 200,
-      body: {
-        email,
-      },
-    };
+    return registerStudentResponse;
   } catch (error) {
-    console.log(error);
+    if (STUDENTS_SERVICE_DEBUG) {
+      console.log("in catch clause");
+      console.log(error);
+    }
     return creationServiceErrorHandler(error);
   }
 }

@@ -15,27 +15,76 @@ import './style/TeacherHomepage.css';
 import './style/App.css';
 import axios from 'axios';
 
-const TeachingRequest = ({ request }) => {
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, firstName }) => {
+    return isOpen ? (
+        <div className="confirmation-modal-overlay">
+            <div className="confirmation-modal">
+                <p>האם את/ה בטוח/ה שברצונך לדחות את הבקשה של {firstName}?</p>
+                <div className="confirmation-buttons">
+                    <Button variant="danger" onClick={onConfirm}>אני בטוח</Button>
+                    <Button variant="secondary" onClick={onClose}>ביטול</Button>
+                </div>
+            </div>
+        </div>
+    ) : null;
+};
+
+const TeachingRequest = ({ request, token }) => {
+    const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+
+    const approveRequest = () => {
+        alert(`Approve ${request._id}`);
+        axios.post(`${SERVER_ADDRESS}/api/TeachingRequests/${request._id}/approve`, {}, {
+            headers: {
+                "Authorization": token
+            }
+        }).then(() => { 
+        }).catch((error) => {
+            console.error("Error approving the request:", error);
+        });
+    };
+
+    const rejectRequest = () => {
+        axios.post(`${SERVER_ADDRESS}/api/TeachingRequests/${request._id}/reject`, {}, {
+            headers: {
+                "Authorization": token
+            }
+        }).then(() => {
+            setIsConfirmationModalOpen(false);
+        }).catch((error) => {
+            console.error("Error rejecting the request:", error);
+            setIsConfirmationModalOpen(false);
+        });
+    };
+
     return (
       <Card className="mb-3">
         <Card.Body>
-        <Card.Title>{request.firstName + " " + request.lastName}</Card.Title>
-          <Card.Text>
-            <strong>תאריך:</strong> {new Date(request.created).toLocaleDateString()} <br />
-            <strong>מקצוע:</strong> {idToSubject[request.subject]} <br />
-            <strong>כיתה:</strong> {idToGrade[request.grade]} <br />
-            <strong>הודעה:</strong> {request.messageContent} <br />
-          </Card.Text>
-          <div className="card-buttons d-flex justify-content-center">
-            <Button variant="success" className="mr-2">אשר</Button>
-            <Button variant="danger">דחה</Button>
-        </div>
+            <Card.Title>{request.firstName + " " + request.lastName}</Card.Title>
+            <Card.Text>
+                <strong>תאריך:</strong> {new Date(request.created).toLocaleDateString()} <br />
+                <strong>מקצוע:</strong> {idToSubject[request.subject]} <br />
+                <strong>כיתה:</strong> {idToGrade[request.grade]} <br />
+                <strong>הודעה:</strong> {request.messageContent} <br />
+            </Card.Text>
+            <div className="card-buttons d-flex justify-content-center">
+                <Button variant="success" className="mr-2" onClick={approveRequest}>אשר</Button>
+                <Button variant="danger" onClick={() => setIsConfirmationModalOpen(true)}>דחה</Button>
+            </div>
+            <ConfirmationModal 
+                isOpen={isConfirmationModalOpen} 
+                onClose={() => setIsConfirmationModalOpen(false)}
+                onConfirm={rejectRequest}
+                firstName={request.firstName}
+            />
         </Card.Body>
       </Card>
     );
 };
 
-const NotificationButton = ({ notifications, teachingRequests }) => {
+const NotificationButton = ({ notifications, teachingRequests, token }) => {
     const [showRequests, setShowRequests] = useState(false);
     return (
       <>
@@ -47,8 +96,8 @@ const NotificationButton = ({ notifications, teachingRequests }) => {
         {showRequests && (
           <div className="requests-modal">
           {teachingRequests.map(request => (
-            <TeachingRequest key={request._id} request={request} />
-          ))}
+            <TeachingRequest key={request._id} request={request} token={token} />
+        ))}
           <div className="d-flex justify-content-center mt-2">
             <button onClick={() => setShowRequests(false)}>סגור</button>
           </div>
@@ -57,8 +106,6 @@ const NotificationButton = ({ notifications, teachingRequests }) => {
       </>
     );
   };
-
-  const SERVER_ADDRESS = process.env.SERVER_ADDRESS 
 
   const TeacherHomepage = () => {
     const location = useLocation();
@@ -70,7 +117,7 @@ const NotificationButton = ({ notifications, teachingRequests }) => {
     const [teachingRequests, setTeachingRequests] = useState([]);
     
     useEffect(() => {
-      axios.get("http://localhost:3001/api/TeachingRequests/myRequests", {
+      axios.get(`${SERVER_ADDRESS}/api/TeachingRequests/myRequests`, {
         headers: {
           "Authorization": token
         }
@@ -124,7 +171,7 @@ const NotificationButton = ({ notifications, teachingRequests }) => {
                                     <Link to="/login">
                                     <button id="orange-button">התנתקות</button>
                                     </Link>
-                                    <NotificationButton notifications={teachingRequests.length} teachingRequests={teachingRequests} />
+                                    <NotificationButton notifications={teachingRequests.length} teachingRequests={teachingRequests} token={token} />
                                 </div>
                             </div>
                             <div className="left-section">

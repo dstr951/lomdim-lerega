@@ -41,16 +41,19 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAddSubject = () => {
-    const newSubject = {
-      subject: selectedSubject,
-      range: `${startClass} עד ${endClass}`,
-    };
-    const i = subjects.findIndex((item) => item.subject === selectedSubject);
-    if (i != -1) {
-      handleRemoveSubject(i);
+    // Validate the grade range
+    if (gradeToId[startClass] > gradeToId[endClass]) {
+      alert("בעיה בטווח הכיתות!");
+        return;
     }
-    setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
-  };
+
+    // Proceed to add subject if grade range is valid
+    const newSubject = {
+        subject: selectedSubject,
+        range: `${startClass}-${endClass}`
+    };
+    setSubjects([...subjects, newSubject]);
+};
 
   const handleRemoveSubject = (index) => {
     const updatedSubjects = [...subjects];

@@ -100,9 +100,10 @@ async function getTeacherByEmail(email) {
         error: "We couldn't find a teacher with this email",
       };
     }
+    const formattedTeachers = createTeacherObject(teacher, false, false);
     return {
       status: 200,
-      body: teacher,
+      body: formattedTeachers,
     };
   } catch (error) {
     console.log(error);
@@ -131,8 +132,9 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
       matchTeachersOnAuthentication,
       { $match: { canTeach: { $elemMatch: matcher } } },
     ]).limit(TEACHERS_LIMIT);
-    const formattedTeachers = createTeacherObjectAfterUsersAggregation(
+    const formattedTeachers = createTeacherObjectFromArray(
       teachers,
+      true,
       false
     );
     if (!formattedTeachers) {
@@ -160,8 +162,9 @@ async function getAllTeachers() {
       lookupUsersOnEmailExpression,
       matchTeachersOnAuthentication,
     ]);
-    const teachers = createTeacherObjectAfterUsersAggregation(
+    const teachers = createTeacherObjectFromArray(
       authenticatedTeachers,
+      true,
       false
     );
     if (!teachers) {
@@ -234,24 +237,33 @@ async function updateAuthenticationTeacherByEmail(email, newAuthentication) {
   }
 }
 
-function createTeacherObjectAfterUsersAggregation(teachers, sendSensitive) {
-  return teachers.map((teacher) => {
-    const newTeacher = {
-      firstName: teacher.firstName,
-      lastName: teacher.lastName,
-      age: teacher.age,
-      socialProfileLink: teacher.socialProfileLink,
-      profilePicture: teacher.profilePicture,
-      aboutMe: teacher.aboutMe,
-      canTeach: teacher.canTeach,
-      authenticated: teacher.userFields[0].authenticated,
-    };
-    if (sendSensitive) {
-      newTeacher.email = teacher.email;
-      newTeacher.phoneNumber = teacher.phoneNumber;
-    }
-    return newTeacher;
-  });
+function createTeacherObjectFromArray(
+  teachers,
+  sendAuthenticated,
+  sendSensitive
+) {
+  return teachers.map((teacher) =>
+    createTeacherObject(teacher, sendAuthenticated, sendSensitive)
+  );
+}
+function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
+  const newTeacher = {
+    firstName: teacher.firstName,
+    lastName: teacher.lastName,
+    age: teacher.age,
+    socialProfileLink: teacher.socialProfileLink,
+    profilePicture: teacher.profilePicture,
+    aboutMe: teacher.aboutMe,
+    canTeach: teacher.canTeach,
+  };
+  if (sendAuthenticated) {
+    newTeacher.authenticated = teacher.userFields[0].authenticated;
+  }
+  if (sendSensitive) {
+    newTeacher.email = teacher.email;
+    newTeacher.phoneNumber = teacher.phoneNumber;
+  }
+  return newTeacher;
 }
 
 module.exports = {

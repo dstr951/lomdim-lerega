@@ -5,31 +5,15 @@ const EmailingService = require("../services/Emailing");
 const jwt = require("jsonwebtoken");
 
 async function createTeachingRequest(req, res) {
-  const {
-    studentEmail,
-    teacherEmail,
-    subject,
-    messageContent,
-    firstName: studentFirstName,
-    lastName: studentLastName,
-  } = req.body;
-  if (
-    !studentEmail ||
-    !teacherEmail ||
-    !subject ||
-    !messageContent ||
-    !studentFirstName ||
-    !studentLastName
-  ) {
+  const { studentEmail, teacherEmail, subject, messageContent } = req.body;
+  if (!studentEmail || !teacherEmail || !subject || !messageContent) {
     return res.status(400).send("bad request");
   }
   const requestResponse = await TeachingRequestsService.createTeachingRequest(
     studentEmail,
     teacherEmail,
     subject,
-    messageContent,
-    studentFirstName,
-    studentLastName
+    messageContent
   );
   if (requestResponse.status === 200) {
     return res.status(200).send(requestResponse.body);

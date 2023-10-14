@@ -3,6 +3,7 @@ const { User } = require("../models/Users");
 const UsersService = require("../services/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const { creationServiceErrorHandler } = require("../commonFunctions");
 
 const lookupUsersOnEmailExpression = {
@@ -31,39 +32,68 @@ async function registerTeacher(
   aboutMe,
   canTeach
 ) {
-  const userRegisterResponse = await UsersService.registerUser(
-    email,
-    hashedPassword,
-    "teacher"
-  );
-  if (userRegisterResponse.status !== 200) {
-    return userRegisterResponse;
-  }
-  const newTeacher = new Teacher({
-    email,
-    firstName,
-    lastName,
-    age,
-    socialProfileLink,
-    phoneNumber,
-    profilePicture,
-    aboutMe,
-    canTeach,
-  });
-
+  const db = await mongoose
+    .createConnection(process.env.MONGODB_URI)
+    .asPromise();
   try {
-    await newTeacher.save();
+    const registerTeacherResponse = await db
+      .startSession()
+      .then((_session) => {
+        session = _session;
+        session.startTransaction();
+      })
+      .then(() => {
+        const newUser = new User({
+          email,
+          password: hashedPassword,
+          role: "teacher",
+        });
+        return newUser.save({ session });
+      })
+      .then(() => {
+        const newTeacher = new Teacher({
+          email,
+          firstName,
+          lastName,
+          age,
+          socialProfileLink,
+          phoneNumber,
+          profilePicture,
+          aboutMe,
+          canTeach,
+        });
+        return newTeacher.save({ session }).then(async () => {
+          await session.commitTransaction();
+          if (TEACHERS_SERVICE_DEBUG) {
+            console.log("in then clause of creating teacher");
+          }
+
+          return {
+            status: 200,
+            body: {
+              email,
+            },
+          };
+        });
+      })
+      .catch(async (err) => {
+        if (TEACHERS_SERVICE_DEBUG) {
+          console.log("I catched the error in the teacher");
+        }
+        console.log("I catched the error in the teacher");
+        await session.abortTransaction();
+        await session.endSession();
+        return creationServiceErrorHandler(err);
+      });
     if (TEACHERS_SERVICE_DEBUG) {
-      console.log("Teacher saved successfully:", newTeacher);
+      console.log("finished transaction", registerTeacherResponse);
     }
-    return {
-      status: 200,
-      body: {
-        email,
-      },
-    };
+    return registerTeacherResponse;
   } catch (error) {
-    console.log(error);
+    if (TEACHERS_SERVICE_DEBUG) {
+      console.log("in catch clause");
+      console.log(error);
+    }
     return creationServiceErrorHandler(error);
   }
 }

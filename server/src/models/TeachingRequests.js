@@ -1,6 +1,14 @@
 const mongoose = require("mongoose").default;
 
 const TeachingRequestsSchema = new mongoose.Schema({
+  studentFirstName: {
+    type: String,
+    required: true,
+  },
+  studentLastName: {
+    type: String,
+    required: true,
+  },
   studentEmail: {
     type: String,
     required: true,
@@ -33,7 +41,7 @@ const TeachingRequestsSchema = new mongoose.Schema({
 
 TeachingRequestsSchema.index(
   { studentEmail: 1, teacherEmail: 1, subject: 1 },
-  { unique: true }
+  { unique: false }
 );
 
 const TeachingRequests = mongoose.model(

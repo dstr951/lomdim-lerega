@@ -143,9 +143,9 @@ const NotificationButton = ({ notifications, teachingRequests }) => {
                         </div>
                     </div>
                 </div>
+              </div>
             </div>
-        </div>
-    );
+  );
 };
 
 TeacherHomepage.defaultProps = {

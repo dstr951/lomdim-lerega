@@ -2,6 +2,7 @@ const { Teacher } = require("../models/Teachers");
 const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const { creationServiceErrorHandler } = require("../commonFunctions");
 
 const lookupUsersOnEmailExpression = {
@@ -20,6 +21,7 @@ const TEACHERS_SERVICE_DEBUG = false;
 
 async function registerTeacher(
   email,
+  hashedPassword,
   firstName,
   lastName,
   age,
@@ -29,31 +31,73 @@ async function registerTeacher(
   aboutMe,
   canTeach
 ) {
-  const newTeacher = new Teacher({
-    email,
-    firstName,
-    lastName,
-    age,
-    socialProfileLink,
-    phoneNumber,
-    profilePicture,
-    aboutMe,
-    canTeach,
-  });
-
+  const db = await mongoose
+    .createConnection(process.env.MONGODB_URI)
+    .asPromise();
   try {
-    await newTeacher.save();
+    const registerTeacherResponse = await db
+      .startSession()
+      .then((_session) => {
+        session = _session;
+        session.startTransaction();
+      })
+      .then(() => {
+        const newUser = new User({
+          email,
+          password: hashedPassword,
+          role: "teacher",
+        });
+        return newUser
+          .save({ session })
+          .then(() => {
+            if (TEACHERS_SERVICE_DEBUG) {
+              console.log("in then clause of creating user");
+            }
+            const newTeacher = new Teacher({
+              email,
+              firstName,
+              lastName,
+              age,
+              socialProfileLink,
+              phoneNumber,
+              profilePicture,
+              aboutMe,
+              canTeach,
+            });
+            return newTeacher.save({ session }).then(async () => {
+              //use await to return values and not promises
+              await session.commitTransaction();
+              if (TEACHERS_SERVICE_DEBUG) {
+                console.log("in then clause of creating teacher");
+              }
+              return {
+                status: 200,
+                body: {
+                  email,
+                },
+              };
+            });
+          })
+          .catch(async (err) => {
+            //use await to return values and not promises
+            if (TEACHERS_SERVICE_DEBUG) {
+              console.log("I catched the error of creating user or teacher");
+            }
+            await session.abortTransaction();
+            await session.endSession();
+            return creationServiceErrorHandler(err);
+          });
+      });
+
     if (TEACHERS_SERVICE_DEBUG) {
-      console.log("Teacher saved successfully:", newTeacher);
+      console.log("finished transaction", registerTeacherResponse);
     }
-    return {
-      status: 200,
-      body: {
-        email,
-      },
-    };
+    return registerTeacherResponse;
   } catch (error) {
-    console.log(error);
+    if (TEACHERS_SERVICE_DEBUG) {
+      console.log("in catch clause");
+      console.log(error);
+    }
     return creationServiceErrorHandler(error);
   }
 }

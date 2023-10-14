@@ -11,18 +11,9 @@ async function registerStudent(req, res) {
     if (err) {
       return res.status(500).send("Error hashing the password.");
     }
-    const userRegisterResponse = await UsersService.registerUser(
-      email,
-      hashedPassword,
-      "student"
-    );
-    if (userRegisterResponse.status !== 200) {
-      res.status(userRegisterResponse.status).send(userRegisterResponse.error);
-      return;
-    }
-
     const studentRegisterResponse = await StudentsService.registerStudent(
       email,
+      hashedPassword,
       parent,
       student
     );

@@ -17,17 +17,9 @@ async function registerTeacher(req, res) {
     canTeach,
   } = req.body;
   bcrypt.hash(password, SALT_ROUNDS, async function (err, hashedPassword) {
-    const userRegisterResponse = await UsersService.registerUser(
-      email,
-      hashedPassword,
-      "teacher"
-    );
-    if (userRegisterResponse.status !== 200) {
-      res.status(userRegisterResponse.status).send(userRegisterResponse.error);
-      return;
-    }
     const teacherRegisterResponse = await TeachersService.registerTeacher(
       email,
+      hashedPassword,
       firstName,
       lastName,
       age,
@@ -37,7 +29,7 @@ async function registerTeacher(req, res) {
       aboutMe,
       canTeach
     );
-    if (teacherRegisterResponse.status == 200) {
+    if (teacherRegisterResponse.status === 200) {
       res.status(200).send(teacherRegisterResponse.body);
     } else {
       res

@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, ListGroup, CloseButton, FormGroup } from "react-bootstrap";
-import axios from 'axios';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  ListGroup,
+  CloseButton,
+  FormGroup,
+} from "react-bootstrap";
+import axios from "axios";
 import Header from "./component/Header";
-import './style/Signup.css';
+import "./style/Signup.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
-import { ReactSVG } from 'react-svg'
+import { ReactSVG } from "react-svg";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -198,169 +207,289 @@ const Signup = () => {
     }
   };
 
-  const color = userType == "teacher" ? "orange-text" : "purple-text"
-    
-    const teacherSignUp = (<div>
-        <h2 id={color}>פרטים אישיים</h2>
-        <FormGroup>
-            <p>שם פרטי:</p>
-            <Form.Control type="text" placeholder="השם הפרטי שלך" value={teacherFirstName} onChange={(e) => setTeacherFirstName(e.target.value)} />
-            <p>שם משפחה:</p>
-            <Form.Control type="text" placeholder="שם המשפחה שלך" value={teacherLastName} onChange={(e) => setTeacherLastName(e.target.value)} />
-            <p>גיל:</p>
-            <Form.Control type="text" placeholder="הגיל שלך" value={age} onChange={(e) => setAge(e.target.value)} />
-            <p>מספר טלפון:</p>
-            <Form.Control type="text" placeholder="מספר הטלפון שלך" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-            <br/>
-            <h2 id={color}>פרטים מקצועיים</h2>
-            <div className="select-container">
-            <div className="select">
-            <p>מקצוע: </p>
-                <Form.Control as="select" className="selectForm" value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
-                {Object.entries(idToSubject).map(([id, subject]) => (
-                          <option key={id} value={subject}>
-                            {subject}
-                          </option>
-                        ))}
-                </Form.Control>
-            </div>
-            <div>
-            <p> מ-  </p>
-                <Form.Control as="select" className="selectForm" value={startClass} onChange={(e) => setStartClass(e.target.value)}>
-                {Object.entries(idToGrade).map(([id, grade]) => (
-                          <option key={id} value={grade}>
-                            {grade}
-                          </option>
-                        ))}
-                </Form.Control>
-            </div>
-            <div>
-                <p> עד- </p>
-                <Form.Control as="select" className="selectForm" value={endClass} defaultValue='י"ב' onChange={(e) => setEndClass(e.target.value)}>
-                {Object.entries(idToGrade).map(([id, grade]) => (
-                          <option key={id} value={grade}>
-                            {grade}
-                          </option>
-                        ))}
-                </Form.Control>
-            </div>
-            type="button"
-            </div>
-            <ListGroup className="list">
-                    {subjects.map((item, index) => (
-                        <ListGroup.Item key={index} className="list-item">
-                            {`${item.subject} (${item.range})`}
-                            <div><ReactSVG src="./assets/close.svg" className="closeButton" onClick={() => handleRemoveSubject(index)}/></div>
-                        </ListGroup.Item>
-                    ))}
-                </ListGroup>
-            <div className="addFile-container">
-                    <p>תמונה:</p>
-                    <Form.Control type="file" className="fileInput" accept="image/*" onChange={handleFileChange}/>
-            </div>
-            <p>קישור לפרופיל חברתי:</p>
-            <Form.Control type="url" placeholder="קישור לפרופיל החברתי שלך" value={socialProfileLink} onChange={(e) => setSocialProfileLink(e.target.value)}/>
-            <p> קצת עליי בכמה מילים...</p>
-            <Form.Control type="text" placeholder="מה המקצועות שאני מלמד/ת, כמה ניסיון יש לי, איפה אני מלמד/ת..." value={aboutMe}
-                    onChange={(e) => setAboutMe(e.target.value)} />
+  const color = userType == "teacher" ? "orange-text" : "purple-text";
 
-        </FormGroup>
-    </div>)
-    const studentSignUp=(<div>
-        <h2 id={color}>פרטי תלמיד</h2>
-        <FormGroup>
-            <p>שם פרטי תלמיד:</p>
-            <Form.Control type="text" placeholder="שם פרטי תלמיד" value={studentFirstName} onChange={(e) => setStudentFirstName(e.target.value)} />
-            <p>שם משפחה תלמיד"</p>
-            <Form.Control type="text" placeholder="שם משפחה תלמיד" value={studentLastName} onChange={(e) => setStudentLastName(e.target.value)} />
-            <p>כיתה:</p>
-            <Form.Control as="select" className="selectForm" value={studentClass} onChange={(e) => setStudentClass(e.target.value)}>
-            {Object.entries(idToGrade).map(([id, grade]) => (
-                        <option key={id} value={grade}>
-                          {grade}
-                        </option>
-                      ))}
-                    </Form.Control>
-            <br/>
-            <h2 id={color}>פרטי הורה / אפוטרופוס</h2>
-            <p>שם פרטי הורה / אפוטרופוס:</p>
-            <Form.Control type="text" placeholder="שם פרטי ההורה" value={parentFirstName} onChange={(e) => setParentFirstName(e.target.value)} />
-            <p>שם משפחה הורה / אפוטרופוס:</p>
-            <Form.Control type="text" placeholder="שם משפחה הורה" value={parentLastName} onChange={(e) => setParentLastName(e.target.value)} />
-            <p>מספר טלפון הורה / אפוטרופוס:</p>
-            <Form.Control type="tel" placeholder="מספר טלפון ההורה" value={parentPhoneNumber} onChange={(e) => setParentPhoneNumber(e.target.value)} />
-        </FormGroup>
-    </div>
-    )
-    
-    return (
-        
-        <div>
-            <Header/>
-            <div className="main-narrow">
-                  <div className="section">
-                    <div className="title" style={{backgroundColor: userType == "teacher" ? "#E8701F" : "#9139E5" ,}}>
-                        {userType == "teacher" ? "הרשמה - מורים" : "הרשמה - תלמידים"}
-                    </div>
-                    <div className="text-section">
-                        <Form.Group>
-                        <div className="row-container">
-                        <p>אני</p>
-                            <button 
-                                className="item-row"
-                                id="orange-button"
-                                label="מורה"
-                                name="userType"
-                                inline
-                                onClick={() => setUserType("teacher")}
-                            >מורה</button>
-                            <button
-                                className="item-row"
-                                id="purple-button"
-                                label="תלמיד"
-                                name="userType"
-                                inline
-                                checked={userType === "student"}
-                                onClick={() => setUserType("student")}
-                            >תלמיד</button>
-                        </div>
-                        </Form.Group>
-                        <Form onSubmit={handleSubmit}>
-                        <br/>
-                        <h2 id={color}>פרטי התחברות</h2>
-                        <p>אימייל:</p>
-                        <Form.Control type="email" placeholder="הכנס כתובת אימייל" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <p>סיסמה:</p>
-                        <Form.Control type="password" placeholder="הכנס סיסמה" value={password} onChange={(e) => setPassword(e.target.value)} />     
-                        <p>אימות סיסמה:</p>
-                        <Form.Control type="password" placeholder="אימות סיסמה" value={passConfirm} onChange={(e) => setPassConfirm(e.target.value)} />     
-                        
-                        <br/>
-                        {userType === "teacher" && teacherSignUp}
-                        {userType === "student" && studentSignUp}
-                        <br/>
-                        <button 
-                            variant="primary" 
-                            type="submit" 
-                            className="w-100" 
-                            id={userType == "teacher" ? "orange-button" : "purple-button"}
-                            > {userType == "teacher" ? "הרשם כמורה" : "הרשם כתלמיד"} 
-                        </button>
-                          <Link to="/login">
-                          <button 
-                            variant="secondary"  
-                            type="button" 
-                            className="w-100 back-button"
-                            > 
-                                חזור
-                            </button>
-                          </Link>
-                        </Form>
-                    </div>
-                  </div>
-                </div>
+  const teacherSignUp = (
+    <div>
+      <h2 id={color}>פרטים אישיים</h2>
+      <FormGroup>
+        <p>שם פרטי:</p>
+        <Form.Control
+          type="text"
+          placeholder="השם הפרטי שלך"
+          value={teacherFirstName}
+          onChange={(e) => setTeacherFirstName(e.target.value)}
+        />
+        <p>שם משפחה:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם המשפחה שלך"
+          value={teacherLastName}
+          onChange={(e) => setTeacherLastName(e.target.value)}
+        />
+        <p>גיל:</p>
+        <Form.Control
+          type="text"
+          placeholder="הגיל שלך"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+        <p>מספר טלפון:</p>
+        <Form.Control
+          type="text"
+          placeholder="מספר הטלפון שלך"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <br />
+        <h2 id={color}>פרטים מקצועיים</h2>
+        <div className="select-container">
+          <div className="select">
+            <p>מקצוע: </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+            >
+              {Object.entries(idToSubject).map(([id, subject]) => (
+                <option key={id} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <div>
+            <p> מ- </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={startClass}
+              onChange={(e) => setStartClass(e.target.value)}
+            >
+              {Object.entries(idToGrade).map(([id, grade]) => (
+                <option key={id} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <div>
+            <p> עד- </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={endClass}
+              defaultValue='י"ב'
+              onChange={(e) => setEndClass(e.target.value)}
+            >
+              {Object.entries(idToGrade).map(([id, grade]) => (
+                <option key={id} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <button
+            type="button"
+            id="orange-background"
+            className="addButton"
+            onClick={handleAddSubject}
+          >
+            הוסף
+          </button>
         </div>
-    );
-  }
+        <ListGroup className="list">
+          {subjects.map((item, index) => (
+            <ListGroup.Item key={index} className="list-item">
+              {`${item.subject} (${item.range})`}
+              <div>
+                <ReactSVG
+                  src="./assets/close.svg"
+                  className="closeButton"
+                  onClick={() => handleRemoveSubject(index)}
+                />
+              </div>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+        <div className="addFile-container">
+          <p>תמונה:</p>
+          <Form.Control
+            type="file"
+            className="fileInput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <p>קישור לפרופיל חברתי:</p>
+        <Form.Control
+          type="url"
+          placeholder="קישור לפרופיל החברתי שלך"
+          value={socialProfileLink}
+          onChange={(e) => setSocialProfileLink(e.target.value)}
+        />
+        <p> קצת עליי בכמה מילים...</p>
+        <Form.Control
+          type="text"
+          placeholder="מה המקצועות שאני מלמד/ת, כמה ניסיון יש לי, איפה אני מלמד/ת..."
+          value={aboutMe}
+          onChange={(e) => setAboutMe(e.target.value)}
+        />
+      </FormGroup>
+    </div>
+  );
+  const studentSignUp = (
+    <div>
+      <h2 id={color}>פרטי תלמיד</h2>
+      <FormGroup>
+        <p>שם פרטי תלמיד:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם פרטי תלמיד"
+          value={studentFirstName}
+          onChange={(e) => setStudentFirstName(e.target.value)}
+        />
+        <p>שם משפחה תלמיד"</p>
+        <Form.Control
+          type="text"
+          placeholder="שם משפחה תלמיד"
+          value={studentLastName}
+          onChange={(e) => setStudentLastName(e.target.value)}
+        />
+        <p>כיתה:</p>
+        <Form.Control
+          as="select"
+          className="selectForm"
+          value={studentClass}
+          onChange={(e) => setStudentClass(e.target.value)}
+        >
+          {Object.entries(idToGrade).map(([id, grade]) => (
+            <option key={id} value={grade}>
+              {grade}
+            </option>
+          ))}
+        </Form.Control>
+        <br />
+        <h2 id={color}>פרטי הורה / אפוטרופוס</h2>
+        <p>שם פרטי הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם פרטי ההורה"
+          value={parentFirstName}
+          onChange={(e) => setParentFirstName(e.target.value)}
+        />
+        <p>שם משפחה הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם משפחה הורה"
+          value={parentLastName}
+          onChange={(e) => setParentLastName(e.target.value)}
+        />
+        <p>מספר טלפון הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="tel"
+          placeholder="מספר טלפון ההורה"
+          value={parentPhoneNumber}
+          onChange={(e) => setParentPhoneNumber(e.target.value)}
+        />
+      </FormGroup>
+    </div>
+  );
+
+  return (
+    <div>
+      <Header />
+      <div className="main-narrow">
+        <div className="section">
+          <div
+            className="title"
+            style={{
+              backgroundColor: userType == "teacher" ? "#E8701F" : "#9139E5",
+            }}
+          >
+            {userType == "teacher" ? "הרשמה - מורים" : "הרשמה - תלמידים"}
+          </div>
+          <div className="text-section">
+            <Form.Group>
+              <div className="row-container">
+                <p>אני</p>
+                <button
+                  className="item-row"
+                  id="orange-button"
+                  label="מורה"
+                  name="userType"
+                  inline
+                  onClick={() => setUserType("teacher")}
+                >
+                  מורה
+                </button>
+                <button
+                  className="item-row"
+                  id="purple-button"
+                  label="תלמיד"
+                  name="userType"
+                  inline
+                  checked={userType === "student"}
+                  onClick={() => setUserType("student")}
+                >
+                  תלמיד
+                </button>
+              </div>
+            </Form.Group>
+            <Form onSubmit={handleSubmit}>
+              <br />
+              <h2 id={color}>פרטי התחברות</h2>
+              <p>אימייל:</p>
+              <Form.Control
+                type="email"
+                placeholder="הכנס כתובת אימייל"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <p>סיסמה:</p>
+              <Form.Control
+                type="password"
+                placeholder="הכנס סיסמה"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p>אימות סיסמה:</p>
+              <Form.Control
+                type="password"
+                placeholder="אימות סיסמה"
+                value={passConfirm}
+                onChange={(e) => setPassConfirm(e.target.value)}
+              />
+
+              <br />
+              {userType === "teacher" && teacherSignUp}
+              {userType === "student" && studentSignUp}
+              <br />
+              <button
+                variant="primary"
+                type="submit"
+                className="w-100"
+                id={userType == "teacher" ? "orange-button" : "purple-button"}
+              >
+                {" "}
+                {userType == "teacher" ? "הרשם כמורה" : "הרשם כתלמיד"}
+              </button>
+              <Link to="/login">
+                <button
+                  variant="secondary"
+                  type="button"
+                  className="w-100 back-button"
+                >
+                  חזור
+                </button>
+              </Link>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Signup;

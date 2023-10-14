@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  ListGroup,
-  CloseButton,
-} from "react-bootstrap";
+import { Form, ListGroup, FormGroup } from "react-bootstrap";
 import axios from "axios";
+import Header from "./component/Header";
+import "./style/Signup.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
+import { ReactSVG } from "react-svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -46,8 +41,12 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAddSubject = () => {
+    if (gradeToId[startClass] > gradeToId[endClass]) {
+      alert("שגיאה: טווח הכיתות אינו תקין");
+      return; 
+    }
     const newSubject = {
-      subject: selectedSubject,
+      subject: selectedSubject, 
       range: `${startClass} עד ${endClass}`,
     };
     setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
@@ -66,8 +65,14 @@ const Signup = () => {
     );
   };
 
+  function ValidateEmail(email) {
+    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      email
+    );
+  }
+
   const validatePhoneNumber = (number) => {
-    return /^\d+$/.test(number);
+    return /^\d+$/.test(number) && number.length === 10;
   };
 
   const handleFileChange = (e) => {
@@ -106,6 +111,10 @@ const Signup = () => {
       return alert("נא למלא את כל השדות הדרושים.");
     }
 
+    if (!ValidateEmail(email)) {
+      return alert("בדקו שכתובת המייל תקינה.");
+    }
+
     if (password !== passConfirm) {
       return alert("הסיסמאות אינן תואמות.");
     }
@@ -117,11 +126,15 @@ const Signup = () => {
     }
 
     if (userType === "teacher" && !validatePhoneNumber(phoneNumber)) {
-      return alert("מספר הטלפון של המורה צריך להכיל מספרים בלבד.");
+      return alert(
+        "מספר הטלפון של המורה צריך להכיל מספרים בלבד ובאורך 10 תווים."
+      );
     }
 
     if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
-      return alert("מספר הטלפון של ההורה / האפוטרופוס צריך להכיל מספרים בלבד.");
+      return alert(
+        "מספר הטלפון של ההורה / האפוטרופוס צריך להכיל מספרים בלבד ובאורך 10 תווים."
+      );
     }
 
     if (userType === "teacher") {
@@ -203,292 +216,288 @@ const Signup = () => {
     }
   };
 
-  return (
-    <Container className="mt-3" dir="rtl">
-      <Row className="mb-3">
-        <Col className="text-center">
-          <h1>הרשמה</h1>
-        </Col>
-      </Row>
+  const color = userType == "teacher" ? "orange-text" : "purple-text";
 
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-4">
-              <Form.Label className="mb-2">בחר סוג משתמש:</Form.Label>
-              <Form.Check
-                custom
-                type="radio"
-                id="custom-radio-teacher"
-                label="מורה"
-                name="userType"
-                inline
-                onChange={() => setUserType("teacher")}
-              />
-              <Form.Check
-                custom
-                type="radio"
-                id="custom-radio-student"
-                label="תלמיד"
-                name="userType"
-                inline
-                checked={userType === "student"}
-                onChange={() => setUserType("student")}
-              />
+  const teacherSignUp = (
+    <div>
+      <h2 id={color}>פרטים אישיים</h2>
+      <FormGroup>
+        <p>שם פרטי:</p>
+        <Form.Control
+          type="text"
+          placeholder="השם הפרטי שלך"
+          value={teacherFirstName}
+          onChange={(e) => setTeacherFirstName(e.target.value)}
+        />
+        <p>שם משפחה:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם המשפחה שלך"
+          value={teacherLastName}
+          onChange={(e) => setTeacherLastName(e.target.value)}
+        />
+        <p>גיל:</p>
+        <Form.Control
+          type="text"
+          placeholder="הגיל שלך"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+        <p>מספר טלפון:</p>
+        <Form.Control
+          type="text"
+          placeholder="מספר הטלפון שלך"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <br />
+        <h2 id={color}>פרטים מקצועיים</h2>
+        <div className="select-container">
+          <div className="select">
+            <p>מקצוע: </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+            >
+              {Object.entries(idToSubject).map(([id, subject]) => (
+                <option key={id} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <div>
+            <p> מ- </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={startClass}
+              onChange={(e) => setStartClass(e.target.value)}
+            >
+              {Object.entries(idToGrade).map(([id, grade]) => (
+                <option key={id} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <div>
+            <p> עד- </p>
+            <Form.Control
+              as="select"
+              className="selectForm"
+              value={endClass}
+              defaultValue='י"ב'
+              onChange={(e) => setEndClass(e.target.value)}
+            >
+              {Object.entries(idToGrade).map(([id, grade]) => (
+                <option key={id} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </Form.Control>
+          </div>
+          <button
+            type="button"
+            id="orange-background"
+            className="addButton"
+            onClick={handleAddSubject}
+          >
+            הוסף
+          </button>
+        </div>
+        <ListGroup className="list">
+          {subjects.map((item, index) => (
+            <ListGroup.Item key={index} className="list-item">
+              {`${item.subject} (${item.range})`}
+              <div>
+                <ReactSVG
+                  src="./assets/close.svg"
+                  className="closeButton"
+                  onClick={() => handleRemoveSubject(index)}
+                />
+              </div>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+        <div className="addFile-container">
+          <p>תמונה:</p>
+          <Form.Control
+            type="file"
+            className="fileInput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <p>קישור לפרופיל חברתי:</p>
+        <Form.Control
+          type="url"
+          placeholder="קישור לפרופיל החברתי שלך"
+          value={socialProfileLink}
+          onChange={(e) => setSocialProfileLink(e.target.value)}
+        />
+        <p> קצת עליי בכמה מילים...</p>
+        <Form.Control
+          type="text"
+          placeholder="מה המקצועות שאני מלמד/ת, כמה ניסיון יש לי, איפה אני מלמד/ת..."
+          value={aboutMe}
+          onChange={(e) => setAboutMe(e.target.value)}
+        />
+      </FormGroup>
+    </div>
+  );
+  const studentSignUp = (
+    <div>
+      <h2 id={color}>פרטי תלמיד</h2>
+      <FormGroup>
+        <p>שם פרטי תלמיד:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם פרטי תלמיד"
+          value={studentFirstName}
+          onChange={(e) => setStudentFirstName(e.target.value)}
+        />
+        <p>שם משפחה תלמיד:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם משפחה תלמיד"
+          value={studentLastName}
+          onChange={(e) => setStudentLastName(e.target.value)}
+        />
+        <p>כיתה:</p>
+        <Form.Control
+          as="select"
+          className="selectForm"
+          value={studentClass}
+          onChange={(e) => setStudentClass(e.target.value)}
+        >
+          {Object.entries(idToGrade).map(([id, grade]) => (
+            <option key={id} value={grade}>
+              {grade}
+            </option>
+          ))}
+        </Form.Control>
+        <br />
+        <h2 id={color}>פרטי הורה / אפוטרופוס</h2>
+        <p>שם פרטי הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם פרטי ההורה"
+          value={parentFirstName}
+          onChange={(e) => setParentFirstName(e.target.value)}
+        />
+        <p>שם משפחה הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="text"
+          placeholder="שם משפחה הורה"
+          value={parentLastName}
+          onChange={(e) => setParentLastName(e.target.value)}
+        />
+        <p>מספר טלפון הורה / אפוטרופוס:</p>
+        <Form.Control
+          type="tel"
+          placeholder="מספר טלפון ההורה"
+          value={parentPhoneNumber}
+          onChange={(e) => setParentPhoneNumber(e.target.value)}
+        />
+      </FormGroup>
+    </div>
+  );
+
+  return (
+    <div>
+      <Header />
+      <div className="main-section-narrow">
+        <div className="section">
+          <div
+            className="title"
+            style={{
+              backgroundColor: userType == "teacher" ? "#E8701F" : "#9139E5",
+            }}
+          >
+            {userType == "teacher" ? "הרשמה - מורים" : "הרשמה - תלמידים"}
+          </div>
+          <div className="text-section">
+            <Form.Group>
+              <div className="row-container">
+                <p>אני</p>
+                <button
+                  className="item-row"
+                  id="orange-button"
+                  label="מורה"
+                  name="userType"
+                  inline
+                  onClick={() => setUserType("teacher")}
+                >
+                  מורה
+                </button>
+                <button
+                  className="item-row"
+                  id="purple-button"
+                  label="תלמיד"
+                  name="userType"
+                  inline
+                  checked={userType === "student"}
+                  onClick={() => setUserType("student")}
+                >
+                  תלמיד
+                </button>
+              </div>
             </Form.Group>
-            {userType === "teacher" && (
-              <>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="mb-2">שם פרטי:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="הכנס שם פרטי"
-                        value={teacherFirstName}
-                        onChange={(e) => setTeacherFirstName(e.target.value)}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="mb-2">שם משפחה:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="הכנס שם משפחה"
-                        value={teacherLastName}
-                        onChange={(e) => setTeacherLastName(e.target.value)}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Form.Group className="mb-4">
-                  <Form.Label className="mb-2">מקצוע:</Form.Label>
-                  <Row className="mb-2">
-                    <Col md={3}>
-                      <Form.Control
-                        as="select"
-                        value={selectedSubject}
-                        onChange={(e) => setSelectedSubject(e.target.value)}
-                      >
-                        {Object.entries(idToSubject).map(([id, subject]) => (
-                          <option key={id} value={subject}>
-                            {subject}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </Col>
-                    <Col md={3}>
-                      <Form.Control
-                        as="select"
-                        value={startClass}
-                        onChange={(e) => setStartClass(e.target.value)}
-                      >
-                        {Object.entries(idToGrade).map(([id, grade]) => (
-                          <option key={id} value={grade}>
-                            {grade}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </Col>
-                    <Col md={1} className="text-center">
-                      עד
-                    </Col>
-                    <Col md={3}>
-                      <Form.Control
-                        as="select"
-                        value={endClass}
-                        defaultValue='י"ב'
-                        onChange={(e) => setEndClass(e.target.value)}
-                      >
-                        {Object.entries(idToGrade).map(([id, grade]) => (
-                          <option key={id} value={grade}>
-                            {grade}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </Col>
-                    <Col md={2}>
-                      <Button onClick={handleAddSubject}>הוסף</Button>
-                    </Col>
-                  </Row>
-                  <ListGroup className="mt-3">
-                    {subjects.map((item, index) => (
-                      <ListGroup.Item key={index}>
-                        {`${item.subject} (${item.range})`}
-                        <CloseButton
-                          size="sm"
-                          onClick={() => handleRemoveSubject(index)}
-                        />
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </Form.Group>
-                <Form.Group className="mb-4">
-                  <Form.Label>גיל:</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="הכנס גיל"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-4">
-                  <Form.Label>על עצמי:</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder="ספר על עצמך"
-                    value={aboutMe}
-                    onChange={(e) => setAboutMe(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-4">
-                  <Form.Label>תמונה:</Form.Label>
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-4">
-                  <Form.Label>קישור לפרופיל חברתי:</Form.Label>
-                  <Form.Control
-                    type="url"
-                    placeholder="הכנס קישור"
-                    value={socialProfileLink}
-                    onChange={(e) => setSocialProfileLink(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-4">
-                  <Form.Label>מספר טלפון</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="הכנס מספר טלפון"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                </Form.Group>
-              </>
-            )}
-            {userType === "student" && (
-              <Row>
-                <Col md={6}>
-                  <h4 className="mb-3">פרטי הורה / אפוטרופוס</h4>
-                  <Form.Group className="mb-4">
-                    <Form.Label>שם:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="הכנס שם ההורה"
-                      value={parentFirstName}
-                      onChange={(e) => setParentFirstName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label>שם משפחה:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="הכנס שם משפחה"
-                      value={parentLastName}
-                      onChange={(e) => setParentLastName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label>טלפון:</Form.Label>
-                    <Form.Control
-                      type="tel"
-                      placeholder="הכנס טלפון הורה / אפוטרופוס"
-                      value={parentPhoneNumber}
-                      onChange={(e) => setParentPhoneNumber(e.target.value)}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <h4 className="mb-3">פרטי הילד</h4>
-                  <Form.Group className="mb-4">
-                    <Form.Label>שם:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="הכנס שם הילד"
-                      value={studentFirstName}
-                      onChange={(e) => setStudentFirstName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label>שם משפחה:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="הכנס שם משפחה"
-                      value={studentLastName}
-                      onChange={(e) => setStudentLastName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-4">
-                    <Form.Label className="mb-2">כיתה:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      value={studentClass}
-                      onChange={(e) => setStudentClass(e.target.value)}
-                    >
-                      {Object.entries(idToGrade).map(([id, grade]) => (
-                        <option key={id} value={grade}>
-                          {grade}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-            )}
-            <hr className="my-4" />
-            {}
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-4">
-                  <Form.Label className="mb-2">אימייל:</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="הכנס כתובת אימייל"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-4">
-                  <Form.Label className="mb-2">סיסמה:</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="הכנס סיסמה"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-4">
-                  <Form.Label className="mb-2">אימות סיסמה:</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="אימות סיסמה"
-                    value={passConfirm}
-                    onChange={(e) => setPassConfirm(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Button variant="primary" type="submit" className="w-100 mb-3">
-              הרשם
-            </Button>
-            <Link to="/">
-              <Button variant="secondary" className="w-100">
-                חזור
-              </Button>
-            </Link>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+            <Form onSubmit={handleSubmit}>
+              <br />
+              <h2 id={color}>פרטי התחברות</h2>
+              <p>אימייל:</p>
+              <Form.Control
+                type="text"
+                placeholder="הכנס כתובת אימייל"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <p>סיסמה:</p>
+              <Form.Control
+                type="password"
+                placeholder="הכנס סיסמה בת 8 תווים לפחות"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <p>אימות סיסמה:</p>
+              <Form.Control
+                type="password"
+                placeholder="אימות סיסמה"
+                value={passConfirm}
+                onChange={(e) => setPassConfirm(e.target.value)}
+              />
+
+              <br />
+              {userType === "teacher" && teacherSignUp}
+              {userType === "student" && studentSignUp}
+              <br />
+              <button
+                variant="primary"
+                type="submit"
+                className="w-100"
+                id={userType == "teacher" ? "orange-button" : "purple-button"}
+              >
+                {" "}
+                {userType == "teacher" ? "הרשם כמורה" : "הרשם כתלמיד"}
+              </button>
+              <Link to="/login">
+                <button
+                  variant="secondary"
+                  type="button"
+                  className="w-100 back-button"
+                >
+                  חזור
+                </button>
+              </Link>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

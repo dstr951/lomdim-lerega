@@ -1,0 +1,103 @@
+.item-row {
+    margin: 0 10px;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap:20px;
+
+}
+
+
+.select-container {
+    margin: 0 0px;
+    display: flex;
+    flex: 1;
+    justify-content: stretch;
+    gap:20px;
+}
+
+.select-container>div {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+}
+.addButton{
+    margin-bottom: 22px;
+    align-self: flex-end;
+    height: 34pt;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: center;
+
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16pt; 
+    margin-bottom: 17px;
+    height: 40px;
+    
+    margin: 0px;
+    background-color: #D5E0E6;
+}
+
+.closeButton{
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.addFile-container{
+    margin: 35px 0px;
+    display: flex;
+    flex: 1;
+    justify-content: stretch;
+    
+}
+
+.addFile-container>p{
+    margin-left: 20px;
+    
+}
+
+.fileInput {
+    width: 300%;
+}
+
+.addFile {
+    margin: 0px;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+}
+
+#cert {
+    margin-right: 20px;
+    width: 200px;
+}
+
+.back-button {
+    background-color: #807070; 
+    color: #e5e2e2;      
+    margin-top: 10px;       
+ 
+}
+
+.back-button:hover {
+    background-color: #8b7b7b; 
+    color: #ffffff;
+}

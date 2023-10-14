@@ -7,12 +7,17 @@ const bodyParser = require("body-parser");
 const routerUsers = require("./routes/Users");
 const routerTeachers = require("./routes/Teachers");
 const routerStudents = require("./routes/Students");
+const routerTeachingRequests = require("./routes/TeachingRequests");
 
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
 try {
   require("custom-env").env(process.env.NODE_ENV, "src/config");
+  console.log(
+    ".env file loaded with these parameters: ",
+    process.env.MONGODB_URI
+  );
 } catch (err) {
   console.log(err);
 }
@@ -35,6 +40,7 @@ app.use(express.json({ limit: "1000mb" }));
 app.use("/api/Users", routerUsers);
 app.use("/api/Teachers", routerTeachers);
 app.use("/api/Students", routerStudents);
+app.use("/api/TeachingRequests", routerTeachingRequests);
 
 app.use(express.static("server-side/src/public")); //to use for public assets
 

@@ -4,6 +4,10 @@
   align-items: c;
 }
 
+.accordion-list {
+  margin-bottom: 45px;
+}
+
 #top-section {
   display: flex;
   align-items: center;

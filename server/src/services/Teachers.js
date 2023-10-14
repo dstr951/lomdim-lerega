@@ -2,16 +2,19 @@ const { Teacher } = require("../models/Teachers");
 const { User } = require("../models/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { creationServiceErrorHandler } = require('../commonFunctions');
+const { creationServiceErrorHandler } = require("../commonFunctions");
 
-const lookupUsersOnEmailExpression = {"$lookup": {
-  from: "users",
-  localField: 'email',
-  foreignField: 'email',
-  as: 'userFields',  
-}}
-const matchTeachersOnAuthentication = {$match: {userFields: {$elemMatch: {authenticated: true}}}}
-
+const lookupUsersOnEmailExpression = {
+  $lookup: {
+    from: "users",
+    localField: "email",
+    foreignField: "email",
+    as: "userFields",
+  },
+};
+const matchTeachersOnAuthentication = {
+  $match: { userFields: { $elemMatch: { authenticated: true } } },
+};
 
 const TEACHERS_SERVICE_DEBUG = false;
 
@@ -71,7 +74,7 @@ async function loginTeacher(email, password) {
         error: "We couldn't find a teacher with those credentials",
       };
     }
-    const data = { email, isAdmin:false};
+    const data = { email, isAdmin: false };
     // Generate the token.
     const token = jwt.sign(data, process.env.JWT_KEY);
     // Return the token to the browser
@@ -114,8 +117,8 @@ const TEACHERS_LIMIT = 50;
 async function getTeachersBySubjectAndGrade(subject, grade) {
   try {
     const matcher = {};
-    subject=parseInt(subject)
-    grade=parseInt(grade)
+    subject = parseInt(subject);
+    grade = parseInt(grade);
     if (subject && subject > 0) {
       matcher.subject = subject;
     }
@@ -124,11 +127,15 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
       matcher.higherGrade = { $gte: grade };
     }
     const teachers = await Teacher.aggregate([
-      lookupUsersOnEmailExpression, 
-      matchTeachersOnAuthentication, 
-      {$match: {canTeach: { $elemMatch: matcher }}}
+      lookupUsersOnEmailExpression,
+      matchTeachersOnAuthentication,
+      { $match: { canTeach: { $elemMatch: matcher } } },
     ]).limit(TEACHERS_LIMIT);
-    if (!teachers) {
+    const formattedTeachers = createTeacherObjectAfterUsersAggregation(
+      teachers,
+      false
+    );
+    if (!formattedTeachers) {
       return {
         status: 404,
         error: "We couldn't find a teachers with those conditions",
@@ -136,53 +143,63 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
     }
     return {
       status: 200,
-      body: teachers,
+      body: formattedTeachers,
     };
   } catch (error) {
     console.log(error);
     return {
       status: 500,
-      body: error,
+      error: error,
     };
   }
 }
 
 async function getAllTeachers() {
   try {
-    const authenticatedTeachers = await Teacher.aggregate([lookupUsersOnEmailExpression, matchTeachersOnAuthentication])
-    const teachers = createTeacherObjectAfterUsersAggregation(authenticatedTeachers)
+    const authenticatedTeachers = await Teacher.aggregate([
+      lookupUsersOnEmailExpression,
+      matchTeachersOnAuthentication,
+    ]);
+    const teachers = createTeacherObjectAfterUsersAggregation(
+      authenticatedTeachers,
+      false
+    );
     if (!teachers) {
       return { status: 404, error: "No teachers found" };
     }
     return { status: 200, body: teachers };
   } catch (error) {
     console.log(error);
-    return { status: 500, body: error };
+    return { status: 500, error: error };
   }
 }
 
 async function getAllTeachersAdmin() {
   try {
-    const teachers = await Teacher.aggregate([{"$lookup": {
-      from: "users",
-      localField: 'email',
-      foreignField: 'email',
-      as: 'userFields',  
-    }}]);
-    const formattedTeachers = teachers.map(teacher => {
+    const teachers = await Teacher.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "email",
+          foreignField: "email",
+          as: "userFields",
+        },
+      },
+    ]);
+    const formattedTeachers = teachers.map((teacher) => {
       return {
-        "email": teacher.email,
-        "firstName": teacher.firstName,
-        "lastName": teacher.lastName,
-        "age": teacher.age,
-        "socialProfileLink": teacher.socialProfileLink,
-        "phoneNumber": teacher.phoneNumber,
-        "profilePicture": teacher.profilePicture,
-        "aboutMe": teacher.aboutMe,
-        "canTeach": teacher.canTeach,
-        "authenticated": teacher.userFields[0].authenticated
-      }
-    })
+        email: teacher.email,
+        firstName: teacher.firstName,
+        lastName: teacher.lastName,
+        age: teacher.age,
+        socialProfileLink: teacher.socialProfileLink,
+        phoneNumber: teacher.phoneNumber,
+        profilePicture: teacher.profilePicture,
+        aboutMe: teacher.aboutMe,
+        canTeach: teacher.canTeach,
+        authenticated: teacher.userFields[0].authenticated,
+      };
+    });
     if (!formattedTeachers) {
       return { status: 404, error: "No teachers found" };
     }
@@ -193,43 +210,48 @@ async function getAllTeachersAdmin() {
   }
 }
 
-async function updateAuthenticationTeacherByEmail(email, newAuthentication){
-    try {
-        const filter = { email: email, role:"teacher" };
-        const update = { authenticated: newAuthentication };
-        const response = await User.findOneAndUpdate(filter, update);
-        if (!response) {
-          return {
-            status:404,
-            error:"Teacher could not update"
-          }
-        }
-        return {
-            status: 200,
-            body: response
-        }
-      } catch (error) {
-        console.log("error: ", error);
-        return {
-            status: 500,
-            error
-        }
-      }
+async function updateAuthenticationTeacherByEmail(email, newAuthentication) {
+  try {
+    const filter = { email: email, role: "teacher" };
+    const update = { authenticated: newAuthentication };
+    const response = await User.findOneAndUpdate(filter, update);
+    if (!response) {
+      return {
+        status: 404,
+        error: "Teacher could not update",
+      };
+    }
+    return {
+      status: 200,
+      body: response,
+    };
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      status: 500,
+      error,
+    };
+  }
 }
 
-function createTeacherObjectAfterUsersAggregation(teachers){
-  return teachers.map(teacher => {return({
-    email: teacher.email,
-    firstName: teacher.firstName,
-    lastName: teacher.lastName,
-    age: teacher.age,
-    socialProfileLink: teacher.socialProfileLink,
-    phoneNumber: teacher.phoneNumber,
-    profilePicture: teacher.profilePicture,
-    aboutMe: teacher.aboutMe,
-    canTeach: teacher.canTeach,
-    authenticated: teacher.userFields[0].authenticated
-  })})
+function createTeacherObjectAfterUsersAggregation(teachers, sendSensitive) {
+  return teachers.map((teacher) => {
+    const newTeacher = {
+      firstName: teacher.firstName,
+      lastName: teacher.lastName,
+      age: teacher.age,
+      socialProfileLink: teacher.socialProfileLink,
+      profilePicture: teacher.profilePicture,
+      aboutMe: teacher.aboutMe,
+      canTeach: teacher.canTeach,
+      authenticated: teacher.userFields[0].authenticated,
+    };
+    if (sendSensitive) {
+      newTeacher.email = teacher.email;
+      newTeacher.phoneNumber = teacher.phoneNumber;
+    }
+    return newTeacher;
+  });
 }
 
 module.exports = {

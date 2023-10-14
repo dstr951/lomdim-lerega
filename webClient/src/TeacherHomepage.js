@@ -95,8 +95,11 @@ const NotificationButton = ({ notifications, teachingRequests, token, handleRequ
     const [showRequests, setShowRequests] = useState(false);
     return (
       <>
-        <button className="notification-button" onClick={() => setShowRequests(true)}>
-          <img src="bla" alt='אופק שים פה אייקון' className="notification-icon" />
+      <button
+        className="notification-button"
+        onClick={() => setShowRequests(true)}
+      >
+        <div className="notification-icon">בקשות ממתינות</div>
           <span className="notification-count">{notifications}</span>
         </button>
         

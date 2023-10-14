@@ -11,6 +11,9 @@ const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState(teachers);
+  const [noTeachersText, setNoTeachersText] = useState(
+    "בדף זה תוכלו לחפש מורים!"
+  );
   const navigate = useNavigate();
   const location = useLocation();
   const token = location?.state?.token;
@@ -30,12 +33,12 @@ const TeachersListing = () => {
       })
       .then((response) => {
         setTeachers(response.data);
-        setFilteredTeachers(response.data);
       })
       .catch((error) => console.error(error));
   };
 
   const handleFilterChange = (subject, grade) => {
+    setNoTeachersText("לא נמצאו מורים.");
     const params = [];
     if (subject) {
       params.push(`subject=${subject}`);
@@ -70,10 +73,11 @@ const TeachersListing = () => {
       className="section"
     >
       <div className="text-section">
-        <p>לא נמצאו מורים.</p>
+        <p>{noTeachersText}</p>
       </div>
     </div>
   );
+
   return (
     <div>
       <Header mode="1" />

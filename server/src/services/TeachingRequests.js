@@ -48,7 +48,6 @@ async function getTeachingRequestsOfTeacher(teacherEmail, approved) {
     const filteredRequests = teachingRequests?.filter(
       (item) => item.approved === approved
     );
-    console.log(filteredRequests);
     return {
       status: 200,
       body: filteredRequests,

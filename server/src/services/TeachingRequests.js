@@ -40,20 +40,20 @@ async function createTeachingRequest(
   }
 }
 
-async function getTeachingRequestsOfTeacher(teacherEmail){
-    try {
-        const teachingRequest = await TeachingRequests.find({ teacherEmail });
-        return {
-          status: 200,
-          body: teachingRequest,
-        };
-      } catch (error) {
-        console.log(error);
-        return {
-          status: 500,
-          body: error,
-        };
-    }
+async function getTeachingRequestsOfTeacher(teacherEmail) {
+  try {
+    const teachingRequest = await TeachingRequests.find({ teacherEmail });
+    return {
+      status: 200,
+      body: teachingRequest,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      body: error,
+    };
+  }
 }
 async function updateTeachingRequest(requestId, status) {
   try {
@@ -79,8 +79,31 @@ async function updateTeachingRequest(requestId, status) {
   }
 }
 
-module.exports = { 
-    createTeachingRequest,
-    updateTeachingRequest, 
-    getTeachingRequestsOfTeacher
+async function getTeachingRequestById(id) {
+  try {
+    const requestResponse = await TeachingRequests.findOne({ _id: id });
+    if (!requestResponse) {
+      return {
+        status: 404,
+        error: "Could not find request",
+      };
+    }
+    return {
+      status: 200,
+      body: requestResponse,
+    };
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
+module.exports = {
+  createTeachingRequest,
+  updateTeachingRequest,
+  getTeachingRequestsOfTeacher,
+  getTeachingRequestById,
 };

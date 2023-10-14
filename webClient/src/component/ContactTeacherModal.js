@@ -119,14 +119,12 @@ function ContactTeacherModal(props) {
               />
               <Row>
                 {" "}
-                <Col md={6}>
-                  <Button onClick={props.onHide}>חזור</Button>
-                </Col>
-                <Col md={6}>
-                  <Button variant="primary" type="submit">
+                <div md={6} className="d-flex justify-content-center">
+                  <button onClick={props.onHide}>חזור</button>{" "}
+                  <button className="me-2" variant="primary" type="submit">
                     שלח
-                  </Button>
-                </Col>
+                  </button>
+                </div>
               </Row>
             </Form.Group>
           </Form>

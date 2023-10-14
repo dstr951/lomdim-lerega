@@ -1,3 +1,85 @@
+
+.left-section {
+    padding: 10px; 
+    overflow: auto; 
+}
+.Card.Body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+.card-buttons {
+    display: flex;
+    justify-content: space-between;   
+    align-items: center;
+    gap: 10px;   
+    margin-top: auto;
+}
+
+.confirmation-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* this ensures the overlay is above everything else */
+}
+
+.confirmation-modal {
+    width: 400px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background-color: #fff;
+    border-radius: 10px;
+    z-index: 1001; 
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.requests-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+    z-index: 10;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.notification-button {
+    position: relative;
+}
+
+.notification-count {
+    position: absolute; 
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 15px;
+    transform: translate(50%, -50%);
+}
+
 .profile-img{
     align-self: center;
     justify-self: flex-start;
@@ -34,8 +116,6 @@
 }
 
 
-
-  /* For large screens (e.g., tablets) */
   @media screen and (min-width: 700px){
     .two-cols-container{
         display: flex; 
@@ -61,9 +141,7 @@
     }
     
   }
-  
-    /* For medium screens (e.g., tablets) */
-  @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1000px) {
     .two-cols-container{
         display: flex;
         flex-direction: column;
@@ -94,44 +172,6 @@
     }
   }
   
-#header{
-    background-color: #016BA6;
-    height: 80px;
-    width: 100%;
-
-    padding-right: 200px;
-    padding-left: 200px;
-
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
-
-    position: fixed;
-    top: 0;
-    z-index: 100;
-
-}
-
-#headerDiv{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#headerBottom{
-    width: 200px;
-    background-color: #E1EAEF;
-    color: #0096FF;
-}
-#headerBottom:hover {
-    background-color: #d5e0e5;
-    transition: 0.3s;
-}
-
-.teacher-homepage-wrapper {
-    padding-top: 80px;  
-}
 
 
 /* Central alignment for the content */
@@ -160,4 +200,5 @@
     font-size: 14px;
     margin-top: 10px; /* Provides spacing between contact info and other elements */
 }
+
 

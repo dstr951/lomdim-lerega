@@ -7,7 +7,9 @@ async function createTeachingRequest(
   studentEmail,
   teacherEmail,
   subject,
-  messageContent
+  messageContent,
+  studentFirstName,
+  studentLastName
 ) {
   const getStudentResponse = await StudentService.getStudentByEmail(
     studentEmail
@@ -18,6 +20,8 @@ async function createTeachingRequest(
   }
   const newTeachingRequests = new TeachingRequests({
     studentEmail,
+    studentFirstName,
+    studentLastName,
     teacherEmail,
     subject,
     messageContent,

@@ -41,7 +41,7 @@ const TeachingRequestsSchema = new mongoose.Schema({
 
 TeachingRequestsSchema.index(
   { studentEmail: 1, teacherEmail: 1, subject: 1 },
-  { unique: false }
+  { unique: true }
 );
 
 const TeachingRequests = mongoose.model(

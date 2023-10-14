@@ -1,7 +1,7 @@
 const TeachingRequestsService = require("../services/TeachingRequests");
 const TeachersService = require("../services/Teachers");
 const StudentsService = require("../services/Students");
-const EmailingService = require("../services/Emailing");
+const EmailingService = require("../services/EmailingResend");
 const jwt = require("jsonwebtoken");
 
 async function createTeachingRequest(req, res) {

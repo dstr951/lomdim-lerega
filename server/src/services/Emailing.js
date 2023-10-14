@@ -1,5 +1,5 @@
 const sgMail = require("@sendgrid/mail");
-const { idToSubject, idToGrade } = require("../../../webClient/src/Converters");
+const { idToSubject, idToGrade } = require("../Converters");
 
 function notifyTeacherWasRequested(
   teacherEmail,
@@ -30,8 +30,9 @@ function notifyTeacherWasRequested(
 }
 
 function notifyMatch(request, student, teacher) {
+  sgMail.setApiKey(process.env.SEND_GRIND_NOTIFY_MATCH_KEY);
   const msg = {
-    to: `${student.email}`,
+    to: [`${student.email}`, `${teacher.email}`],
     from: "lomdimlerega@gmail.com",
     dynamic_template_data: {
       subject: `לומדים לרגע -נמצאה התאמה-${request._id}`,

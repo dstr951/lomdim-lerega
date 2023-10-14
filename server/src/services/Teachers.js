@@ -1,6 +1,5 @@
 const { Teacher } = require("../models/Teachers");
 const { User } = require("../models/Users");
-const UsersService = require("../services/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -66,6 +65,7 @@ async function registerTeacher(
               canTeach,
             });
             return newTeacher.save({ session }).then(async () => {
+              //use await to return values and not promises
               await session.commitTransaction();
               if (TEACHERS_SERVICE_DEBUG) {
                 console.log("in then clause of creating teacher");
@@ -79,8 +79,9 @@ async function registerTeacher(
             });
           })
           .catch(async (err) => {
+            //use await to return values and not promises
             if (TEACHERS_SERVICE_DEBUG) {
-              console.log("I catched the error in the teacher");
+              console.log("I catched the error of creating user or teacher");
             }
             await session.abortTransaction();
             await session.endSession();

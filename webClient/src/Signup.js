@@ -298,7 +298,7 @@ const Signup = () => {
         
         <div>
             <Header/>
-            <div className="main-narrow">
+            <div className="main-section-narrow">
                   <div className="section">
                     <div className="title" style={{backgroundColor: userType == "teacher" ? "#E8701F" : "#9139E5" ,}}>
                         {userType == "teacher" ? "הרשמה - מורים" : "הרשמה - תלמידים"}

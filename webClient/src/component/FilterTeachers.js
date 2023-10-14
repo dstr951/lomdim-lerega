@@ -15,7 +15,7 @@ const FilterTeachers = ({ handleFilterChange }) => {
     setGrade(event.target.value);
   };
   return (
-    <div className="row-container" id="search-teacher">
+    <div className="filter-container" id="search-teacher">
           <Form.Select size="sm" className="selectForm" id="filter-lesson" value={subject} onChange={handleSubjectChange}>
             <option value={0}>כל המקצועות</option>
             {Object.keys(idToSubject).map((id) => (

@@ -206,16 +206,13 @@ button:hover {
 .main{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     margin: auto;
     gap: 45px;
     margin-top: 45px;
     overflow: auto;
     margin-bottom: 45px;
-    min-height: 1000px;
-    height: 100%;
-    width: 100%;
 }
 
 .main-narrow{

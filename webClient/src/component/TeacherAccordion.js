@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { idToGrade, idToSubject } from "../Converters";
 import ContactTeacherModal from "../component/ContactTeacherModal";
+import '../style/TeachersListing.css'
+
 
 const TeacherAccordion = ({props, filteredTeachers, token }) => {
   const [modalShow, setModalShow] = React.useState(false);
@@ -33,15 +35,17 @@ const TeacherAccordion = ({props, filteredTeachers, token }) => {
         key={teacher.email}
         className="accordion"
         onClick={() => toggleSection(teacher.email)}
+        id={teacher.email === activeSection ? "accordion-activate":"accordion-deactivate"}
         >
           <div className="accordion-header">
-            <Image
-              src={`data:image/jpeg;base64,${teacher.profilePicture}`}
-              roundedCircle
-              width={100}
-              height={100}
-              className="mb-3"
-            />
+            <div id="image-div">
+              <Image
+                src={`data:image/jpeg;base64,${teacher.profilePicture}`}
+                roundedCircle
+                width={100}
+                height={100}
+                className="mb-3"/>
+              </div>
             <div>
               <h2 id="personal-title">{teacher.firstName} {teacher.lastName}{" "}</h2>
               <div className="row-container">
@@ -64,16 +68,16 @@ const TeacherAccordion = ({props, filteredTeachers, token }) => {
               {teacher.email === activeSection && (
           <div className="accordion-body">
             
-            <p> {teacher.aboutMe}</p>
-            <ListGroup variant="flush">
+            <p> <strong>מידע על המורה:</strong> {teacher.aboutMe}</p>
+            <div variant="flush" className="list">
                         {teacher?.canTeach?.map((item, index) => (
-                          <ListGroup.Item key={index}>
+                          <div key={index} className="item">
                             {idToSubject[item.subject]} (כיתות{" "}
                             {idToGrade[item.lowerGrade]} עד{" "}
                             {idToGrade[item.higherGrade]})
-                          </ListGroup.Item>
+                          </div>
                         ))}
-                      </ListGroup>
+                      </div>
           </div>
         )}
             </div>

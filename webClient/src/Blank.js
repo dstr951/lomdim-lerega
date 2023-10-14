@@ -7,7 +7,6 @@ import FilterTeachers from "./component/FilterTeachers";
 import Header from "./component/Header";
 import { idToGrade, idToSubject } from "./Converters";
 
-import './style/App.css';
 import './style/TeachersListing.css'
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
@@ -132,7 +131,7 @@ const Blank = () => {
   return (
     <div>
       <Header/>
-      <div className="main">
+      <div className="main-section">
         <div className="section">
           <div className="text-section">
             <h1>שנתחיל ללמוד?</h1>

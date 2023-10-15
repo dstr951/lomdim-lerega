@@ -21,7 +21,7 @@ module.exports = {
     /** "path"
      * the folder path of the output file
      */
-    path: path.resolve(__dirname, "../server/src/public"),
+    path: path.resolve(__dirname, "../server/public"),
     /** "filename"
      * the name of the output file
      */

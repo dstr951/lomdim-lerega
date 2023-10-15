@@ -41,7 +41,6 @@ app.use("/api/Users", routerUsers);
 app.use("/api/Teachers", routerTeachers);
 app.use("/api/Students", routerStudents);
 app.use("/api/TeachingRequests", routerTeachingRequests);
-
-app.use(express.static("server-side/src/public")); //to use for public assets
+app.use(express.static("./public")); //to use for public assets
 
 server.listen(3001);

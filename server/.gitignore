@@ -5,3 +5,7 @@ package-lock.json
 .env.local
 config/.env.local
 /data/
+public/*.svg
+public/*.png
+public/main.css
+public/main.js

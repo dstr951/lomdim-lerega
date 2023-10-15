@@ -29,18 +29,17 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MongoDB");
+    app.use(cors());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(express.json({ limit: "1000mb" }));
+    app.use("/api/Users", routerUsers);
+    app.use("/api/Teachers", routerTeachers);
+    app.use("/api/Students", routerStudents);
+    app.use("/api/TeachingRequests", routerTeachingRequests);
+    app.use(express.static("./public")); //to use for public assets
+
+    server.listen(3001);
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
   });
-
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json({ limit: "1000mb" }));
-app.use("/api/Users", routerUsers);
-app.use("/api/Teachers", routerTeachers);
-app.use("/api/Students", routerStudents);
-app.use("/api/TeachingRequests", routerTeachingRequests);
-app.use(express.static("./public")); //to use for public assets
-
-server.listen(3001);

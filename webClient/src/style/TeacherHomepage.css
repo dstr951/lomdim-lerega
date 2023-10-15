@@ -48,21 +48,26 @@
     margin-top: 20px;
 }
 
-.requests-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 600px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
-    z-index: 10;
-    overflow-y: auto;
-    max-height: 80vh;
+
+
+
+
+.profile-img{
+    align-self: center;
+    justify-self: flex-start;
 }
+
+.text-box{
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.button-div{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
 
 .notification-button {
     position: relative;
@@ -72,29 +77,28 @@
     position: absolute; 
     top: 0;
     right: 0;
-    background-color: red;
+    background-color: #D81259;
     color: white;
     border-radius: 50%;
-    padding: 2px 5px;
+    width: 20pt;
+    height: 20pt;
     font-size: 15px;
     transform: translate(50%, -50%);
-}
 
-.profile-img{
-    align-self: center;
-    justify-self: flex-start;
-}
-
-.text-box{
-    margin-top: 10px;
-    margin-bottom: 50px;
-}
-
-
-.list{
     display: flex;
-    flex-direction: column;
-    gap:8px;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 10pt;
+    font-family: 'liebling', 'Segoe UI', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+
+
+.card{
+    background-color: #E1EAEF;
 }
 
 .list-item{
@@ -107,7 +111,7 @@
     font-family: 'Segoe UI',  sans-serif;
     font-size: 16pt; 
     margin-bottom: 17px;
-    height: 40px;
+    min-height: 40pt;
 
     padding: 10px;
     
@@ -115,6 +119,22 @@
     background-color: #D5E0E6;
 }
 
+.about-me-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 40pt;
+    border-radius: 10px; 
+    background-color: #D5E0E6;
+    font-family: 'Segoe UI',  sans-serif;
+    font-size: 16pt; 
+    margin-bottom: 17px;
+
+    padding: 10px;
+    
+    margin: 0px;
+    background-color: #D5E0E6;
+}
 
   @media screen and (min-width: 700px){
     .two-cols-container{
@@ -158,7 +178,7 @@
     }
     
     .left-section{
-        width: 100%;
+        width: 80%;
         display: flex;
         align-self: flex-start;
         flex-direction: column;

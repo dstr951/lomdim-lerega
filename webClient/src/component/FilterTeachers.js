@@ -18,7 +18,7 @@ const FilterTeachers = ({ handleFilterChange }) => {
     <div className="filter-container" id="search-teacher">
       <Form.Select
         size="sm"
-        className="selectForm"
+        className="select-form"
         id="filter-lesson"
         value={subject}
         onChange={handleSubjectChange}
@@ -32,7 +32,7 @@ const FilterTeachers = ({ handleFilterChange }) => {
       </Form.Select>
       <Form.Select
         size="sm"
-        className="selectForm"
+        className="select-form"
         id="filter-class"
         value={grade}
         onChange={handleGradeChange}
@@ -44,7 +44,8 @@ const FilterTeachers = ({ handleFilterChange }) => {
           </option>
         ))}
       </Form.Select>
-
+      <div
+      id="button-move">
       <button
         onClick={() => {
           handleFilterChange(subject, grade);
@@ -52,6 +53,8 @@ const FilterTeachers = ({ handleFilterChange }) => {
       >
         חיפוש
       </button>
+      </div>
+      
     </div>
   );
 };

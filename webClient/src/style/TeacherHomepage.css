@@ -65,9 +65,14 @@
 }
 
 
+#orange-button{
+  padding: 7px 20px 7px 20px;
+}
+
 .notification-button {
   margin-top: 10px;
   position: relative;
+  
 }
 
 .notification-count {
@@ -104,8 +109,6 @@
     justify-content: space-between;
     align-items: center;
 
-    border-radius: 10px; 
-    background-color: #D5E0E6;
     font-family: 'Segoe UI',  sans-serif;
     font-size: 16pt; 
     margin-bottom: 17px;
@@ -114,7 +117,6 @@
     padding: 10px;
     
     margin: 0px;
-    background-color: #D5E0E6;
 }
 
 .about-me-box{
@@ -229,4 +231,12 @@
 .contact-info {
   font-size: 14px;
   margin-top: 10px; /* Provides spacing between contact info and other elements */
+}
+
+#margin-bottom-8{
+  margin-bottom: 8px;
+}
+
+#close-button{
+  margin-bottom: 24px;
 }

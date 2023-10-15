@@ -67,18 +67,17 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
     };
 
     return (
-      <Card className="section">
-        <Card.Body>
-            <Card.Text>
+        <div className="about-me-box" id="margin-bottom-8">
+            <div>
                 <strong>שם:</strong> {request.studentFirstName + " " + request.studentLastName} <br />
                 <strong>תאריך:</strong> {new Date(request.created).toLocaleDateString()} <br />
                 <strong>מקצוע:</strong> {idToSubject[request.subject]} <br />
                 <strong>כיתה:</strong> {idToGrade[request.grade]} <br />
                 <strong>הודעה:</strong> {request.messageContent} <br />
-            </Card.Text>
+            </div>
             <div className="card-buttons d-flex justify-content-center">
-                <Button variant="success" className="mr-2" onClick={approveRequest}>אשר</Button>
-                <Button variant="danger" onClick={rejectRequest}>דחה</Button>
+                <button variant="success" className="mr-2" onClick={approveRequest}>אשר</button>
+                <button variant="danger" onClick={rejectRequest}>דחה</button>
             </div>
             <ConfirmationModal 
                 isOpen={isConfirmationModalOpen} 
@@ -86,14 +85,74 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
                 onConfirm={rejectRequest}
                 firstName={request.firstName}
             />
-        </Card.Body>
-      </Card>
+        </div>
     );
 };
 
+
+
 const NotificationButton = ({ notifications, teachingRequests, token, handleRequestAction }) => {
     const [showRequests, setShowRequests] = useState(false);
+
+    const requests = [{
+      "_id": {
+        "$oid": "652a943ad4aca135b8220227"
+      },
+      "studentEmail": "dsdsd@gmail.com",
+      "teacherEmail": "ofek@gmail.com",
+      "subject": 1,
+      "messageContent": "אני אופק",
+      "grade": 6,
+      "approved": true,
+      "created": {
+        "$date": "2023-10-14T13:14:34.686Z"
+      },
+      "__v": 0
+    },{
+      "_id": {
+        "$oid": "652a943ad4aca135b8220227"
+      },
+      "studentEmail": "dsdsd@gmail.com",
+      "teacherEmail": "ofek@gmail.com",
+      "subject": 1,
+      "messageContent": "אני אופק",
+      "grade": 6,
+      "approved": true,
+      "created": {
+        "$date": "2023-10-14T13:14:34.686Z"
+      },
+      "__v": 0
+    },{
+      "_id": {
+        "$oid": "652a943ad4aca135b8220227"
+      },
+      "studentEmail": "dsdsd@gmail.com",
+      "teacherEmail": "ofek@gmail.com",
+      "subject": 1,
+      "messageContent": "אני אופק",
+      "grade": 6,
+      "approved": true,
+      "created": {
+        "$date": "2023-10-14T13:14:34.686Z"
+      },
+      "__v": 0
+    },{
+      "_id": {
+        "$oid": "652a943ad4aca135b8220227"
+      },
+      "studentEmail": "dsdsd@gmail.com",
+      "teacherEmail": "ofek@gmail.com",
+      "subject": 1,
+      "messageContent": "אני אופק",
+      "grade": 6,
+      "approved": true,
+      "created": {
+        "$date": "2023-10-14T13:14:34.686Z"
+      },
+      "__v": 0
+    }]
     return (
+
       <>
       <button
         className="notification-button" 
@@ -107,16 +166,27 @@ const NotificationButton = ({ notifications, teachingRequests, token, handleRequ
         {showRequests && (
           <div className="overlay">
             <div className="requests-modal">
-            {teachingRequests.map(request => (
-              <TeachingRequest 
-                  key={request._id} 
-                  request={request} 
-                  token={token} 
-                  onActionComplete={handleRequestAction}
-              />
-          ))}
+              <div className="title">
+                ההתראות שלי
+              </div>
+            <div className="requests-modal-body">
+            {teachingRequests.length == 0 ? <p id="center">אין התראות כרגע.</p> :
+            
+              teachingRequests.map(request => (
+                <TeachingRequest 
+                    key={request._id} 
+                    request={request} 
+                    token={token} 
+                    onActionComplete={handleRequestAction}
+                />
+              ))}
+              </div>
+            
             <div className="d-flex justify-content-center mt-2">
-              <button onClick={() => setShowRequests(false)}>סגור</button>
+              <button 
+              id="close-button"
+              onClick={() => setShowRequests(false)}
+              >סגור</button>
             </div>
           </div>
           </div>
@@ -237,5 +307,8 @@ TeacherHomepage.defaultProps = {
     ],
   },
 };
+
+  
+
 
 export default TeacherHomepage;

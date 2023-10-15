@@ -38,7 +38,7 @@
 .list-item{
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
     align-content: center;
 
     border-radius: 10px; 
@@ -54,7 +54,7 @@
 
 .closeButton{
     width: 10px;
-    height: 10px;
+    height: 50%;
     cursor: pointer;
     align-self: center;
 }

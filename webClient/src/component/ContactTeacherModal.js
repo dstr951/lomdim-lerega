@@ -75,62 +75,63 @@ function ContactTeacherModal(props) {
 
   return (
     <>
-      {props.show && <div style={overlayStyle} onClick={props.onHide} />}
+      {props.show && <div className="overlay"/>}
       <Modal
         dir="rtl"
         {...props}
         size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
         centered
         enforceFocus={"true"}
+        id="no-background"
       >
-        <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            יצירת קשר עם מורה
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={sendMessageToTeacher}>
-            <Form.Group className="mb-4">
-              <Form.Label className="mb-2">מקצוע:</Form.Label>
-              <Row className="mb-2">
-                <Col md={6}>
-                  <Form.Control
-                    as="select"
-                    value={selectedSubject}
-                    onChange={(e) => setSelectedSubject(e.target.value)}
-                  >
-                    <option value={"נא לבחור מקצוע"}>נא לבחור מקצוע</option>
-                    {props.teacher?.teacher?.canTeach.map((record) => (
-                      <option value={record.subject} key={record.subject}>
-                        {idToSubject[record.subject]}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Col>
-              </Row>
-              <Form.Label>כתוב הודעתך למורה:</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                placeholder="כתוב את הודעתך למורה כאן."
-                value={messageContent}
-                onChange={(e) => setMessageContent(e.target.value)}
-              />
-              <Row>
-                {" "}
-                <div md={6} className="d-flex justify-content-center">
-                  <button type="button" onClick={props.onHide}>
-                    חזור
-                  </button>{" "}
-                  <button className="me-2" variant="primary" type="submit">
-                    שלח
-                  </button>
+          <Form onSubmit={sendMessageToTeacher} className="requests-modal">
+            
+              <div className="title">יצרית קשר - מורה</div>
+              
+              <div className="requests-modal-body">
+                <p>מקצוע:</p>
+                <div className="mb-2">
+                  <Col md={6}>
+                    <Form.Select
+                      as="select"
+                      className="select-form"
+                      value={selectedSubject}
+                      onChange={(e) => setSelectedSubject(e.target.value)}
+                    >
+                      <option 
+                      value={"נא לבחור מקצוע"}
+                      className="select-form"
+                      >נא לבחור מקצוע</option>
+                      {props.teacher?.teacher?.canTeach.map((record) => (
+                        <option value={record.subject} key={record.subject}>
+                          {idToSubject[record.subject]}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Col>
                 </div>
-              </Row>
-            </Form.Group>
+                <p>כתוב הודעתך למורה:</p>
+                <Form.Control
+                  id="text-message"
+                  rows={4}
+                  placeholder="כתוב את הודעתך למורה כאן."
+                  value={messageContent}
+                  onChange={(e) => setMessageContent(e.target.value)}
+                />
+                <div>
+                  {" "}
+                  <div md={6} className="d-flex justify-content-center">
+                    <button type="button" onClick={props.onHide}>
+                      חזור
+                    </button>{" "}
+                    <button className="me-2" variant="primary" type="submit">
+                      שלח
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
           </Form>
-        </Modal.Body>
       </Modal>
     </>
   );

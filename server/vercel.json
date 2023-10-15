@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "npm dual-install",
+  "installCommand": "npm run dual-install",
   "buildCommand": "npm run build --prefix ../webClient/",
   "routes": [
     {

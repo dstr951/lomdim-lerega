@@ -2,7 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "SET NODE_ENV=local && nodemon src/app.js"
+    "start": "SET NODE_ENV=local && nodemon src/app.js",
+    "dual-install": "npm install && npm install --prefix ../webClient"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",

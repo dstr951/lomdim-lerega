@@ -19,7 +19,9 @@ try {
     process.env.MONGODB_URI
   );
 } catch (err) {
-  console.log(err);
+  console.log(
+    "No .env file was found, if this is a deployed version this is okay, if not, please place your env file in ./config"
+  );
 }
 
 mongoose

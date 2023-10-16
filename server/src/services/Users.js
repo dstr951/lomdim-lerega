@@ -30,7 +30,7 @@ async function registerUser(email, hashedPassword, role) {
   }
 }
 async function loginUser(email, password) {
-  const hashedPassword = bcrypt.hashSync(password, salt);
+  const hashedPassword = bcrypt.hashSync(password, SALT_ROUNDS);
   try {
     const student = await User.findOne({ email });
     if (!student) {

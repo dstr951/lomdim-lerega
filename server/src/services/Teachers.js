@@ -249,6 +249,7 @@ async function getAllTeachersAdmin() {
         aboutMe: teacher.aboutMe,
         canTeach: teacher.canTeach,
         authenticated: teacher.userFields[0].authenticated,
+        role:"teacher"
       };
     });
     if (!formattedTeachers) {

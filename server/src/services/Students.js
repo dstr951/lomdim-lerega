@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { creationServiceErrorHandler } = require("../commonFunctions");
+const {Teacher} = require("../models/Teachers");
 
 const STUDENTS_SERVICE_DEBUG = false;
 
@@ -152,8 +153,45 @@ async function updateAuthenticationStudentByEmail(email, newAuthentication) {
   }
 }
 
+async function getAllStudentsAdmin() {
+  try {
+    const students = await Student.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "email",
+          foreignField: "email",
+          as: "userFields",
+        },
+      },
+    ]);
+    const formattedStudents = students.map((student) => {
+      return {
+        email: student.email,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        age: student.age,
+        parent: student.parent,
+        student: student.student,
+        authenticated: student.userFields[0].authenticated,
+        role:"student"
+      };
+    });
+    if (!formattedStudents) {
+      return { status: 404, error: "No teachers found" };
+    }
+    return { status: 200, body: formattedStudents };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, body: error };
+  }
+}
+
+
+
 module.exports = {
   registerStudent,
   getStudentByEmail,
   updateAuthenticationStudentByEmail,
+  getAllStudentsAdmin
 };

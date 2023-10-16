@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
 import { ReactSVG } from "react-svg";
+import closeSVG from "../public/assets/close.svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -43,10 +44,10 @@ const Signup = () => {
   const handleAddSubject = () => {
     if (gradeToId[startClass] > gradeToId[endClass]) {
       alert("שגיאה: טווח הכיתות אינו תקין");
-      return; 
+      return;
     }
     const newSubject = {
-      subject: selectedSubject, 
+      subject: selectedSubject,
       range: `${startClass} עד ${endClass}`,
     };
     setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
@@ -314,7 +315,7 @@ const Signup = () => {
               {`${item.subject} (${item.range})`}
               <div>
                 <ReactSVG
-                  src="./assets/close.svg"
+                  src={closeSVG}
                   className="closeButton"
                   onClick={() => handleRemoveSubject(index)}
                 />

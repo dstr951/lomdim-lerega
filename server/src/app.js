@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose").default;
 
 console.log("starting mongoose with version: " + mongoose.version);
@@ -7,6 +8,7 @@ const bodyParser = require("body-parser");
 const routerUsers = require("./routes/Users");
 const routerTeachers = require("./routes/Teachers");
 const routerStudents = require("./routes/Students");
+const routerRefresher = require("./routes/refresher");
 const routerTeachingRequests = require("./routes/TeachingRequests");
 
 const app = express();
@@ -19,7 +21,9 @@ try {
     process.env.MONGODB_URI
   );
 } catch (err) {
-  console.log(err);
+  console.log(
+    "No .env file was found, if this is a deployed version this is okay, if not, please place your env file in ./config"
+  );
 }
 
 mongoose
@@ -29,19 +33,24 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MongoDB");
+    app.use(cors());
+    app.use((req, res, next) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      next();
+    });
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(express.json({ limit: "1000mb" }));
+    app.use("/", routerRefresher);
+    app.use("/api/Users", routerUsers);
+    app.use("/api/Teachers", routerTeachers);
+    app.use("/api/Students", routerStudents);
+    app.use("/api/TeachingRequests", routerTeachingRequests);
+    app.use(express.static("./public")); //to use for public assets
+
+    server.listen(process.env.PORT, () => {
+      console.log(`listening on port ${process.env.PORT}`);
+    });
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
   });
-
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json({ limit: "1000mb" }));
-app.use("/api/Users", routerUsers);
-app.use("/api/Teachers", routerTeachers);
-app.use("/api/Students", routerStudents);
-app.use("/api/TeachingRequests", routerTeachingRequests);
-
-app.use(express.static("server-side/src/public")); //to use for public assets
-
-server.listen(3001);

@@ -5,6 +5,7 @@ import TeacherAccordion from "./component/TeacherAccordion";
 import FilterTeachers from "./component/FilterTeachers";
 import Header from "./component/Header";
 import { ReactSVG } from "react-svg";
+import appleImg from "../public/assets/apple-img.svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -88,7 +89,7 @@ const TeachersListing = () => {
             <h2>חיפוש מורה לפי נושא</h2>
             <FilterTeachers handleFilterChange={handleFilterChange} />
           </div>
-          <ReactSVG src="./assets/apple-img.svg" />
+          <ReactSVG src={appleImg} />
         </div>
         {filteredTeachers?.length === 0 ? (
           noTeachers

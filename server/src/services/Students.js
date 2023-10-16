@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { creationServiceErrorHandler } = require("../commonFunctions");
+const LoggerService = require("./Logger");
 
 const STUDENTS_SERVICE_DEBUG = false;
 
@@ -41,6 +42,7 @@ async function registerStudent(email, hashedPassword, parent, student) {
               if (STUDENTS_SERVICE_DEBUG) {
                 console.log("in then clause of creating student");
               }
+              LoggerService.log(`Created new user ${email}, student`);
               return {
                 status: 200,
                 body: {
@@ -69,6 +71,7 @@ async function registerStudent(email, hashedPassword, parent, student) {
       console.log("in catch clause");
       console.log(error);
     }
+    LoggerService.error(`user registration caused error, ${email} ${error}`);
     return creationServiceErrorHandler(error);
   }
 }

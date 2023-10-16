@@ -52,7 +52,9 @@ async function loginUser(email, password) {
     }
     const data = { email, role: student.role };
     const token = jwt.sign(data, process.env.JWT_KEY);
-    LoggerService.log(`User:${email} logged in successfully as a ${role}.`);
+    LoggerService.log(
+      `User:${email} logged in successfully as a ${student.role}.`
+    );
     return {
       status: 200,
       body: {
@@ -60,7 +62,7 @@ async function loginUser(email, password) {
       },
     };
   } catch (error) {
-    LoggerService.error(`Error creating student ${email}: ${error}`);
+    LoggerService.error(`Error loggin in to student ${email}: ${error}`);
     return {
       status: 500,
       body: error,

@@ -314,6 +314,49 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
   return newTeacher;
 }
 
+async function updateTeacherProfile(
+  email,
+  firstName,
+  lastName,
+  age,
+  socialProfileLink,
+  phoneNumber,
+  profilePicture,
+  aboutMe,
+  canTeach
+) {
+  try {
+    const filter = { email: email };
+    const update = {
+      firstName: firstName,
+      lastName: lastName,
+      age: age,
+      socialProfileLink: socialProfileLink,
+      phoneNumber: phoneNumber,
+      profilePicture: profilePicture,
+      aboutMe: aboutMe,
+      canTeach: canTeach,
+    };
+    const response = await Teacher.findOneAndUpdate(filter, update);
+    if (!response) {
+      return {
+        status: 404,
+        error: "Teacher could not be found",
+      };
+    }
+    return {
+      status: 200,
+      body: response,
+    };
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
 module.exports = {
   getTeacherByEmail,
   getTeachersBySubjectAndGrade,
@@ -321,4 +364,5 @@ module.exports = {
   getAllTeachers,
   updateAuthenticationTeacherByEmail,
   getAllTeachersAdmin,
+  updateTeacherProfile,
 };

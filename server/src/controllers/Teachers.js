@@ -108,6 +108,44 @@ async function rejectTeacher(req, res) {
   }
 }
 
+async function updateTeacherProfile(req, res) {
+  const {
+    email,
+    firstName,
+    lastName,
+    age,
+    socialProfileLink,
+    phoneNumber,
+    profilePicture,
+    aboutMe,
+    canTeach,
+  } = req.body;
+  const updateResponse = await TeachersService.updateTeacherProfile(
+    email,
+    firstName,
+    lastName,
+    age,
+    socialProfileLink,
+    phoneNumber,
+    profilePicture,
+    aboutMe,
+    canTeach
+  );
+  if (updateResponse.status == 200) {
+    authenticationResponse =
+      await TeachersService.updateAuthenticationTeacherByEmail(email, false);
+    if (authenticationResponse.status == 200) {
+      res.status(200).send(updateResponse.body);
+    } else {
+      res
+        .status(authenticationResponse.status)
+        .send(authenticationResponse.error);
+    }
+  } else {
+    res.status(updateResponse.status).send(updateResponse.error);
+  }
+}
+
 module.exports = {
   searchTeachers,
   getAllTeachers,
@@ -115,4 +153,5 @@ module.exports = {
   approveTeacher,
   rejectTeacher,
   registerTeacher,
+  updateTeacherProfile,
 };

@@ -26,4 +26,10 @@ router.post(
   TeachersController.rejectTeacher
 );
 
+router.post(
+  "/update",
+  TokensService.isTeacher,
+  TeachersController.updateTeacherProfile
+);
+
 module.exports = router;

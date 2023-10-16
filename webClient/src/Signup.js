@@ -238,7 +238,7 @@ const Signup = () => {
         />
         <p>גיל:</p>
         <Form.Control
-          type="text"
+          type="number"
           placeholder="הגיל שלך"
           value={age}
           onChange={(e) => setAge(e.target.value)}

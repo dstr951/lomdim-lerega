@@ -71,6 +71,7 @@ async function registerStudent(email, hashedPassword, parent, student) {
       console.log("in catch clause");
       console.log(error);
     }
+    LoggerService.error(`user registration caused error, ${email} ${error}`);
     return creationServiceErrorHandler(error);
   }
 }

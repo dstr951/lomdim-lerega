@@ -2,6 +2,7 @@ const UserService = require("../services/Users");
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
+  console.log("email", email, "password", password);
   //todo: refactor the db to user table with role based on the role choose the correct service
   const userLoginResponse = await UserService.loginUser(email, password);
   if (userLoginResponse.status === 200) {

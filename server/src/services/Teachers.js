@@ -272,17 +272,25 @@ async function updateAuthenticationTeacherByEmail(email, newAuthentication) {
     const update = { authenticated: newAuthentication };
     const response = await User.findOneAndUpdate(filter, update);
     if (!response) {
+      LoggerService.error(
+        `admin tried to update status of ${email} to ${newAuthentication} but couldn't find the teacher`
+      );
       return {
         status: 404,
         error: "Teacher could not update",
       };
     }
+    LoggerService.log(
+      `admin successfully change status of teacher ${email} to ${newAuthentication}`
+    );
     return {
       status: 200,
       body: response,
     };
   } catch (error) {
-    console.log("error: ", error);
+    LoggerService.error(
+      `admin failed to change status of teacher ${email} to ${newAuthentication}`
+    );
     return {
       status: 500,
       error,

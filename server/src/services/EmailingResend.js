@@ -1,5 +1,6 @@
 const Resend = require("resend");
 const { idToSubject, idToGrade } = require("../Converters");
+const LoggerService = require("./Logger");
 
 function notifyMatchHTML(
   parentName,
@@ -164,12 +165,23 @@ function notifyMatch(request, student, teacher) {
     teacherName,
     teacherPhone
   );
-  resend.emails.send({
-    to: [`${student.email}`, `${teacher.email}`],
-    from: `${process.env.RESEND_SENDER_NAME}@lomdim-lerega.info`,
-    html: HTMLstring,
-    subject,
-  });
+  resend.emails
+    .send({
+      to: [`${student.email}`, `${teacher.email}`],
+      from: `${process.env.RESEND_SENDER_NAME}@lomdim-lerega.info`,
+      html: HTMLstring,
+      subject,
+    })
+    .then(() => {
+      LoggerService.log(
+        `matching email was sent successfully teacherEmail:${teacherEmail}, studentEmail:${studentEmail}`
+      );
+    })
+    .catch(() => {
+      LoggerService.error(
+        `matching email wasn't sent, teacherEmail:${teacherEmail}, studentEmail:${studentEmail}`
+      );
+    });
 }
 
 module.exports = { notifyMatch };

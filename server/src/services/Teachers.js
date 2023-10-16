@@ -71,6 +71,7 @@ async function registerTeacher(
               if (TEACHERS_SERVICE_DEBUG) {
                 console.log("in then clause of creating teacher");
               }
+              LoggerService.log(`User ${email} registered successfully`);
               return {
                 status: 200,
                 body: {
@@ -82,10 +83,11 @@ async function registerTeacher(
           .catch(async (err) => {
             //use await to return values and not promises
             if (TEACHERS_SERVICE_DEBUG) {
-              console.log("I catched the error of creating user or teacher");
+              console.log("I caught the error of creating a user or a teacher");
             }
             await session.abortTransaction();
             await session.endSession();
+            LoggerService.error(`Error creating teacher ${email}: ${err}`);
             return creationServiceErrorHandler(err);
           });
       });
@@ -99,6 +101,7 @@ async function registerTeacher(
       console.log("in catch clause");
       console.log(error);
     }
+    LoggerService.error(`Error creating teacher ${email}: ${error}`);
     return creationServiceErrorHandler(error);
   }
 }
@@ -191,16 +194,23 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
       false
     );
     if (!formattedTeachers) {
+      LoggerService.log(
+        `Could not find teachers with paramteres: ${subject} , ${grade}`
+      );
       return {
         status: 404,
         error: "We couldn't find a teachers with those conditions",
       };
     }
+    LoggerService.log(`Found teacher/s with paramteres: ${subject} , ${grade}`);
     return {
       status: 200,
       body: formattedTeachers,
     };
   } catch (error) {
+    LoggerService.error(
+      `Error searching for teachers with parameters: $${subject} , ${grade}: ${error}`
+    );
     console.log(error);
     return {
       status: 500,

@@ -133,7 +133,7 @@ async function updateTeacherProfile(req, res) {
   );
   if (updateResponse.status == 200) {
     authenticationResponse =
-      await TeachersService.updateAuthenticationTeacherByEmail(email, false);
+      await TeachersService.updateAuthenticationTeacherByEmail(email, null);
     if (authenticationResponse.status == 200) {
       res.status(200).send(updateResponse.body);
     } else {

@@ -1,6 +1,7 @@
 const { TeachingRequests } = require("../models/TeachingRequests");
 const StudentService = require("../services/Students");
 const { creationServiceErrorHandler } = require("../commonFunctions");
+const LoggerService = require("./Logger");
 const TEACHING_REQUESTS_SERVICE_DEBUG = false;
 
 async function createTeachingRequest(
@@ -13,6 +14,9 @@ async function createTeachingRequest(
     studentEmail
   );
   if (getStudentResponse.status !== 200) {
+    LoggerService.log(
+      `teaching request creationg failed teacherEmail:${teacherEmail}, studentEmail:${studentEmail}, ${getStudentResponse.error}`
+    );
     //if error return the error to the controller
     return getStudentResponse;
   }
@@ -30,6 +34,9 @@ async function createTeachingRequest(
     if (TEACHING_REQUESTS_SERVICE_DEBUG) {
       console.log("Request saved successfully:", newTeachingRequests);
     }
+    LoggerService.log(
+      `student ${studentEmail} created a request for the teacher ${teacherEmail} in the subject ${subject}`
+    );
     return {
       status: 200,
       body: {
@@ -37,7 +44,9 @@ async function createTeachingRequest(
       },
     };
   } catch (error) {
-    console.log(error);
+    LoggerService.error(
+      `teaching request creationg failed teacherEmail:${teacherEmail}, studentEmail:${studentEmail}, ${error}`
+    );
     return creationServiceErrorHandler(error);
   }
 }
@@ -48,12 +57,17 @@ async function getTeachingRequestsOfTeacher(teacherEmail, approved) {
     const filteredRequests = teachingRequests?.filter(
       (item) => item.approved === approved
     );
+    LoggerService.log(
+      `teacher ${teacherEmail} asked for his requests in status:${status}`
+    );
     return {
       status: 200,
       body: filteredRequests,
     };
   } catch (error) {
-    console.log(error);
+    LoggerService.error(
+      `teacher ${teacherEmail} tried to ask for requests  in status:${status} but failed, ${error}`
+    );
     return {
       status: 500,
       body: error,
@@ -66,17 +80,25 @@ async function updateTeachingRequest(requestId, status) {
     const update = { approved: status };
     const response = await TeachingRequests.findOneAndUpdate(filter, update);
     if (!response) {
+      LoggerService.error(
+        `teacher tried to change status of request ${requestId} to ${status} but failed`
+      );
       return {
         status: 404,
         error: "Could not update request",
       };
     }
+    LoggerService.log(
+      `teacher ${response.teacherEmail} change request ${requestId} to status ${status}`
+    );
     return {
       status: 200,
       body: response,
     };
   } catch (error) {
-    console.log("error: ", error);
+    LoggerService.error(
+      `teacher ${response.teacherEmail} tried to change request ${requestId} status to ${status} but failed, ${error}`
+    );
     return {
       status: 500,
       error,

@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const { creationServiceErrorHandler } = require("../commonFunctions");
+const LoggerService = require("./Logger");
 
 const lookupUsersOnEmailExpression = {
   $lookup: {
@@ -139,6 +140,7 @@ async function getTeacherByEmail(email, authorized, sensitive) {
   try {
     const teacher = await Teacher.findOne({ email });
     if (!teacher) {
+      LoggerService.error(`Couldn't find a teacher with username ${email}`);
       return {
         status: 404,
         error: "We couldn't find a teacher with this email",
@@ -149,12 +151,15 @@ async function getTeacherByEmail(email, authorized, sensitive) {
       authorized,
       sensitive
     );
+    LoggerService.log(`Successfully accessed ${email}'s teacher page`);
     return {
       status: 200,
       body: formattedTeachers,
     };
   } catch (error) {
-    console.log(error);
+    LoggerService.error(
+      `Couldn't access ${email}'s teacher page, error: ${error}`
+    );
     return {
       status: 500,
       body: error,

@@ -30,46 +30,42 @@ async function registerUser(email, hashedPassword, role) {
   }
 }
 async function loginUser(email, password) {
-  bcrypt.hash(password, SALT_ROUNDS, async function (err, hashedPassword) {
-    if (err) {
-      LoggerService.error("Error hashing the password.");
-    }
-    try {
-      const student = await User.findOne({ email });
-      if (!student) {
-        LoggerService.error(`No account with email '${email}' as a username`);
-        return {
-          status: 404,
-          error: "We couldn't find a user with those credentials",
-        };
-      }
-      const compareResult = await bcrypt.compare(password, student.password);
-      if (!compareResult) {
-        LoggerService.error(
-          `Username: ${email} did not match the passsword ${hashedPassword}`
-        );
-        return {
-          status: 404,
-          error: "We couldn't find a user with those credentials",
-        };
-      }
-      const data = { email, role: student.role };
-      const token = jwt.sign(data, process.env.JWT_KEY);
-      LoggerService.log(`User:${email} logged in successfully as a ${role}.`);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+  try {
+    const student = await User.findOne({ email });
+    if (!student) {
+      LoggerService.error(`No account with email '${email}' as a username`);
       return {
-        status: 200,
-        body: {
-          token,
-        },
-      };
-    } catch (error) {
-      LoggerService.error(`Error creating student ${email}: ${err}`);
-      return {
-        status: 500,
-        body: error,
+        status: 404,
+        error: "We couldn't find a user with those credentials",
       };
     }
-  });
+    const compareResult = await bcrypt.compare(password, student.password);
+    if (!compareResult) {
+      LoggerService.error(
+        `Username: ${email} did not match the passsword ${hashedPassword}`
+      );
+      return {
+        status: 404,
+        error: "We couldn't find a user with those credentials",
+      };
+    }
+    const data = { email, role: student.role };
+    const token = jwt.sign(data, process.env.JWT_KEY);
+    LoggerService.log(`User:${email} logged in successfully as a ${role}.`);
+    return {
+      status: 200,
+      body: {
+        token,
+      },
+    };
+  } catch (error) {
+    LoggerService.error(`Error creating student ${email}: ${err}`);
+    return {
+      status: 500,
+      body: error,
+    };
+  }
 }
 
 module.exports = {

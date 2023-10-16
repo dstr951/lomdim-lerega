@@ -2,8 +2,10 @@ const { User } = require("../models/Users");
 const { creationServiceErrorHandler } = require("../commonFunctions");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const LoggerService = require("./Logger");
 const SALT_ROUNDS = 10;
 const USERS_SERVICE_DEBUG = false;
+const LoggerService = require("./Logger");
 
 async function registerUser(email, hashedPassword, role) {
   const newUser = new User({
@@ -16,6 +18,7 @@ async function registerUser(email, hashedPassword, role) {
     if (USERS_SERVICE_DEBUG) {
       console.log("Student saved successfully:", newUser);
     }
+    LoggerService.log(`User created successfully: ${email}, ${role}`);
     return {
       status: 200,
       body: {
@@ -23,7 +26,7 @@ async function registerUser(email, hashedPassword, role) {
       },
     };
   } catch (error) {
-    console.log(error);
+    LoggerService.log(`user registration failed: ${email}, ${role}, ${error}`);
     return creationServiceErrorHandler(error);
   }
 }
@@ -61,7 +64,7 @@ async function loginUser(email, password) {
         },
       };
     } catch (error) {
-      console.log(error);
+      LoggerService.error(`Error creating student ${email}: ${err}`);
       return {
         status: 500,
         body: error,

@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const LoggerService = require("./Logger");
 const SALT_ROUNDS = 10;
 const USERS_SERVICE_DEBUG = false;
-const LoggerService = require("./Logger");
 
 async function registerUser(email, hashedPassword, role) {
   const newUser = new User({

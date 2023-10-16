@@ -7,6 +7,8 @@ import './style/App.css';
 import Header from "./component/Header";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const Login = () => {
     const location = useLocation();

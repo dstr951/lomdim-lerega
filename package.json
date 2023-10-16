@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "heroku-prebuild": "cd server && npm run dual-install",
-    "start": "cd server && npm start"
+    "heroku-prebuild": "echo 'starting prebuild script' && cd server && npm run dual-install",
+    "build": "echo 'starting build script' && npm run build --prefix ../webClient/",
+    "start": "echo 'starting start script' && cd server && npm start"
   },
   "engines": {
     "node": "20.x"

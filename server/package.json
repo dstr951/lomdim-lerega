@@ -2,7 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "SET NODE_ENV=local && nodemon src/app.js",
+    "start-dev": "SET NODE_ENV=local && nodemon src/app.js",
+    "start": "node src/app.js",
+    "build": "npm run build --prefix ../webClient/",
+    "heroku-prebuild": "npm install --prefix ../webClient",
     "dual-install": "npm install && npm install --prefix ../webClient"
   },
   "dependencies": {
@@ -20,5 +23,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }

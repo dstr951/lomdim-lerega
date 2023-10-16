@@ -60,7 +60,7 @@ async function loginUser(email, password) {
       },
     };
   } catch (error) {
-    LoggerService.error(`Error creating student ${email}: ${err}`);
+    LoggerService.error(`Error creating student ${email}: ${error}`);
     return {
       status: 500,
       body: error,

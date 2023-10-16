@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose").default;
 
 console.log("starting mongoose with version: " + mongoose.version);
@@ -7,6 +8,7 @@ const bodyParser = require("body-parser");
 const routerUsers = require("./routes/Users");
 const routerTeachers = require("./routes/Teachers");
 const routerStudents = require("./routes/Students");
+const routerRefresher = require("./routes/refresher");
 const routerTeachingRequests = require("./routes/TeachingRequests");
 
 const app = express();
@@ -38,6 +40,7 @@ mongoose
     });
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(express.json({ limit: "1000mb" }));
+    app.use("/", routerRefresher);
     app.use("/api/Users", routerUsers);
     app.use("/api/Teachers", routerTeachers);
     app.use("/api/Students", routerStudents);

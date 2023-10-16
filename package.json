@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "heroku-prebuild": "echo 'starting prebuild script' && cd server && npm run dual-install",
-    "build": "echo 'starting build script' && cd webClient && npm run build",
+    "build": "echo 'starting build script' && echo SERVER_ADDRESS && cd webClient && npm run build",
     "start": "echo 'starting start script' && cd server && npm start"
   },
   "engines": {

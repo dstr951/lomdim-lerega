@@ -42,7 +42,7 @@ async function registerStudent(email, hashedPassword, parent, student) {
               if (STUDENTS_SERVICE_DEBUG) {
                 console.log("in then clause of creating student");
               }
-              LoggerService.log(`Created new user ${email}, ${role}`);
+              LoggerService.log(`Created new user ${email}, student`);
               return {
                 status: 200,
                 body: {

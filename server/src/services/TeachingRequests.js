@@ -58,7 +58,7 @@ async function getTeachingRequestsOfTeacher(teacherEmail, approved) {
       (item) => item.approved === approved
     );
     LoggerService.log(
-      `teacher ${teacherEmail} asked for his requests in status:${status}`
+      `teacher ${teacherEmail} asked for his requests in status:${approved}`
     );
     return {
       status: 200,
@@ -66,7 +66,7 @@ async function getTeachingRequestsOfTeacher(teacherEmail, approved) {
     };
   } catch (error) {
     LoggerService.error(
-      `teacher ${teacherEmail} tried to ask for requests  in status:${status} but failed, ${error}`
+      `teacher ${teacherEmail} tried to ask for requests  in status:${approved} but failed, ${error}`
     );
     return {
       status: 500,

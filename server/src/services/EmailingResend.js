@@ -174,12 +174,12 @@ function notifyMatch(request, student, teacher) {
     })
     .then(() => {
       LoggerService.log(
-        `matching email was sent successfully teacherEmail:${teacherEmail}, studentEmail:${studentEmail}`
+        `matching email was sent successfully teacherEmail:${teacher.email}, studentEmail:${teacher.email}`
       );
     })
-    .catch(() => {
+    .catch((error) => {
       LoggerService.error(
-        `matching email wasn't sent, teacherEmail:${teacherEmail}, studentEmail:${studentEmail}`
+        `matching email wasn't sent, teacherEmail:${teacher.email}, studentEmail:${teacher.email}, error:${error}`
       );
     });
 }

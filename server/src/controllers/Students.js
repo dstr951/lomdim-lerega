@@ -51,7 +51,31 @@ async function getMyselfStudent(req, res) {
   }
 }
 
+async function approveStudent(req, res) {
+  const email = req.params.email;
+  const approvalResponse =
+    await StudentsService.updateAuthenticationStudentByEmail(email, true);
+  if (approvalResponse.status == 200) {
+    res.status(200).send("Student approved successfully");
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error);
+  }
+}
+
+async function rejectStudent(req, res) {
+  const email = req.params.email;
+  const approvalResponse =
+    await StudentsService.updateAuthenticationStudentByEmail(email, false);
+  if (approvalResponse.status == 200) {
+    res.status(200).send("Student rejected successfully");
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error);
+  }
+}
+
 module.exports = {
   getMyselfStudent,
   registerStudent,
+  approveStudent,
+  rejectStudent,
 };

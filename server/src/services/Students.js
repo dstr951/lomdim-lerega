@@ -128,7 +128,32 @@ async function getStudentByEmail(email) {
   }
 }
 
+async function updateAuthenticationStudentByEmail(email, newAuthentication) {
+  try {
+    const filter = { email: email, role: "student" };
+    const update = { authenticated: newAuthentication };
+    const response = await User.findOneAndUpdate(filter, update);
+    if (!response) {
+      return {
+        status: 404,
+        error: "Student could not update",
+      };
+    }
+    return {
+      status: 200,
+      body: response,
+    };
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
 module.exports = {
   registerStudent,
   getStudentByEmail,
+  updateAuthenticationStudentByEmail,
 };

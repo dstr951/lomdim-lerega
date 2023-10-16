@@ -96,16 +96,16 @@ const Login = () => {
               {/* Buttons Container */}
               <Row className="d-flex justify-content-center mt-3">
                 <Col xs="auto">
-                  <button variant="primary" type="submit" onClick={handleLogin}>
-                    הכנס
-                  </button>
-                </Col>
-                <Col xs="auto">
                   <Link to="/signup">
                     <button variant="primary" as="span">
                       הרשם
                     </button>
                   </Link>
+                </Col>
+                <Col xs="auto">
+                  <button variant="primary" type="submit" onClick={handleLogin}>
+                    הכנס
+                  </button>
                 </Col>
               </Row>
             </Form>

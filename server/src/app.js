@@ -42,7 +42,7 @@ mongoose
     app.use("/api/TeachingRequests", routerTeachingRequests);
     app.use(express.static("./public")); //to use for public assets
 
-    server.listen(process.env.PORT).then(() => {
+    server.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`);
     });
   })

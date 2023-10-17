@@ -80,7 +80,6 @@ async function getAllTeachers(req, res) {
 
 async function getAllTeachersAdmin(req, res) {
   const teacherResponse = await TeachersService.getAllTeachersAdmin();
-  console.log(teacherResponse.length);
   if (teacherResponse.status == 200) {
     console.log(teacherResponse.body);
     res.status(200).send(teacherResponse.body);

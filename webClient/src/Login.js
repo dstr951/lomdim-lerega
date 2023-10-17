@@ -97,7 +97,7 @@ const Login = () => {
               <Row className="d-flex justify-content-center mt-3">
                 <Col xs="auto">
                   <Link to="/signup">
-                    <button variant="primary" as="span">
+                    <button variant="primary" type="button" as="span">
                       הרשם
                     </button>
                   </Link>

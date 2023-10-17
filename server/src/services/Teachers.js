@@ -260,11 +260,10 @@ async function getAllTeachersAdmin() {
         age: teacher.age,
         socialProfileLink: teacher.socialProfileLink,
         phoneNumber: teacher.phoneNumber,
-        profilePicture: teacher.profilePicture,
         aboutMe: teacher.aboutMe,
         canTeach: teacher.canTeach,
         authenticated: teacher.userFields[0].authenticated,
-        role:"teacher"
+        role: "teacher",
       };
     });
     if (!formattedTeachers) {
@@ -325,7 +324,6 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
     age: teacher.age,
     email: teacher.email,
     socialProfileLink: teacher.socialProfileLink,
-    profilePicture: teacher.profilePicture,
     aboutMe: teacher.aboutMe,
     canTeach: teacher.canTeach,
   };

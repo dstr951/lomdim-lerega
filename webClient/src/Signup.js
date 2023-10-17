@@ -167,7 +167,7 @@ const Signup = () => {
         );
         if (response.status === 200) {
           alert("ההרשמה בוצעה בהצלחה.");
-          navigate("/", { state: { email } });
+          navigate("/login", { state: { email } });
         } else {
           alert("תקלה כללית, אנא נסה שנית מאוחר יותר.");
         }
@@ -203,7 +203,7 @@ const Signup = () => {
         );
         if (response.status === 200) {
           alert("ההרשמה בוצעה בהצלחה.");
-          navigate("/", { state: { email } });
+          navigate("/login", { state: { email } });
         } else {
           alert("ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.");
         }

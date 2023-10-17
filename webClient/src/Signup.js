@@ -258,7 +258,7 @@ const Signup = () => {
             <p>מקצוע: </p>
             <Form.Control
               as="select"
-              className="selectForm"
+              className="select-form"
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
             >
@@ -273,7 +273,7 @@ const Signup = () => {
             <p> מ- </p>
             <Form.Control
               as="select"
-              className="selectForm"
+              className="select-form"
               value={startClass}
               onChange={(e) => setStartClass(e.target.value)}
             >
@@ -288,7 +288,7 @@ const Signup = () => {
             <p> עד- </p>
             <Form.Control
               as="select"
-              className="selectForm"
+              className="select-form"
               value={endClass}
               defaultValue='י"ב'
               onChange={(e) => setEndClass(e.target.value)}
@@ -370,7 +370,7 @@ const Signup = () => {
         <p>כיתה:</p>
         <Form.Control
           as="select"
-          className="selectForm"
+          className="select-form"
           value={studentClass}
           onChange={(e) => setStudentClass(e.target.value)}
         >

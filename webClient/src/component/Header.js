@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import "../style/App.css";
 import { ReactSVG } from "react-svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import israelLogo from "../../public/assets/israel-logo.svg";
 import longLogo from "../../public/assets/long-logo.svg";
-
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 /* 
 פונקציית התנתקות
@@ -17,7 +14,7 @@ const Header = (props) => {
   const flag = <ReactSVG src={israelLogo} />;
 
   let details = <div></div>;
-  if (props.mode == 1) {
+  if (props.mode === 1) {
     details = (
       <div id="headerDiv">
         {flag}

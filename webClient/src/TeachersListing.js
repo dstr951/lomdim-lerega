@@ -81,7 +81,7 @@ const TeachersListing = () => {
 
   return (
     <div>
-      <Header mode="1" />
+      <Header mode={1} />
       <div className="main-section">
         <div className="section" id="top-section">
           <div className="text-section" id="search-section">

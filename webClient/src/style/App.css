@@ -54,6 +54,21 @@ a {
   background-color: #d5e0e6;
 }
 
+.select-form {
+  border-radius: 10px;
+  background-color: #d5e0e6;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17pt;
+  height: 34pt;
+
+  background-image: url("assets/downArrow.svg");
+  background-size: 10px; /* Adjust the size of the icon as needed */
+  background-repeat: no-repeat; /* Prevent repeating the icon */
+  background-position: right center; /* Adjust the icon's position */
+  background-position: 20px, 50%;
+}
+
 button {
   border-radius: 10px;
   background-color: #007bff;
@@ -72,7 +87,7 @@ button {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  height: 34pt;
+  min-height: 34pt;
 }
 button:hover {
   background-color: #007bffc5;
@@ -148,25 +163,66 @@ button:hover {
 
 #headerDiv {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: start;
   align-items: center;
   gap: 32px;
 }
 
-.selectForm {
-  cursor: pointer;
-  border-radius: 10px;
-  background-color: #d5e0e6;
-  font-family: "Segoe UI", sans-serif;
-  font-size: 16pt;
-  margin-bottom: 17pt;
-  height: 34pt;
+.overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(187, 198, 204, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+  transition: 1s;
+}
 
-  background-image: url("./assets/downArrow.svg");
-  background-size: 10px; /* Adjust the size of the icon as needed */
-  background-repeat: no-repeat; /* Prevent repeating the icon */
-  background-position: 20px 50%; /* Adjust the icon's position */
+.requests-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  z-index: 10;
+  direction: rtl;
+  background-color: #e1eaef;
+  border-radius: 10px;
+  max-height: 775x;
+}
+
+.requests-modal-body {
+  padding: 24px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-color: none #232323;
+  scrollbar-width: thin;
+  height: 600px;
+  border-radius: 10px;
+}
+
+.requests-modal-body::-webkit-scrollbar {
+  width: 16px;
+}
+
+.requests-modal-body::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 100px;
+  height: 50px;
+}
+
+.section {
+  width: 100%;
+  direction: rtl;
+  background-color: #e1eaef;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(182, 198, 206, 0.3);
 }
 
 .fileInput {
@@ -253,31 +309,37 @@ button:hover {
   gap: 20px;
 }
 
-/* For small screens (e.g., mobile phones) */
 @media screen and (max-width: 1249px) {
   .main {
     margin-right: 45px;
     margin-left: 45px;
   }
-  .main-narrow {
+  .main-section-narrow {
     margin-right: 45px;
     margin-left: 45px;
   }
   .header-in {
-    margin-right: 45px;
-    margin-left: 45px;
+    padding-right: 45px;
+    padding-left: 45px;
   }
 }
 
 /* For large screens (e.g., desktops) */
 @media screen and (min-width: 1250px) {
-  .main {
+  .main-section {
     width: 80%;
   }
-  .main-narrow {
+  .main-section-narrow {
     width: 50%;
   }
   .header-in {
     width: 80%;
   }
+}
+
+#text-message {
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
+  display: block;
 }

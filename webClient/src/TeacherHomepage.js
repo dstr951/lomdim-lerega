@@ -7,7 +7,9 @@ import "./style/TeacherHomepage.css";
 import "./style/App.css";
 import axios from "axios";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const ConfirmationModal = ({ isOpen, onClose, onConfirm, firstName }) => {
   const preventBackgroundClick = (e) => {

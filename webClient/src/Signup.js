@@ -9,7 +9,9 @@ import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
 import { ReactSVG } from "react-svg";
 import closeSVG from "../public/assets/close.svg";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const Signup = () => {
   const [email, setEmail] = useState("");

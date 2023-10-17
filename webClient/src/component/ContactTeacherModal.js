@@ -10,7 +10,9 @@ function ContactTeacherModal(props) {
   const [selectedSubject, setSelectedSubject] = useState("נא לבחור מקצוע");
   const [messageContent, setMessageContent] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
-  const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+  const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+    ? process.env.SERVER_ADDRESS
+    : "http://localhost:3001";
 
   useEffect(() => {
     getStudentEmail();

@@ -14,7 +14,9 @@ import lastImage from "../public/assets/last-img.svg";
 import israelFlag from "../public/assets/israel-flag.svg";
 import appleImage from "../public/assets/apple-big.svg";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const Home = () => {
   const rand = Math.random();

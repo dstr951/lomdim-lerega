@@ -7,7 +7,9 @@ import Header from "./component/Header";
 import { ReactSVG } from "react-svg";
 import appleImg from "../public/assets/apple-img.svg";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);

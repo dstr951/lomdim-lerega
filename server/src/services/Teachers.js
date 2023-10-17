@@ -260,11 +260,10 @@ async function getAllTeachersAdmin() {
         age: teacher.age,
         socialProfileLink: teacher.socialProfileLink,
         phoneNumber: teacher.phoneNumber,
-        profilePicture: teacher.profilePicture,
         aboutMe: teacher.aboutMe,
         canTeach: teacher.canTeach,
         authenticated: teacher.userFields[0].authenticated,
-        role:"teacher"
+        role: "teacher",
       };
     });
     if (!formattedTeachers) {
@@ -325,7 +324,6 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
     age: teacher.age,
     email: teacher.email,
     socialProfileLink: teacher.socialProfileLink,
-    profilePicture: teacher.profilePicture,
     aboutMe: teacher.aboutMe,
     canTeach: teacher.canTeach,
   };
@@ -338,6 +336,32 @@ function createTeacherObject(teacher, sendAuthenticated, sendSensitive) {
   return newTeacher;
 }
 
+async function getPictureOfTeacher(email) {
+  try {
+    const teacher = await Teacher.findOne({ email });
+    if (!teacher) {
+      LoggerService.error(
+        `In getPictureOfTeacher couldn't find a teacher with email ${email}`
+      );
+      return {
+        status: 404,
+        error: "We couldn't find a teacher with this email",
+      };
+    }
+    LoggerService.log(`Successfully accessed ${email}'s photo`);
+    return {
+      status: 200,
+      body: { profilePicture: teacher.profilePicture },
+    };
+  } catch (error) {
+    LoggerService.error(`Couldn't access ${email}'s photo, error: ${error}`);
+    return {
+      status: 500,
+      body: error,
+    };
+  }
+}
+
 module.exports = {
   getTeacherByEmail,
   getTeachersBySubjectAndGrade,
@@ -345,4 +369,5 @@ module.exports = {
   getAllTeachers,
   updateAuthenticationTeacherByEmail,
   getAllTeachersAdmin,
+  getPictureOfTeacher,
 };

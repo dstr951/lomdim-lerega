@@ -151,6 +151,7 @@ const NotificationButton = ({ notifications, teachingRequests, token, handleRequ
       },
       "__v": 0
     }]
+    // להחליף ל teachingRequests
     return (
 
       <>
@@ -170,9 +171,9 @@ const NotificationButton = ({ notifications, teachingRequests, token, handleRequ
                 ההתראות שלי
               </div>
             <div className="requests-modal-body">
-            {teachingRequests.length == 0 ? <p id="center">אין התראות כרגע.</p> :
+            {requests.length == 0 ? <p id="center">אין התראות כרגע.</p> :
             
-              teachingRequests.map(request => (
+              requests.map(request => (
                 <TeachingRequest 
                     key={request._id} 
                     request={request} 

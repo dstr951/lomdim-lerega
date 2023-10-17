@@ -9,6 +9,11 @@ router.get(
   TeachersController.searchTeachers
 );
 router.get("/all", TokensService.isLoggedIn, TeachersController.getAllTeachers);
+router.get(
+  "/:email/profilePicture",
+  TokensService.isLoggedIn,
+  TeachersController.getPictureOfTeacher
+);
 
 router.get(
   "/all/admin",

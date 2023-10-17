@@ -1,5 +1,5 @@
 const TeachersService = require("../services/Teachers");
-const UsersService = require("../services/Users");
+const LoggerService = require("../services/Logger");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
 
@@ -110,6 +110,21 @@ async function rejectTeacher(req, res) {
   }
 }
 
+async function getPictureOfTeacher(req, res) {
+  const email = req.params.email;
+  if (!email) {
+    LoggerService.error(
+      `got a request for a teacher picture without any email`
+    );
+  }
+  const pictureResponse = await TeachersService.getPictureOfTeacher(email);
+  if (pictureResponse.status == 200) {
+    res.status(200).send(pictureResponse.body);
+  } else {
+    res.status(pictureResponse.status).send(pictureResponse.error);
+  }
+}
+
 module.exports = {
   searchTeachers,
   getAllTeachers,
@@ -117,4 +132,5 @@ module.exports = {
   approveTeacher,
   rejectTeacher,
   registerTeacher,
+  getPictureOfTeacher,
 };

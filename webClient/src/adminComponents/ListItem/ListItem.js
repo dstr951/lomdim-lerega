@@ -1,6 +1,6 @@
 import React from "react"
 
-function ListItem({_id, firstName, lastName, age, email, phoneNumber, socialProfileLink, aboutMe,
+function ListItem({_id, firstName, lastName, age, email, phoneNumber, socialProfileLink, aboutMe, role, parent, student,
                       authenticated, onProfileClick}) {
     function getAuthenticationClass() {
         if (authenticated === true) {
@@ -15,10 +15,10 @@ function ListItem({_id, firstName, lastName, age, email, phoneNumber, socialProf
 
     return (
         <li onClick={() => onProfileClick(_id, firstName, lastName, age, email, phoneNumber, socialProfileLink, aboutMe,
-            authenticated)}
+            authenticated, role, parent, student)}
             data-bs-toggle="modal" data-bs-target="#infoModal"
             className={`rounded-0 btn d-flex justify-content-center list-group-item-action list-group-item ${getAuthenticationClass()}`}>
-            {firstName + " " + lastName}
+            {role === "teacher" ? firstName + " " + lastName : student.firstName + " " + student.lastName}
         </li>
     );
 }

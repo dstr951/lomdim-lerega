@@ -47,153 +47,131 @@
   margin-top: 20px;
 }
 
-
-.profile-img{
-    align-self: center;
-    justify-self: flex-start;
+.profile-img {
+  align-self: center;
+  justify-self: flex-start;
 }
 
-.text-box{
-    margin-top: 10px;
-    margin-bottom: 25px;
+.text-box {
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
-.button-div{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
+.button-div {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
 }
 
-
-#orange-button{
+#orange-button {
   padding: 7px 20px 7px 20px;
 }
 
 .notification-button {
   margin-top: 10px;
   position: relative;
-  
 }
 
 .notification-count {
-    position: absolute; 
-    top: 0;
-    right: 0;
-    background-color: #D81259;
-    color: white;
-    border-radius: 50%;
-    width: 20pt;
-    height: 20pt;
-    font-size: 15px;
-    transform: translate(50%, -50%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #d81259;
+  color: white;
+  border-radius: 50%;
+  width: 20pt;
+  height: 20pt;
+  font-size: 15px;
+  transform: translate(50%, -50%);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 10pt;
+  font-family: "liebling", "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.card {
+  background-color: #e1eaef;
+}
+
+.left-section {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17px;
+  min-height: 40pt;
+
+  padding: 10px;
+
+  margin: 0px;
+}
+
+.about-me-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40pt;
+  border-radius: 10px;
+  background-color: #d5e0e6;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17px;
+
+  padding: 10px;
+
+  margin: 0px;
+  background-color: #d5e0e6;
+}
+
+@media screen and (min-width: 700px) {
+  .two-cols-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    font-size: 10pt;
-    font-family: 'liebling', 'Segoe UI', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    
-}
-
-
-.card{
-    background-color: #E1EAEF;
-}
+    justify-content: center;
+    gap: 20px;
+  }
+  .right-section {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
   .left-section {
     width: 70%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    font-family: 'Segoe UI',  sans-serif;
-    font-size: 16pt; 
-    margin-bottom: 17px;
-    min-height: 40pt;
-
-    padding: 10px;
-    
-    margin: 0px;
-}
-
-.about-me-box{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 40pt;
-    border-radius: 10px; 
-    background-color: #D5E0E6;
-    font-family: 'Segoe UI',  sans-serif;
-    font-size: 16pt; 
-    margin-bottom: 17px;
-
-    padding: 10px;
-    
-    margin: 0px;
-    background-color: #D5E0E6;
-}
-
-  @media screen and (min-width: 700px){
-    .two-cols-container{
-        display: flex; 
-        align-items: center;
-        justify-content: center;
-        gap: 20px; 
-    }
-    .right-section{
-        width: 30%;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .left-section{
-        width: 70%;
-        display: flex;
-        align-self: flex-start;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-        
-    }
-    
+    align-self: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
   }
-    @media screen and (max-width: 1000px) {
-    .two-cols-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: stretch;
-        gap: 20px; 
-    }
-    .right-section{
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .left-section{
-        width: 80%;
-        display: flex;
-        align-self: flex-start;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-        
-    }
-
-    .info-box{
-        margin-right: 80px;
-    }
+}
+@media screen and (max-width: 1000px) {
+  .two-cols-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+    gap: 20px;
+  }
+  .right-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 
   .left-section {
-    width: 100%;
+    width: 80%;
     display: flex;
     align-self: flex-start;
     flex-direction: column;
@@ -204,7 +182,20 @@
   .info-box {
     margin-right: 80px;
   }
+}
 
+.left-section {
+  width: 100%;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.info-box {
+  margin-right: 80px;
+}
 
 /* Central alignment for the content */
 .content-container {
@@ -233,10 +224,10 @@
   margin-top: 10px; /* Provides spacing between contact info and other elements */
 }
 
-#margin-bottom-8{
+#margin-bottom-8 {
   margin-bottom: 8px;
 }
 
-#close-button{
+#close-button {
   margin-bottom: 24px;
 }

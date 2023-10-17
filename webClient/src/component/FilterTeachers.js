@@ -44,17 +44,15 @@ const FilterTeachers = ({ handleFilterChange }) => {
           </option>
         ))}
       </Form.Select>
-      <div
-      id="button-move">
-      <button
-        onClick={() => {
-          handleFilterChange(subject, grade);
-        }}
-      >
-        חיפוש
-      </button>
+      <div id="button-move">
+        <button
+          onClick={() => {
+            handleFilterChange(subject, grade);
+          }}
+        >
+          חיפוש
+        </button>
       </div>
-      
     </div>
   );
 };

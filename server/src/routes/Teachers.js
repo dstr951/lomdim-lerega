@@ -6,6 +6,7 @@ const router = express.Router();
 router.get(
   "/search",
   TokensService.isLoggedIn,
+  TokensService.isAuthenticated,
   TeachersController.searchTeachers
 );
 router.get("/all", TokensService.isLoggedIn, TeachersController.getAllTeachers);

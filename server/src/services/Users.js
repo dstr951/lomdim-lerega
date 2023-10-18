@@ -50,7 +50,7 @@ async function loginUser(email, password) {
         error: "We couldn't find a user with those credentials",
       };
     }
-    const data = { email, role: user.role };
+    const data = { email, role: user.role, authenticated: user.authenticated };
     const token = jwt.sign(data, process.env.JWT_KEY);
     LoggerService.log(
       `User:${email} logged in successfully as a ${user.role}.`

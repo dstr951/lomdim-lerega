@@ -59,6 +59,7 @@ async function loginUser(email, password) {
       status: 200,
       body: {
         token,
+        authenticated: user.authenticated,
       },
     };
   } catch (error) {

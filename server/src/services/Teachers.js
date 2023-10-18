@@ -170,8 +170,7 @@ async function getTeacherByEmail(email, authorized, sensitive) {
   }
 }
 
-const TEACHERS_LIMIT = 50;
-async function getTeachersBySubjectAndGrade(subject, grade) {
+async function getTeachersBySubjectAndGrade(subject, grade, limit, offset) {
   try {
     const matcher = {};
     subject = parseInt(subject);
@@ -187,7 +186,9 @@ async function getTeachersBySubjectAndGrade(subject, grade) {
       lookupUsersOnEmailExpression,
       matchTeachersOnAuthentication,
       { $match: { canTeach: { $elemMatch: matcher } } },
-    ]).limit(TEACHERS_LIMIT);
+      { $skip: offset },
+      { $limit: limit },
+    ]);
     const formattedTeachers = createTeacherObjectFromArray(
       teachers,
       true,

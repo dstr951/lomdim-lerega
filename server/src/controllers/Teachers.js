@@ -39,8 +39,10 @@ async function registerTeacher(req, res) {
   });
 }
 
+const TEACHERS_LIMIT = 50;
+const DEFAULT_OFFSET = 0;
 async function searchTeachers(req, res) {
-  const { email, subject, grade } = req.query;
+  const { email, subject, grade, limit, offset } = req.query;
   if (email) {
     const authorized = false;
     const sensitive = false;
@@ -57,7 +59,9 @@ async function searchTeachers(req, res) {
   } else if (subject || grade) {
     const teacherResponse = await TeachersService.getTeachersBySubjectAndGrade(
       subject,
-      grade
+      grade,
+      parseInt(limit) || TEACHERS_LIMIT,
+      parseInt(offset) || DEFAULT_OFFSET
     );
     if (teacherResponse.status == 200) {
       res.status(200).send(teacherResponse.body);

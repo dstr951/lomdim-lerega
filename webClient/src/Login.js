@@ -5,6 +5,7 @@ import jwt from "jwt-decode";
 import axios from "axios";
 import "./style/App.css";
 import Header from "./component/Header";
+import Swal from "sweetalert2";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS

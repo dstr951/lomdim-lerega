@@ -32,6 +32,7 @@ const Login = () => {
 
       if (loginResponse.data) {
         token = loginResponse.data.token;
+        const authenticated = loginResponse.data.authenticated;
         const login = jwt(token);
         switch (login.role) {
           case "teacher":
@@ -41,11 +42,13 @@ const Login = () => {
             );
             if (teacherResponse.data) {
               const teacher = teacherResponse.data;
-              navigate("/teacher-homepage", { state: { teacher, token } });
+              navigate("/teacher-homepage", {
+                state: { teacher, token, authenticated },
+              });
             }
             break;
           case "student":
-            navigate("/seek-teachers", { state: { token } });
+            navigate("/seek-teachers", { state: { token, authenticated } });
             break;
           case "admin":
             navigate("/admin/panel", { state: { token } });

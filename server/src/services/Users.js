@@ -32,15 +32,15 @@ async function registerUser(email, hashedPassword, role) {
 async function loginUser(email, password) {
   const hashedPassword = bcrypt.hashSync(password, SALT_ROUNDS);
   try {
-    const student = await User.findOne({ email });
-    if (!student) {
+    const user = await User.findOne({ email });
+    if (!user) {
       LoggerService.error(`No account with email '${email}' as a username`);
       return {
         status: 404,
         error: "We couldn't find a user with those credentials",
       };
     }
-    const compareResult = await bcrypt.compare(password, student.password);
+    const compareResult = await bcrypt.compare(password, user.password);
     if (!compareResult) {
       LoggerService.error(
         `Username: ${email} did not match the passsword ${hashedPassword}`
@@ -50,15 +50,16 @@ async function loginUser(email, password) {
         error: "We couldn't find a user with those credentials",
       };
     }
-    const data = { email, role: student.role };
+    const data = { email, role: user.role };
     const token = jwt.sign(data, process.env.JWT_KEY);
     LoggerService.log(
-      `User:${email} logged in successfully as a ${student.role}.`
+      `User:${email} logged in successfully as a ${user.role}.`
     );
     return {
       status: 200,
       body: {
         token,
+        authenticated: user.authenticated,
       },
     };
   } catch (error) {

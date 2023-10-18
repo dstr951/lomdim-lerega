@@ -20,13 +20,23 @@ const TeachersListing = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = location?.state?.token;
+  const authenticated = location?.state?.authenticated;
 
   const handleError401 = () => {
-    alert("נראה שאתה לא היית מחובר, אנא התחבר שוב במסך ההתחברות");
+    alert("תלמיד יקר, נראה שאתה לא היית מחובר, אנא התחבר שוב במסך ההתחברות.");
     navigate("/login", {});
   };
 
   const handleFilterChange = (subject, grade) => {
+    if (authenticated === undefined) {
+      handleError401;
+    }
+    if (authenticated === false || authenticated === null) {
+      alert(
+        "תלמיד יקר, אינך מאומת עדיין, לכן לא ניתן לחפש מורים בשלב זה. אנא נסה שוב מאוחר יותר."
+      );
+      return;
+    }
     setNoTeachersText("לא נמצאו מורים.");
     const params = [];
     if (subject) {

@@ -25,21 +25,6 @@ const TeachersListing = () => {
     navigate("/", {});
   };
 
-  useEffect(() => {
-    getTeachers();
-  }, []);
-
-  const getTeachers = () => {
-    axios
-      .get(`${SERVER_ADDRESS}/api/Teachers/all`, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        setTeachers(response.data);
-      })
-      .catch((error) => console.error(error));
-  };
-
   const handleFilterChange = (subject, grade) => {
     setNoTeachersText("לא נמצאו מורים.");
     const params = [];

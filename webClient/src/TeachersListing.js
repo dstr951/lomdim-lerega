@@ -21,8 +21,9 @@ const TeachersListing = () => {
   const location = useLocation();
   const token = location?.state?.token;
 
-  const handleDisconnect = () => {
-    navigate("/", {});
+  const handleError401 = () => {
+    alert("נראה שאתה לא היית מחובר, אנא התחבר שוב במסך ההתחברות");
+    navigate("/login", {});
   };
 
   const handleFilterChange = (subject, grade) => {
@@ -48,9 +49,15 @@ const TeachersListing = () => {
         .then((response) => {
           setFilteredTeachers(response.data);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          if (error?.response?.status === 401) {
+            handleError401();
+          }
+        });
     } else {
       setFilteredTeachers(teachers);
+      setNoTeachersText("בחרו מקצוע, כיתה או שניהם לפני החיפוש");
     }
   };
   const noTeachers = (

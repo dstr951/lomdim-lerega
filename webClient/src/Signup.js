@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
 import { ReactSVG } from "react-svg";
 import closeSVG from "../public/assets/close.svg";
+import Swal from "sweetalert2";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -45,7 +46,11 @@ const Signup = () => {
 
   const handleAddSubject = () => {
     if (gradeToId[startClass] > gradeToId[endClass]) {
-      alert("שגיאה: טווח הכיתות אינו תקין");
+      Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "!טווח הכיתות אינו תקין",
+      });
       return;
     }
     const newSubject = {
@@ -111,33 +116,51 @@ const Signup = () => {
           !studentFirstName ||
           !studentLastName))
     ) {
-      return alert("נא למלא את כל השדות הדרושים.");
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "!נא למלא את כל השדות",
+      });
     }
 
     if (!ValidateEmail(email)) {
-      return alert("בדקו שכתובת המייל תקינה.");
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "בדקו שכתובת האימייל שהזנתם תקינה",
+      });
     }
 
     if (password !== passConfirm) {
-      return alert("הסיסמאות אינן תואמות.");
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "הסיסמאות אינן תואמות",
+      });
     }
 
     if (!validatePassword(password)) {
-      return alert(
-        "הסיסמה צריכה להיות באורך של 8 תווים לפחות ולהכיל אותיות באנגלית, מספרים וסימנים בלבד."
-      );
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "הסיסמה צריכה להיות באורך לפחות 8, להכין מספרים, סימנים ותווים באנגלית בלבד",
+      });
     }
 
     if (userType === "teacher" && !validatePhoneNumber(phoneNumber)) {
-      return alert(
-        "מספר הטלפון של המורה צריך להכיל מספרים בלבד ובאורך 10 תווים."
-      );
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "מספר הטלפון צריך להכיל עשר ספרות",
+      });
     }
 
     if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
-      return alert(
-        "מספר הטלפון של ההורה / האפוטרופוס צריך להכיל מספרים בלבד ובאורך 10 תווים."
-      );
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתמש בהרשמה",
+        text: "מספר הטלפון צריך להכיל עשר ספרות",
+      });
     }
 
     if (userType === "teacher") {
@@ -169,15 +192,46 @@ const Signup = () => {
           alert("ההרשמה בוצעה בהצלחה.");
           navigate("/login", { state: { email } });
         } else {
-          alert("תקלה כללית, אנא נסה שנית מאוחר יותר.");
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            html: `
+              <div dir="rtl">
+                אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                או פנו אלינו במייל: 
+                <span dir="ltr" style="display: inline-block;">
+                  <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                </span>
+              </div>
+            `,
+            confirmButtonText: "אישור",
+          });
         }
       } catch (error) {
         if (error.response?.status === 409) {
           console.log("im at 409 clause");
-          alert("אימייל זה כבר בשימוש");
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
+          });
         } else {
-          alert("ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.");
-          console.error(error);
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            html: `
+              <div dir="rtl">
+                אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                או פנו אלינו במייל: 
+                <span dir="ltr" style="display: inline-block;">
+                  <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                </span>
+              </div>
+            `,
+            confirmButtonText: "אישור",
+          }).then(() => {
+            console.error(error);
+          });
         }
       }
     } else if (userType === "student") {
@@ -202,18 +256,53 @@ const Signup = () => {
           studentData
         );
         if (response.status === 200) {
-          alert("ההרשמה בוצעה בהצלחה.");
-          navigate("/login", { state: { email } });
+          Swal.fire({
+            icon: "success",
+            title: "!ההרשמה בוצעה בהצלחה",
+          }).then(() => {
+            navigate("/login", { state: { email } });
+          });
         } else {
-          alert("ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.");
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            html: `
+              <div dir="rtl">
+                אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                או פנו אלינו במייל: 
+                <span dir="ltr" style="display: inline-block;">
+                  <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                </span>
+              </div>
+            `,
+            confirmButtonText: "אישור",
+          });
         }
       } catch (error) {
         if (error.response?.status === 409) {
           console.log("im at 409 clause");
-          alert("אימייל זה כבר בשימוש");
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
+          });
         } else {
-          alert("ההרשמה נכשלה. אנא נסה שוב מאוחר יותר.");
-          console.error(error);
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתמש בהרשמה",
+            html: `
+              <div dir="rtl">
+                אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                או פנו אלינו במייל: 
+                <span dir="ltr" style="display: inline-block;">
+                  <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                </span>
+              </div>
+            `,
+            confirmButtonText: "אישור",
+          }).then(() => {
+            console.error(error);
+          });
         }
       }
     }

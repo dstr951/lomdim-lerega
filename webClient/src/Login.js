@@ -54,16 +54,46 @@ const Login = () => {
             navigate("/admin/panel", { state: { token } });
             break;
           default:
-            alert("there was an error");
-            break;
+            return Swal.fire({
+              icon: "error",
+              title: "משהו השתבש בהתחברות",
+              html: `
+                <div dir="rtl">
+                  אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                  או פנו אלינו במייל: 
+                  <span dir="ltr" style="display: inline-block;">
+                    <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                  </span>
+                </div>
+              `,
+              confirmButtonText: "אישור",
+            });
         }
       }
     } catch (error) {
       if (error.response?.status === 404) {
-        alert("לא מצאנו משתמש עם הפרטים הללו, אנא נסה שנית עם הפרטים הנכונים");
-        console.error("Error:", error);
+        return Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהתחברות",
+          text: "לא מצאנו משתמש עם הפרטים הללו",
+        }).then(() => {
+          console.error(error);
+        });
       } else {
-        alert("there was an error logging in");
+        return Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהתחברות",
+          html: `
+            <div dir="rtl">
+              אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+              או פנו אלינו במייל: 
+              <span dir="ltr" style="display: inline-block;">
+                <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+              </span>
+            </div>
+          `,
+          confirmButtonText: "אישור",
+        });
       }
       console.error("Error:", error);
     }

@@ -48,7 +48,7 @@ const Signup = () => {
     if (gradeToId[startClass] > gradeToId[endClass]) {
       Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "!טווח הכיתות אינו תקין",
       });
       return;
@@ -118,7 +118,7 @@ const Signup = () => {
     ) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "!נא למלא את כל השדות",
       });
     }
@@ -126,7 +126,7 @@ const Signup = () => {
     if (!ValidateEmail(email)) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "בדקו שכתובת האימייל שהזנתם תקינה",
       });
     }
@@ -134,7 +134,7 @@ const Signup = () => {
     if (password !== passConfirm) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "הסיסמאות אינן תואמות",
       });
     }
@@ -142,7 +142,7 @@ const Signup = () => {
     if (!validatePassword(password)) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "הסיסמה צריכה להיות באורך לפחות 8, להכין מספרים, סימנים ותווים באנגלית בלבד",
       });
     }
@@ -150,7 +150,7 @@ const Signup = () => {
     if (userType === "teacher" && !validatePhoneNumber(phoneNumber)) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "מספר הטלפון צריך להכיל עשר ספרות",
       });
     }
@@ -158,7 +158,7 @@ const Signup = () => {
     if (userType === "student" && !validatePhoneNumber(parentPhoneNumber)) {
       return Swal.fire({
         icon: "error",
-        title: "משהו השתמש בהרשמה",
+        title: "משהו השתבש בהרשמה",
         text: "מספר הטלפון צריך להכיל עשר ספרות",
       });
     }
@@ -194,7 +194,7 @@ const Signup = () => {
         } else {
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
@@ -212,13 +212,13 @@ const Signup = () => {
           console.log("im at 409 clause");
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
@@ -265,7 +265,7 @@ const Signup = () => {
         } else {
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
@@ -283,13 +283,13 @@ const Signup = () => {
           console.log("im at 409 clause");
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
           return Swal.fire({
             icon: "error",
-            title: "משהו השתמש בהרשמה",
+            title: "משהו השתבש בהרשמה",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 

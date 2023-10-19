@@ -58,6 +58,10 @@ const Signup = () => {
       subject: selectedSubject,
       range: `${startClass} עד ${endClass}`,
     };
+    const i = subjects.findIndex((item) => item.subject === selectedSubject);
+    if (i != -1) {
+      handleRemoveSubject(i);
+    }
     setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
   };
 

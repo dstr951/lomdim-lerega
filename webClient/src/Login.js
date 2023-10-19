@@ -38,7 +38,7 @@ const Login = () => {
         switch (login.role) {
           case "teacher":
             const teacherResponse = await axios.get(
-              `${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
+              `${SERVER_ADDRESS}/api/Teachers/myself`,
               { headers: { Authorization: token } }
             );
             if (teacherResponse.data) {
@@ -72,19 +72,20 @@ const Login = () => {
         }
       }
     } catch (error) {
-      if (error.response?.status === 404) {
-        return Swal.fire({
-          icon: "error",
-          title: "משהו השתבש בהתחברות",
-          text: "לא מצאנו משתמש עם הפרטים הללו",
-        }).then(() => {
-          console.error(error);
-        });
-      } else {
-        return Swal.fire({
-          icon: "error",
-          title: "משהו השתבש בהתחברות",
-          html: `
+      if (error.response)
+        if (error.response?.status === 404) {
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתבש בהתחברות",
+            text: "לא מצאנו משתמש עם הפרטים הללו",
+          }).then(() => {
+            console.error(error);
+          });
+        } else {
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתבש בהתחברות",
+            html: `
             <div dir="rtl">
               אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
               או פנו אלינו במייל: 
@@ -93,9 +94,9 @@ const Login = () => {
               </span>
             </div>
           `,
-          confirmButtonText: "אישור",
-        });
-      }
+            confirmButtonText: "אישור",
+          });
+        }
       console.error("Error:", error);
     }
   };

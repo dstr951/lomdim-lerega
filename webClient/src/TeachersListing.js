@@ -26,7 +26,7 @@ const TeachersListing = () => {
   const handleError401 = () => {
     return Swal.fire({
       icon: "error",
-      title: "משהו השתבש בהתחברות",
+      title: "משהו השתבש",
       text: "תלמיד יקר, נראה שלא היית מחובר, אנא התחבר שוב במסך הראשי.",
     }).then(() => {
       navigate("/login", {});
@@ -39,11 +39,11 @@ const TeachersListing = () => {
     }
     if (authenticated === false || authenticated === null) {
       return Swal.fire({
-        icon: "error",
-        title: "משהו השתבש בהרשמה",
+        icon: "info",
+        title: "שימו לב",
         html: `
           <div dir="rtl">
-          תלמיד יקר, עדיין לא אימתנו את המשתמש שלך, אנא המתן:
+          תלמיד יקר, עדיין לא אימתנו את המשתמש שלך, אנא המתן
             או פנו אלינו במייל: 
             <span dir="ltr" style="display: inline-block;">
               <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
@@ -83,7 +83,7 @@ const TeachersListing = () => {
         });
     } else {
       setFilteredTeachers(teachers);
-      setNoTeachersText("בחרו מקצוע, כיתה או שניהם לפני החיפוש");
+      setNoTeachersText(".בחרו מקצוע, כיתה או שניהם לפני החיפוש");
     }
   };
   const noTeachers = (

@@ -119,7 +119,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
-        text: "!נא למלא את כל השדות",
+        text: "נא למלא את כל השדות",
       });
     }
 
@@ -189,8 +189,12 @@ const Signup = () => {
           teacherData
         );
         if (response.status === 200) {
-          alert("ההרשמה בוצעה בהצלחה.");
-          navigate("/login", { state: { email } });
+          Swal.fire({
+            icon: "success",
+            title: "!ההרשמה בוצעה בהצלחה",
+          }).then(() => {
+            navigate("/login", { state: { email } });
+          });
         } else {
           return Swal.fire({
             icon: "error",

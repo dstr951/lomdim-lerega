@@ -2,6 +2,7 @@ const TeachersService = require("../services/Teachers");
 const LoggerService = require("../services/Logger");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
+const jwt = require("jsonwebtoken");
 
 async function registerTeacher(req, res) {
   const {
@@ -37,6 +38,30 @@ async function registerTeacher(req, res) {
         .send(teacherRegisterResponse.error);
     }
   });
+}
+
+async function getMyselfTeacher(req, res) {
+  const token = req.headers.authorization;
+  let email;
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, process.env.JWT_KEY);
+    email = data.email;
+  } catch (err) {
+    console.log(err);
+    return res.status(401).send("Invalid Token");
+  }
+  if (!email) {
+    console.log("token didn't contain an email");
+    res.status(401).send("Invalid Token");
+    return;
+  }
+  const teacherResponse = await TeachersService.getTeacherByEmail(email);
+  if (teacherResponse.status == 200) {
+    res.status(200).send(teacherResponse.body);
+  } else {
+    res.status(teacherResponse.status).send(teacherResponse.error);
+  }
 }
 
 async function searchTeachers(req, res) {
@@ -132,4 +157,5 @@ module.exports = {
   rejectTeacher,
   registerTeacher,
   getPictureOfTeacher,
+  getMyselfTeacher,
 };

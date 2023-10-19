@@ -166,6 +166,7 @@ const TeacherHomepage = () => {
   const token = location.state?.token;
 
   const [teachingRequests, setTeachingRequests] = useState([]);
+  const [teacherImage, setTeacherImage] = useState("");
 
   const handleRequestAction = (requestId) => {
     setTeachingRequests((prevRequests) =>
@@ -174,6 +175,20 @@ const TeacherHomepage = () => {
   };
 
   useEffect(() => {
+    const imageURL = `${SERVER_ADDRESS}/api/Teachers/${teacherData.email}/profilePicture`;
+    axios
+      .get(imageURL, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setTeacherImage(response.data.profilePicture);
+      })
+      .catch((error) => {
+        console.error("Error fetching image:", error);
+        console.error("Error response:", error.response);
+      });
     axios
       .get(`${SERVER_ADDRESS}/api/TeachingRequests/myRequests`, {
         headers: {
@@ -201,7 +216,7 @@ const TeacherHomepage = () => {
             <div className="two-cols-container">
               <div className="right-section">
                 <Image
-                  src={`data:image/jpeg;base64,${teacherData.profilePicture}`}
+                  src={`data:image/jpeg;base64,${teacherImage}`}
                   roundedCircle
                   width="250"
                   height="250"

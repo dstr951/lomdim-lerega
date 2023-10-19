@@ -34,7 +34,11 @@ function ContactTeacherModal(props) {
     e.preventDefault();
 
     if (selectedSubject === "נא לבחור מקצוע" || messageContent === "") {
-      return alert("נא למלא את כל השדות הדרושים.");
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתבש",
+        text: "נא למלא את כל השדות",
+      });
     }
 
     try {
@@ -55,23 +59,54 @@ function ContactTeacherModal(props) {
       setMessageContent("");
       setSelectedSubject("נא לבחור מקצוע");
       if (response.status === 200) {
-        alert("ההודעה נשלחה.");
+        Swal.fire({
+          icon: "success",
+          title: "!ההודעה נשלחה בהצלחה",
+        });
       } else {
-        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+        return Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהרשמה",
+          html: `
+            <div dir="rtl">
+              אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+              או פנו אלינו במייל: 
+              <span dir="ltr" style="display: inline-block;">
+                <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+              </span>
+            </div>
+          `,
+          confirmButtonText: "אישור",
+        });
       }
     } catch (error) {
       props.onHide();
       setSelectedSubject("נא לבחור מקצוע");
       setMessageContent("");
       if (error.message === "Request failed with status code 409") {
-        alert(
-          "כבר נשלחה בקשה למורה עם מקצוע זה, יכולים לנסות אצל מורים אחרים."
-        );
+        Swal.fire({
+          icon: "info",
+          title: "בקשה למורה הזה כבר נשלחה",
+          text: "אנא המתינו עד לקבלת תשובה מהמורה, בינתיים מוזמנים לנסות מורים אחרים",
+        });
       } else {
-        alert("השליחה נכשלה, נסה שנית מאוחר יותר.");
+        return Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהרשמה",
+          html: `
+            <div dir="rtl">
+              אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+              או פנו אלינו במייל: 
+              <span dir="ltr" style="display: inline-block;">
+                <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+              </span>
+            </div>
+          `,
+          confirmButtonText: "אישור",
+        }).then(() => {
+          console.error(error);
+        });
       }
-
-      console.error(error);
     }
   };
 

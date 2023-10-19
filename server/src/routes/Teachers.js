@@ -3,6 +3,8 @@ const TeachersController = require("../controllers/Teachers");
 const TokensService = require("../services/Tokens");
 const router = express.Router();
 
+router.get("/myself", TeachersController.getMyselfTeacher);
+
 router.get(
   "/search",
   TokensService.isLoggedIn,

@@ -6,6 +6,7 @@ import FilterTeachers from "./component/FilterTeachers";
 import Header from "./component/Header";
 import { ReactSVG } from "react-svg";
 import appleImg from "../public/assets/apple-img.svg";
+import Swal from "sweetalert2";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -23,8 +24,13 @@ const TeachersListing = () => {
   const authenticated = location?.state?.authenticated;
 
   const handleError401 = () => {
-    alert("תלמיד יקר, נראה שאתה לא היית מחובר, אנא התחבר שוב במסך ההתחברות.");
-    navigate("/login", {});
+    return Swal.fire({
+      icon: "error",
+      title: "משהו השתבש",
+      text: "תלמיד יקר, נראה שלא היית מחובר, אנא התחבר שוב במסך הראשי.",
+    }).then(() => {
+      navigate("/login", {});
+    });
   };
 
   const handleFilterChange = (subject, grade) => {
@@ -32,10 +38,20 @@ const TeachersListing = () => {
       handleError401;
     }
     if (authenticated === false || authenticated === null) {
-      alert(
-        "תלמיד יקר, אינך מאומת עדיין, לכן לא ניתן לחפש מורים בשלב זה. אנא נסה שוב מאוחר יותר."
-      );
-      return;
+      return Swal.fire({
+        icon: "info",
+        title: "שימו לב",
+        html: `
+          <div dir="rtl">
+          תלמיד יקר, עדיין לא אימתנו את המשתמש שלך, אנא המתן
+            או פנו אלינו במייל: 
+            <span dir="ltr" style="display: inline-block;">
+              <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+            </span>
+          </div>
+        `,
+        confirmButtonText: "אישור",
+      });
     }
     setNoTeachersText("לא נמצאו מורים.");
     const params = [];
@@ -67,7 +83,7 @@ const TeachersListing = () => {
         });
     } else {
       setFilteredTeachers(teachers);
-      setNoTeachersText("בחרו מקצוע, כיתה או שניהם לפני החיפוש");
+      setNoTeachersText(".בחרו מקצוע, כיתה או שניהם לפני החיפוש");
     }
   };
   const noTeachers = (

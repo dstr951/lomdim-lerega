@@ -2,6 +2,7 @@ const StudentsService = require("../services/Students");
 const UsersService = require("../services/Users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const TeachersService = require("../services/Teachers");
 const SALT_ROUNDS = 10;
 
 async function registerStudent(req, res) {
@@ -27,6 +28,7 @@ async function registerStudent(req, res) {
     }
   });
 }
+
 async function getMyselfStudent(req, res) {
   const token = req.headers.authorization;
   let email;
@@ -51,7 +53,41 @@ async function getMyselfStudent(req, res) {
   }
 }
 
+async function getAllStudentsAdmin(req, res) {
+  const studentResponse = await StudentsService.getAllStudentsAdmin();
+  if (studentResponse.status == 200) {
+    res.status(200).send(studentResponse.body);
+  } else {
+    res.status(studentResponse.status).send(studentResponse.error);
+  }
+}
+
+async function approveStudent(req, res) {
+  const email = req.params.email;
+  const approvalResponse =
+    await StudentsService.updateAuthenticationStudentByEmail(email, true);
+  if (approvalResponse.status == 200) {
+    res.status(200).send("Student approved successfully");
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error);
+  }
+}
+
+async function rejectStudent(req, res) {
+  const email = req.params.email;
+  const approvalResponse =
+    await StudentsService.updateAuthenticationStudentByEmail(email, false);
+  if (approvalResponse.status == 200) {
+    res.status(200).send("Student rejected successfully");
+  } else {
+    res.status(approvalResponse.status).send(approvalResponse.error);
+  }
+}
+
 module.exports = {
   getMyselfStudent,
   registerStudent,
+  approveStudent,
+  rejectStudent,
+  getAllStudentsAdmin,
 };

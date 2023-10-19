@@ -1,7 +1,8 @@
 const TeachersService = require("../services/Teachers");
-const UsersService = require("../services/Users");
+const LoggerService = require("../services/Logger");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
+const jwt = require("jsonwebtoken");
 
 async function registerTeacher(req, res) {
   const {
@@ -39,6 +40,30 @@ async function registerTeacher(req, res) {
   });
 }
 
+async function getMyselfTeacher(req, res) {
+  const token = req.headers.authorization;
+  let email;
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, process.env.JWT_KEY);
+    email = data.email;
+  } catch (err) {
+    console.log(err);
+    return res.status(401).send("Invalid Token");
+  }
+  if (!email) {
+    console.log("token didn't contain an email");
+    res.status(401).send("Invalid Token");
+    return;
+  }
+  const teacherResponse = await TeachersService.getTeacherByEmail(email);
+  if (teacherResponse.status == 200) {
+    res.status(200).send(teacherResponse.body);
+  } else {
+    res.status(teacherResponse.status).send(teacherResponse.error);
+  }
+}
+
 async function searchTeachers(req, res) {
   const { email, subject, grade } = req.query;
   if (email) {
@@ -68,6 +93,7 @@ async function searchTeachers(req, res) {
     res.status(400).send("bad request");
   }
 }
+
 async function getAllTeachers(req, res) {
   const teacherResponse = await TeachersService.getAllTeachers();
   if (teacherResponse.status == 200) {
@@ -76,9 +102,9 @@ async function getAllTeachers(req, res) {
     res.status(teacherResponse.status).send(teacherResponse.error);
   }
 }
+
 async function getAllTeachersAdmin(req, res) {
   const teacherResponse = await TeachersService.getAllTeachersAdmin();
-  console.log(teacherResponse.length);
   if (teacherResponse.status == 200) {
     res.status(200).send(teacherResponse.body);
   } else {
@@ -108,6 +134,21 @@ async function rejectTeacher(req, res) {
   }
 }
 
+async function getPictureOfTeacher(req, res) {
+  const email = req.params.email;
+  if (!email) {
+    LoggerService.error(
+      `got a request for a teacher picture without any email`
+    );
+  }
+  const pictureResponse = await TeachersService.getPictureOfTeacher(email);
+  if (pictureResponse.status == 200) {
+    res.status(200).send(pictureResponse.body);
+  } else {
+    res.status(pictureResponse.status).send(pictureResponse.error);
+  }
+}
+
 module.exports = {
   searchTeachers,
   getAllTeachers,
@@ -115,4 +156,6 @@ module.exports = {
   approveTeacher,
   rejectTeacher,
   registerTeacher,
+  getPictureOfTeacher,
+  getMyselfTeacher,
 };

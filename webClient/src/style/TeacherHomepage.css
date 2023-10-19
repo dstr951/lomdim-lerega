@@ -47,20 +47,24 @@
   margin-top: 20px;
 }
 
-.requests-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 600px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  overflow-y: auto;
-  max-height: 80vh;
+.profile-img {
+  align-self: center;
+  justify-self: flex-start;
+}
+
+.text-box {
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.button-div {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+#orange-button {
+  padding: 7px 20px 7px 20px;
 }
 
 .notification-button {
@@ -72,22 +76,59 @@
   position: absolute;
   top: 0;
   right: 0;
-  background-color: red;
+  background-color: #d81259;
   color: white;
   border-radius: 50%;
-  padding: 2px 5px;
+  width: 20pt;
+  height: 20pt;
   font-size: 15px;
   transform: translate(50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 10pt;
+  font-family: "liebling", "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.profile-img {
-  align-self: center;
-  justify-self: flex-start;
+.card {
+  background-color: #e1eaef;
 }
 
-.text-box {
-  margin-top: 10px;
-  margin-bottom: 50px;
+.left-section {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17px;
+  min-height: 40pt;
+
+  padding: 10px;
+
+  margin: 0px;
+}
+
+.about-me-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40pt;
+  border-radius: 10px;
+  background-color: #d5e0e6;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17px;
+
+  padding: 10px;
+
+  margin: 0px;
+  background-color: #d5e0e6;
 }
 
 @media screen and (min-width: 700px) {
@@ -130,7 +171,7 @@
   }
 
   .left-section {
-    width: 100%;
+    width: 80%;
     display: flex;
     align-self: flex-start;
     flex-direction: column;
@@ -141,6 +182,19 @@
   .info-box {
     margin-right: 80px;
   }
+}
+
+.left-section {
+  width: 100%;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.info-box {
+  margin-right: 80px;
 }
 
 /* Central alignment for the content */
@@ -168,4 +222,12 @@
 .contact-info {
   font-size: 14px;
   margin-top: 10px; /* Provides spacing between contact info and other elements */
+}
+
+#margin-bottom-8 {
+  margin-bottom: 8px;
+}
+
+#close-button {
+  margin-bottom: 24px;
 }

@@ -5,6 +5,7 @@ import jwt from "jwt-decode";
 import axios from "axios";
 import "./style/App.css";
 import Header from "./component/Header";
+import Swal from "sweetalert2";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -32,36 +33,70 @@ const Login = () => {
 
       if (loginResponse.data) {
         token = loginResponse.data.token;
+        const authenticated = loginResponse.data.authenticated;
         const login = jwt(token);
         switch (login.role) {
           case "teacher":
             const teacherResponse = await axios.get(
-              `${SERVER_ADDRESS}/api/Teachers/search?email=${email}`,
+              `${SERVER_ADDRESS}/api/Teachers/myself`,
               { headers: { Authorization: token } }
             );
             if (teacherResponse.data) {
               const teacher = teacherResponse.data;
-              navigate("/teacher-homepage", { state: { teacher, token } });
+              navigate("/teacher-homepage", {
+                state: { teacher, token, authenticated },
+              });
             }
             break;
           case "student":
-            navigate("/seek-teachers", { state: { token } });
+            navigate("/seek-teachers", { state: { token, authenticated } });
             break;
           case "admin":
             navigate("/admin/panel", { state: { token } });
             break;
           default:
-            alert("there was an error");
-            break;
+            return Swal.fire({
+              icon: "error",
+              title: "משהו השתבש בהתחברות",
+              html: `
+                <div dir="rtl">
+                  אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+                  או פנו אלינו במייל: 
+                  <span dir="ltr" style="display: inline-block;">
+                    <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+                  </span>
+                </div>
+              `,
+              confirmButtonText: "אישור",
+            });
         }
       }
     } catch (error) {
-      if (error.response?.status === 404) {
-        alert("לא מצאנו משתמש עם הפרטים הללו, אנא נסה שנית עם הפרטים הנכונים");
-        console.error("Error:", error);
-      } else {
-        alert("there was an error logging in");
-      }
+      if (error.response)
+        if (error.response?.status === 404) {
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתבש בהתחברות",
+            text: "לא מצאנו משתמש עם הפרטים הללו",
+          }).then(() => {
+            console.error(error);
+          });
+        } else {
+          return Swal.fire({
+            icon: "error",
+            title: "משהו השתבש בהתחברות",
+            html: `
+            <div dir="rtl">
+              אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
+              או פנו אלינו במייל: 
+              <span dir="ltr" style="display: inline-block;">
+                <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+              </span>
+            </div>
+          `,
+            confirmButtonText: "אישור",
+          });
+        }
       console.error("Error:", error);
     }
   };
@@ -97,7 +132,7 @@ const Login = () => {
               <Row className="d-flex justify-content-center mt-3">
                 <Col xs="auto">
                   <Link to="/signup">
-                    <button variant="primary" as="span">
+                    <button variant="primary" type="button" as="span">
                       הרשם
                     </button>
                   </Link>

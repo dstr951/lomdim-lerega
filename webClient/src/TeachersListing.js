@@ -6,8 +6,11 @@ import FilterTeachers from "./component/FilterTeachers";
 import Header from "./component/Header";
 import { ReactSVG } from "react-svg";
 import appleImg from "../public/assets/apple-img.svg";
+import Swal from "sweetalert2";
 
-const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
 
 const TeachersListing = () => {
   const [teachers, setTeachers] = useState([]);
@@ -18,27 +21,38 @@ const TeachersListing = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = location?.state?.token;
+  const authenticated = location?.state?.authenticated;
 
-  const handleDisconnect = () => {
-    navigate("/", {});
-  };
-
-  useEffect(() => {
-    getTeachers();
-  }, []);
-
-  const getTeachers = () => {
-    axios
-      .get(`${SERVER_ADDRESS}/api/Teachers/all`, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        setTeachers(response.data);
-      })
-      .catch((error) => console.error(error));
+  const handleError401 = () => {
+    return Swal.fire({
+      icon: "error",
+      title: "משהו השתבש",
+      text: "תלמיד יקר, נראה שלא היית מחובר, אנא התחבר שוב במסך הראשי.",
+    }).then(() => {
+      navigate("/login", {});
+    });
   };
 
   const handleFilterChange = (subject, grade) => {
+    if (authenticated === undefined) {
+      handleError401;
+    }
+    if (authenticated === false || authenticated === null) {
+      return Swal.fire({
+        icon: "info",
+        title: "שימו לב",
+        html: `
+          <div dir="rtl">
+          תלמיד יקר, עדיין לא אימתנו את המשתמש שלך, אנא המתן
+            או פנו אלינו במייל: 
+            <span dir="ltr" style="display: inline-block;">
+              <a href="mailto:lomdimlerega@gmail.com">lomdimlerega@gmail.com</a>
+            </span>
+          </div>
+        `,
+        confirmButtonText: "אישור",
+      });
+    }
     setNoTeachersText("לא נמצאו מורים.");
     const params = [];
     if (subject) {
@@ -61,9 +75,15 @@ const TeachersListing = () => {
         .then((response) => {
           setFilteredTeachers(response.data);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          if (error?.response?.status === 401) {
+            handleError401();
+          }
+        });
     } else {
       setFilteredTeachers(teachers);
+      setNoTeachersText(".בחרו מקצוע, כיתה או שניהם לפני החיפוש");
     }
   };
   const noTeachers = (
@@ -81,7 +101,7 @@ const TeachersListing = () => {
 
   return (
     <div>
-      <Header mode="1" />
+      <Header mode={1} />
       <div className="main-section">
         <div className="section" id="top-section">
           <div className="text-section" id="search-section">

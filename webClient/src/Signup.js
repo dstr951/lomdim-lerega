@@ -9,6 +9,7 @@ import { gradeToId, subjectToId, idToSubject, idToGrade } from "./Converters";
 import { ReactSVG } from "react-svg";
 import closeSVG from "../public/assets/close.svg";
 import Swal from "sweetalert2";
+import imageCompression from "browser-image-compression";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -83,15 +84,25 @@ const Signup = () => {
     return /^\d+$/.test(number) && number.length === 10;
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = function () {
-        const base64 = reader.result.split(",")[1];
-        setProfilePicture(base64);
-      };
+      try {
+        const options = {
+          maxSizeMB: 0.5, // Adjust this value as per your requirements
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onloadend = function () {
+          const base64 = reader.result.split(",")[1];
+          setProfilePicture(base64);
+        };
+      } catch (error) {
+        console.error("Image compression failed: ", error);
+      }
     }
   };
 

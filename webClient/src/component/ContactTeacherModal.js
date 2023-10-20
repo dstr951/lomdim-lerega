@@ -59,7 +59,7 @@ function ContactTeacherModal(props) {
       setMessageContent("");
       setSelectedSubject("נא לבחור מקצוע");
       if (response.status === 200) {
-        Swal.fire({
+        return Swal.fire({
           icon: "success",
           title: "!ההודעה נשלחה בהצלחה",
         });

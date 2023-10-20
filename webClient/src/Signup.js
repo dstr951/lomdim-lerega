@@ -22,9 +22,9 @@ const Signup = () => {
 
   // Teacher fields
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState("מתמטיקה");
-  const [startClass, setStartClass] = useState("א'");
-  const [endClass, setEndClass] = useState("א'");
+  const [selectedSubject, setSelectedSubject] = useState("בחר מקצוע");
+  const [startClass, setStartClass] = useState("בחר כיתה");
+  const [endClass, setEndClass] = useState("בחר כיתה");
   const [age, setAge] = useState("");
   const [socialProfileLink, setSocialProfileLink] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -46,23 +46,29 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAddSubject = () => {
-    if (gradeToId[startClass] > gradeToId[endClass]) {
-      Swal.fire({
-        icon: "error",
-        title: "משהו השתבש בהרשמה",
-        text: "!טווח הכיתות אינו תקין",
-      });
-      return;
+    if (
+      selectedSubject != "בחר מקצוע" &&
+      startClass != "בחר כיתה" &&
+      endClass != "בחר כיתה"
+    ) {
+      if (gradeToId[startClass] > gradeToId[endClass]) {
+        Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהרשמה",
+          text: "!טווח הכיתות אינו תקין",
+        });
+        return;
+      }
+      const newSubject = {
+        subject: selectedSubject,
+        range: `${startClass} עד ${endClass}`,
+      };
+      const i = subjects.findIndex((item) => item.subject === selectedSubject);
+      if (i != -1) {
+        handleRemoveSubject(i);
+      }
+      setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
     }
-    const newSubject = {
-      subject: selectedSubject,
-      range: `${startClass} עד ${endClass}`,
-    };
-    const i = subjects.findIndex((item) => item.subject === selectedSubject);
-    if (i != -1) {
-      handleRemoveSubject(i);
-    }
-    setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
   };
 
   const handleRemoveSubject = (index) => {
@@ -372,6 +378,7 @@ const Signup = () => {
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
             >
+              <option value={"בחר מקצוע"}>בחר מקצוע</option>
               {Object.entries(idToSubject).map(([id, subject]) => (
                 <option key={id} value={subject}>
                   {subject}
@@ -387,6 +394,7 @@ const Signup = () => {
               value={startClass}
               onChange={(e) => setStartClass(e.target.value)}
             >
+              <option value={"בחר כיתה"}>בחר כיתה</option>
               {Object.entries(idToGrade).map(([id, grade]) => (
                 <option key={id} value={grade}>
                   {grade}
@@ -403,6 +411,7 @@ const Signup = () => {
               defaultValue='י"ב'
               onChange={(e) => setEndClass(e.target.value)}
             >
+              <option value={"בחר כיתה"}>בחר כיתה</option>
               {Object.entries(idToGrade).map(([id, grade]) => (
                 <option key={id} value={grade}>
                   {grade}
@@ -445,7 +454,7 @@ const Signup = () => {
         <p>קישור לפרופיל חברתי:</p>
         <Form.Control
           type="url"
-          placeholder="קישור לפרופיל החברתי שלך"
+          placeholder="קישור לפרופיל החברתי שלך - https://www.example.com"
           value={socialProfileLink}
           onChange={(e) => setSocialProfileLink(e.target.value)}
         />

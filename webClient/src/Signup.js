@@ -544,7 +544,9 @@ const Signup = () => {
               <div className="row-container">
                 <p>אני</p>
                 <button
-                  className="item-row"
+                  className={`item-row ${
+                    userType === "teacher" ? "checked-signup-button" : ""
+                  }`}
                   id="orange-button"
                   label="מורה"
                   name="userType"
@@ -554,12 +556,13 @@ const Signup = () => {
                   מורה
                 </button>
                 <button
-                  className="item-row"
+                  className={`item-row ${
+                    userType === "student" ? "checked-signup-button" : ""
+                  }`}
                   id="purple-button"
                   label="תלמיד"
                   name="userType"
                   inline
-                  checked={userType === "student"}
                   onClick={() => setUserType("student")}
                 >
                   תלמיד

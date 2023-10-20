@@ -96,3 +96,7 @@
   background-color: #8b7b7b;
   color: #ffffff;
 }
+
+.checked-signup-button {
+  border: black 2.5px solid;
+}

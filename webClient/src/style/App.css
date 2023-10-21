@@ -34,7 +34,7 @@ a {
   font-weight: bold;
 }
 a.link:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .form-control {
@@ -308,7 +308,7 @@ button:hover {
 .row-container {
   display: flex;
   align-items: baseline;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
 }
 
@@ -341,10 +341,13 @@ button:hover {
 }
 
 #text-message {
+  width: 100%;
   height: 300px;
-  min-height: 300px;
-  max-height: 300px;
-  display: block;
+  border-radius: 10px;
+  background-color: #d5e0e6;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 17pt;
 }
 
 div#NagishLiTrigger {

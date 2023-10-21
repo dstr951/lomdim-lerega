@@ -150,7 +150,7 @@ function ContactTeacherModal(props) {
               </Col>
             </div>
             <p>כתוב הודעתך למורה:</p>
-            <Form.Control
+            <textarea
               id="text-message"
               rows={4}
               placeholder="כתוב את הודעתך למורה כאן."

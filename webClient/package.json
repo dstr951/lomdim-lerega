@@ -44,8 +44,5 @@
     "sweetalert2": "^11.7.32",
     "webpack": "^5.88.2",
     "webpack-dev-server": "^4.15.1"
-  },
-  "devDependencies": {
-    "webpack-cli": "^5.1.4"
   }
 }

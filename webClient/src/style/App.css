@@ -202,11 +202,10 @@ button:hover {
 
 .requests-modal-body {
   padding: 24px;
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
   scrollbar-color: none #232323;
   scrollbar-width: thin;
-  height: 600px;
   border-radius: 10px;
 }
 

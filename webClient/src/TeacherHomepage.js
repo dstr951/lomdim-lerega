@@ -124,7 +124,7 @@ const NotificationButton = ({
   const [showRequests, setShowRequests] = useState(false);
 
   const requests = [
-    {
+    /*     {
       _id: {
         $oid: "652a943ad4aca135b8220227",
       },
@@ -183,7 +183,7 @@ const NotificationButton = ({
         $date: "2023-10-14T13:14:34.686Z",
       },
       __v: 0,
-    },
+    }, */
   ];
   // להחליף ל teachingRequests
   return (
@@ -201,7 +201,10 @@ const NotificationButton = ({
         <div className="overlay">
           <div className="requests-modal">
             <div className="title">ההתראות שלי</div>
-            <div className="requests-modal-body">
+            <div
+              className="requests-modal-body"
+              id={requests.length == 0 && "no-notification"}
+            >
               {requests.length == 0 ? (
                 <p id="center">אין התראות כרגע.</p>
               ) : (

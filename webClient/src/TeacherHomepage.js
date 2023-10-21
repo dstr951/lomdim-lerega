@@ -42,7 +42,7 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const confirmAndApproveRequest = () => {
-    Swal.fire({
+    const swalWithCustomProperties = Swal.mixin({
       title: "?האם אתה בטוח",
       text: 'בעת אישור הבקשה, דוא"ל יישלח אליך ואל התלמיד עם פרטי יצירת הקשר של כל אחד, כך שתוכלו ליצור קשר אחד עם השני ולקבוע שיעור.',
       icon: "info",
@@ -51,10 +51,17 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "כן, אשר את הבקשה",
       cancelButtonText: "ביטול",
-    }).then((result) => {
+    });
+
+    swalWithCustomProperties.fire().then((result) => {
       if (result.isConfirmed) {
         approveRequest();
-        Swal.fire("!אושר", "הבקשה אושרה בהצלחה", "success");
+        Swal.fire({
+          title: "!אושר",
+          text: "הבקשה אושרה בהצלחה",
+          icon: "success",
+          confirmButtonText: "מעולה",
+        });
       }
     });
   };
@@ -79,7 +86,7 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
   };
 
   const confirmAndRejectRequest = () => {
-    Swal.fire({
+    const swalWithCustomProperties = Swal.mixin({
       title: "?האם אתה בטוח",
       text: "ברגע שתבטל את הבקשה, לא תוכל לשחזר אותה",
       icon: "warning",
@@ -88,10 +95,16 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "כן, בטל את הבקשה",
       cancelButtonText: "חזור",
-    }).then((result) => {
+    });
+
+    swalWithCustomProperties.fire().then((result) => {
       if (result.isConfirmed) {
         rejectRequest();
-        Swal.fire("הבקשה נדחתה בהצלחה", "", "success");
+        Swal.fire({
+          title: "הבקשה נדחתה בהצלחה",
+          icon: "success",
+          confirmButtonText: "אישור",
+        });
       }
     });
   };

@@ -28,6 +28,7 @@ const TeachersListing = () => {
       icon: "error",
       title: "משהו השתבש",
       text: "תלמיד יקר, נראה שלא היית מחובר, אנא התחבר שוב במסך הראשי.",
+      confirmButtonText: "אישור",
     }).then(() => {
       navigate("/login", {});
     });

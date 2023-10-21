@@ -39,6 +39,7 @@ function ContactTeacherModal(props) {
         icon: "error",
         title: "משהו השתבש",
         text: "נא למלא את כל השדות",
+        confirmButtonText: "הבנתי",
       });
     }
 
@@ -63,6 +64,7 @@ function ContactTeacherModal(props) {
         return Swal.fire({
           icon: "success",
           title: "!ההודעה נשלחה בהצלחה",
+          confirmButtonText: "מעולה",
         });
       } else {
         return Swal.fire({
@@ -89,6 +91,7 @@ function ContactTeacherModal(props) {
           icon: "info",
           title: "בקשה למורה הזה כבר נשלחה",
           text: "אנא המתינו עד לקבלת תשובה מהמורה, בינתיים מוזמנים לנסות מורים אחרים",
+          confirmButtonText: "הבנתי",
         });
       } else {
         return Swal.fire({
@@ -154,8 +157,8 @@ function ContactTeacherModal(props) {
               value={messageContent}
               onChange={(e) => setMessageContent(e.target.value)}
             />
-			<div className="color-red">*שימו לב, כל השדות בטופס הינם חובה</div>
-			<br/>
+            <div className="color-red">*שימו לב, כל השדות בטופס הינם חובה</div>
+            <br />
             <div>
               {" "}
               <div md={6} className="d-flex justify-content-center">

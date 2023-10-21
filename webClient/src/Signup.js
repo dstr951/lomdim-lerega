@@ -551,7 +551,7 @@ const Signup = () => {
                 <p>אני</p>
                 <button
                   className={`item-row ${
-                    userType === "teacher" ? "checked-signup-button" : ""
+                    userType === "teacher" ? "checked-signup-button" : "unchecked-signup-button"
                   }`}
                   id="orange-button"
                   label="מורה"
@@ -563,7 +563,7 @@ const Signup = () => {
                 </button>
                 <button
                   className={`item-row ${
-                    userType === "student" ? "checked-signup-button" : ""
+                    userType === "student" ? "checked-signup-button" : "unchecked-signup-button"
                   }`}
                   id="purple-button"
                   label="תלמיד"

@@ -367,6 +367,22 @@ const Signup = () => {
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
+        <div className="addFile-container">
+          <p>תמונה:</p>
+          <Form.Control
+            type="file"
+            className="fileInput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <p>קישור לפרופיל חברתי:</p>
+        <Form.Control
+          type="url"
+          placeholder="קישור לפרופיל החברתי שלך"
+          value={socialProfileLink}
+          onChange={(e) => setSocialProfileLink(e.target.value)}
+        />
         <br />
         <h2 id={color}>פרטים מקצועיים</h2>
         <div className="select-container">
@@ -428,36 +444,26 @@ const Signup = () => {
             הוסף
           </button>
         </div>
-        <ListGroup className="list">
-          {subjects.map((item, index) => (
-            <ListGroup.Item key={index} className="list-item">
-              {`${item.subject} (${item.range})`}
-              <div>
-                <ReactSVG
-                  src={closeSVG}
-                  className="closeButton"
-                  onClick={() => handleRemoveSubject(index)}
-                />
-              </div>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-        <div className="addFile-container">
-          <p>תמונה:</p>
-          <Form.Control
-            type="file"
-            className="fileInput"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <p>קישור לפרופיל חברתי:</p>
-        <Form.Control
-          type="url"
-          placeholder="קישור לפרופיל החברתי שלך - https://www.example.com"
-          value={socialProfileLink}
-          onChange={(e) => setSocialProfileLink(e.target.value)}
-        />
+        <p>מקצועות שנבחרו:</p>
+        {subjects.length == 0 ? (
+          <p class="text-center">לא הוזנו מקצועות.</p>
+        ) : (
+          <ListGroup className="list">
+            {subjects.map((item, index) => (
+              <ListGroup.Item key={index} className="list-item">
+                {`${item.subject} (${item.range})`}
+                <div>
+                  <ReactSVG
+                    src={closeSVG}
+                    className="closeButton"
+                    onClick={() => handleRemoveSubject(index)}
+                  />
+                </div>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+        <br />
         <p> קצת עליי בכמה מילים...</p>
         <Form.Control
           type="text"

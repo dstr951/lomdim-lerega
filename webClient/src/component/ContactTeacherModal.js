@@ -154,6 +154,7 @@ function ContactTeacherModal(props) {
               onChange={(e) => setMessageContent(e.target.value)}
             />
 			<div className="color-red">*שימו לב, כל השדות בטופס הינם חובה</div>
+			<br/>
             <div>
               {" "}
               <div md={6} className="d-flex justify-content-center">

@@ -178,10 +178,6 @@
     align-items: stretch;
     justify-content: flex-start;
   }
-
-  .info-box {
-    margin-right: 80px;
-  }
 }
 
 .left-section {
@@ -194,7 +190,7 @@
 }
 
 .info-box {
-  margin-right: 80px;
+  margin-top: 25px;
 }
 
 /* Central alignment for the content */
@@ -230,4 +226,20 @@
 
 #close-button {
   margin-bottom: 24px;
+}
+
+#success {
+  background-color: #359e2a;
+}
+
+#danger {
+  background-color: #d81259;
+}
+
+#teacher-name-title {
+  align-self: flex-start;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 10px;
 }

@@ -14,6 +14,11 @@ import Header from "./component/Header";
 import "./style/TeacherHomepage.css";
 import "./style/App.css";
 import axios from "axios";
+import { ReactSVG } from "react-svg";
+
+import accept from "../public/assets/white-check.svg";
+import cancel from "../public/assets/white-close.svg";
+import teacherIcon from "../public/assets/teacher-icon.svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS;
 
@@ -98,11 +103,11 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
         <strong>הודעה:</strong> {request.messageContent} <br />
       </div>
       <div className="card-buttons d-flex justify-content-center">
-        <button variant="success" className="mr-2" onClick={approveRequest}>
-          אשר
+        <button id="success" className="mr-2" onClick={approveRequest}>
+          <ReactSVG src={accept} />
         </button>
-        <button variant="danger" onClick={rejectRequest}>
-          דחה
+        <button id="danger" onClick={rejectRequest}>
+          <ReactSVG src={cancel} />
         </button>
       </div>
       <ConfirmationModal
@@ -124,21 +129,6 @@ const NotificationButton = ({
   const [showRequests, setShowRequests] = useState(false);
 
   const requests = [
-    /*     {
-      _id: {
-        $oid: "652a943ad4aca135b8220227",
-      },
-      studentEmail: "dsdsd@gmail.com",
-      teacherEmail: "ofek@gmail.com",
-      subject: 1,
-      messageContent: "אני אופק",
-      grade: 6,
-      approved: true,
-      created: {
-        $date: "2023-10-14T13:14:34.686Z",
-      },
-      __v: 0,
-    },
     {
       _id: {
         $oid: "652a943ad4aca135b8220227",
@@ -183,7 +173,22 @@ const NotificationButton = ({
         $date: "2023-10-14T13:14:34.686Z",
       },
       __v: 0,
-    }, */
+    },
+    {
+      _id: {
+        $oid: "652a943ad4aca135b8220227",
+      },
+      studentEmail: "dsdsd@gmail.com",
+      teacherEmail: "ofek@gmail.com",
+      subject: 1,
+      messageContent: "אני אופק",
+      grade: 6,
+      approved: true,
+      created: {
+        $date: "2023-10-14T13:14:34.686Z",
+      },
+      __v: 0,
+    },
   ];
   // להחליף ל teachingRequests
   return (
@@ -291,9 +296,13 @@ const TeacherHomepage = () => {
                 />
                 <div className="info-box">
                   <div className="text-box">
-                    <h2 id="orange-text">
-                      {teacherData.firstName} {teacherData.lastName}
-                    </h2>
+                    <div id="teacher-name-title">
+                      <h2 id="orange-text">
+                        {" "}
+                        {teacherData.firstName} {teacherData.lastName}{" "}
+                      </h2>
+                      <ReactSVG src={teacherIcon} />
+                    </div>
                     <p>
                       <strong>גיל:</strong> {teacherData.age} <br />
                       <a

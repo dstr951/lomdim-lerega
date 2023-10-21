@@ -368,7 +368,7 @@ const Signup = () => {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <div className="addFile-container">
-          <p>תמונה:</p>
+          <p>תמונת פרופיל:</p>
           <Form.Control
             type="file"
             className="fileInput"
@@ -577,6 +577,7 @@ const Signup = () => {
             </Form.Group>
             <Form onSubmit={handleSubmit}>
               <br />
+			  <div className="color-red">שימו לב, כל השדות בטופס הינם חובה*</div>
               <h2 id={color}>פרטי התחברות</h2>
               <p>אימייל:</p>
               <Form.Control
@@ -619,7 +620,7 @@ const Signup = () => {
                   type="button"
                   className="w-100 back-button"
                 >
-                  חזור
+                  להתחברות
                 </button>
               </Link>
             </Form>

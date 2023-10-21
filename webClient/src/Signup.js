@@ -140,6 +140,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "נא למלא את כל השדות",
       });
     }
@@ -148,6 +149,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "בדקו שכתובת האימייל שהזנתם תקינה",
       });
     }
@@ -156,6 +158,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "הסיסמאות אינן תואמות",
       });
     }
@@ -164,6 +167,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "הסיסמה צריכה להיות באורך לפחות 8, להכין מספרים, סימנים ותווים באנגלית בלבד",
       });
     }
@@ -172,6 +176,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "מספר הטלפון צריך להכיל עשר ספרות",
       });
     }
@@ -180,6 +185,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "מספר הטלפון צריך להכיל עשר ספרות",
       });
     }
@@ -229,7 +235,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           });
         }
       } catch (error) {
@@ -238,12 +244,14 @@ const Signup = () => {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
@@ -300,7 +308,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           });
         }
       } catch (error) {
@@ -309,6 +317,7 @@ const Signup = () => {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
@@ -324,7 +333,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           }).then(() => {
             console.error(error);
           });
@@ -551,7 +560,9 @@ const Signup = () => {
                 <p>אני</p>
                 <button
                   className={`item-row ${
-                    userType === "teacher" ? "checked-signup-button" : "unchecked-signup-button"
+                    userType === "teacher"
+                      ? "checked-signup-button"
+                      : "unchecked-signup-button"
                   }`}
                   id="orange-button"
                   label="מורה"
@@ -563,7 +574,9 @@ const Signup = () => {
                 </button>
                 <button
                   className={`item-row ${
-                    userType === "student" ? "checked-signup-button" : "unchecked-signup-button"
+                    userType === "student"
+                      ? "checked-signup-button"
+                      : "unchecked-signup-button"
                   }`}
                   id="purple-button"
                   label="תלמיד"
@@ -577,7 +590,9 @@ const Signup = () => {
             </Form.Group>
             <Form onSubmit={handleSubmit}>
               <br />
-			  <div className="color-red">*שימו לב, כל השדות בטופס הינם חובה</div>
+              <div className="color-red">
+                *שימו לב, כל השדות בטופס הינם חובה
+              </div>
               <h2 id={color}>פרטי התחברות</h2>
               <p>אימייל:</p>
               <Form.Control

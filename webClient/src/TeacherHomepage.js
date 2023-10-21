@@ -44,7 +44,7 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
   const confirmAndApproveRequest = () => {
     Swal.fire({
       title: "?האם אתה בטוח",
-      text: '.בעת אישור הבקשה, דוא"ל יישלח אליך ואל התלמיד עם פרטי יצירת הקשר של כל אחד, כך שתוכלו ליצור קשר אחד עם השני ולקבוע שיעור',
+      text: 'בעת אישור הבקשה, דוא"ל יישלח אליך ואל התלמיד עם פרטי יצירת הקשר של כל אחד, כך שתוכלו ליצור קשר אחד עם השני ולקבוע שיעור.',
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

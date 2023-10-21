@@ -42,9 +42,7 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="header-in">
-        <Link to="/">
           <ReactSVG src={longLogo} />
-        </Link>
         <div>{details}</div>
       </div>
     </div>

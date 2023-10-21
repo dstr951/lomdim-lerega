@@ -33,7 +33,7 @@ a {
   text-decoration: none;
   font-weight: bold;
 }
-a:hover {
+a.link:hover {
 	text-decoration: underline;
 }
 

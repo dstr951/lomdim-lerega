@@ -271,6 +271,7 @@ const TeacherHomepage = () => {
                     <p>
                       <strong>גיל:</strong> {teacherData.age} <br />
                       <a
+					  className="link"
                         id="orange-text"
                         href={teacherData.socialProfileLink}
                         target="_blank"

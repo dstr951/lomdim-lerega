@@ -122,7 +122,7 @@ function ContactTeacherModal(props) {
         id="no-background"
       >
         <Form onSubmit={sendMessageToTeacher} className="requests-modal">
-          <div className="title">יצרית קשר - מורה</div>
+          <div className="title">יצירת קשר עם מורה</div>
 
           <div className="requests-modal-body">
             <p>מקצוע:</p>

@@ -577,6 +577,7 @@ const Signup = () => {
             </Form.Group>
             <Form onSubmit={handleSubmit}>
               <br />
+			  <div className="color-red">שימו לב, כל השדות בטופס הינם חובה*</div>
               <h2 id={color}>פרטי התחברות</h2>
               <p>אימייל:</p>
               <Form.Control

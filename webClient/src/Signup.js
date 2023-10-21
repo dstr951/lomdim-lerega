@@ -619,7 +619,7 @@ const Signup = () => {
                   type="button"
                   className="w-100 back-button"
                 >
-                  חזור
+                  להתחברות
                 </button>
               </Link>
             </Form>

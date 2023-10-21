@@ -6,6 +6,7 @@ import Header from "./component/Header";
 import "./style/TeacherHomepage.css";
 import "./style/App.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -40,6 +41,24 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, firstName }) => {
 const TeachingRequest = ({ request, token, onActionComplete }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
+  const confirmAndApproveRequest = () => {
+    Swal.fire({
+      title: "?האם אתה בטוח",
+      text: '.בעת אישור הבקשה, דוא"ל יישלח אליך ואל התלמיד עם פרטי יצירת הקשר של כל אחד, כך שתוכלו ליצור קשר אחד עם השני ולקבוע שיעור',
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן, אשר את הבקשה",
+      cancelButtonText: "ביטול",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        approveRequest();
+        Swal.fire("!אושר", "הבקשה אושרה בהצלחה", "success");
+      }
+    });
+  };
+
   const approveRequest = () => {
     axios
       .post(
@@ -57,6 +76,24 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
       .catch((error) => {
         console.error("Error approving the request:", error);
       });
+  };
+
+  const confirmAndRejectRequest = () => {
+    Swal.fire({
+      title: "?האם אתה בטוח",
+      text: "ברגע שתבטל את הבקשה, לא תוכל לשחזר אותה",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "כן, בטל את הבקשה",
+      cancelButtonText: "חזור",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        rejectRequest();
+        Swal.fire("הבקשה נדחתה בהצלחה", "", "success");
+      }
+    });
   };
 
   const rejectRequest = () => {
@@ -92,10 +129,14 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
         <strong>הודעה:</strong> {request.messageContent} <br />
       </div>
       <div className="card-buttons d-flex justify-content-center">
-        <button variant="success" className="mr-2" onClick={approveRequest}>
+        <button
+          variant="success"
+          className="mr-2"
+          onClick={confirmAndApproveRequest}
+        >
           אשר
         </button>
-        <button variant="danger" onClick={rejectRequest}>
+        <button variant="danger" onClick={confirmAndRejectRequest}>
           דחה
         </button>
       </div>

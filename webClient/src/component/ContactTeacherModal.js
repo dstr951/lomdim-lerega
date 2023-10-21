@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { idToGrade, idToSubject, subjectToId } from "../Converters";
+import Swal from "sweetalert2";
 
 function ContactTeacherModal(props) {
   const navigate = useNavigate();

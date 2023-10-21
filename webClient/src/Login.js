@@ -67,7 +67,7 @@ const Login = () => {
                   </span>
                 </div>
               `,
-              confirmButtonText: "אישור",
+              confirmButtonText: "הבנתי",
             });
         }
       }
@@ -78,6 +78,7 @@ const Login = () => {
             icon: "error",
             title: "משהו השתבש בהתחברות",
             text: "לא מצאנו משתמש עם הפרטים הללו",
+            confirmButtonText: "הבנתי",
           }).then(() => {
             console.error(error);
           });
@@ -94,7 +95,7 @@ const Login = () => {
               </span>
             </div>
           `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           });
         }
       console.error("Error:", error);

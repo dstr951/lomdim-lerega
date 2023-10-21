@@ -219,6 +219,7 @@ const Signup = () => {
           Swal.fire({
             icon: "success",
             title: "!ההרשמה בוצעה בהצלחה",
+            confirmButtonText: "אישור",
           }).then(() => {
             navigate("/login", { state: { email } });
           });
@@ -261,7 +262,6 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
           }).then(() => {
             console.error(error);
           });
@@ -292,6 +292,7 @@ const Signup = () => {
           Swal.fire({
             icon: "success",
             title: "!ההרשמה בוצעה בהצלחה",
+            confirmButtonText: "אישור",
           }).then(() => {
             navigate("/login", { state: { email } });
           });

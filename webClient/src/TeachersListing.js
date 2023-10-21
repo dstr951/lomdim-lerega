@@ -83,7 +83,7 @@ const TeachersListing = () => {
         });
     } else {
       setFilteredTeachers(teachers);
-      setNoTeachersText(".בחרו מקצוע, כיתה או שניהם לפני החיפוש");
+      setNoTeachersText("בחרו מקצוע, כיתה או שניהם לפני החיפוש.");
     }
   };
   const noTeachers = (

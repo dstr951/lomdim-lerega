@@ -368,7 +368,7 @@ const Signup = () => {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <div className="addFile-container">
-          <p>תמונה:</p>
+          <p>תמונת פרופיל:</p>
           <Form.Control
             type="file"
             className="fileInput"

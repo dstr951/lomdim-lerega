@@ -343,3 +343,9 @@ button:hover {
   max-height: 300px;
   display: block;
 }
+
+div#NagishLiTrigger {
+  right: 0 !important;
+  left: 30px;
+  bottom: 0;
+}

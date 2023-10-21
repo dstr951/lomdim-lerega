@@ -7,6 +7,10 @@ import "./style/TeacherHomepage.css";
 import "./style/App.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { ReactSVG } from "react-svg";
+
+import accept from "../public/assets/white-check.svg";
+import cancel from "../public/assets/white-close.svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -143,14 +147,14 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
       </div>
       <div className="card-buttons d-flex justify-content-center">
         <button
-          variant="success"
+          id="success"
           className="mr-2"
           onClick={confirmAndApproveRequest}
         >
-          אשר
+          <ReactSVG src={accept} />
         </button>
-        <button variant="danger" onClick={confirmAndRejectRequest}>
-          דחה
+        <button id="danger" onClick={confirmAndRejectRequest}>
+          <ReactSVG src={cancel} />
         </button>
       </div>
       <ConfirmationModal

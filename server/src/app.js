@@ -10,10 +10,12 @@ const routerTeachers = require("./routes/Teachers");
 const routerStudents = require("./routes/Students");
 const routerRefresher = require("./routes/refresher");
 const routerTeachingRequests = require("./routes/TeachingRequests");
-
+require("./priodicTasks/priodicTasks");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
+
+
 try {
   require("custom-env").env(process.env.NODE_ENV, "src/config");
   console.log(

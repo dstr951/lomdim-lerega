@@ -34,6 +34,7 @@ function creationServiceErrorHandler(error){
     }
 }
 
+
 module.exports = {
     validatePassword,
     validatePhoneNumber,

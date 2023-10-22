@@ -247,6 +247,7 @@ function AdminPage() {
           <ProfileDetails
             clickedProfile={clickedProfile}
             setApproval={setApproval}
+            token={token}
           />
         </div>
       </div>

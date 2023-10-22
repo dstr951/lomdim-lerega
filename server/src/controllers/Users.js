@@ -1,5 +1,6 @@
 const UserService = require("../services/Users");
 const {deleteExpiredPasswordResets} = require("../models/PasswordReset");
+const {notifyResetLink} = require("../services/EmailingResend");
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -22,7 +23,7 @@ async function resetPasswordLink(req, res){
   const userPasswordResetLinkResponse = await UserService.resetPasswordLink(email);
   if(userPasswordResetLinkResponse.status === 200){
     console.log("send email with this link- " + userPasswordResetLinkResponse.body.link);
-    //TODO- send email with reset link.
+    notifyResetLink("tomerkimberg@gmail.com",userPasswordResetLinkResponse.body.link);
     res.status(200).send();
   }
   // got invalid email or some error saving to DB

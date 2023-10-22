@@ -184,4 +184,24 @@ function notifyMatch(request, student, teacher) {
     });
 }
 
-module.exports = { notifyMatch };
+function notifyResetLink(email,link){
+  console.log(`sending email to: ${email}\nwith link: ${link}`);
+  const resend = new Resend.Resend(process.env.RESEND_API_KEY);
+  resend.emails.send({
+    to : [email],
+    from: `${process.env.RESEND_SENDER_NAME}@lomdim-lerega.info`,
+    subject: "לומדים לרגע- איפוס סיסמא",
+    text: `הנה קישור לאיפוס הסיסמא-\n ${link}\nהקישור יהיה זמין למשך 10 דקות.`
+  }).then(() => {
+    LoggerService.log(
+        "email sent"
+    );
+  })
+      .catch((error) => {
+        LoggerService.error(
+            error
+        );
+      });
+}
+
+module.exports = { notifyMatch, notifyResetLink};

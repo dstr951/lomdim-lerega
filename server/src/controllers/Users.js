@@ -1,6 +1,7 @@
 const UserService = require("../services/Users");
 const {deleteExpiredPasswordResets} = require("../models/PasswordReset");
 const {notifyResetLink} = require("../services/EmailingResend");
+const LoggerService = require("../services/Logger");
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -22,20 +23,19 @@ async function resetPasswordLink(req, res){
   const {email} = req.body;
   const userPasswordResetLinkResponse = await UserService.resetPasswordLink(email);
   if(userPasswordResetLinkResponse.status === 200){
-    console.log("send email with this link- " + userPasswordResetLinkResponse.body.link);
-    notifyResetLink("tomerkimberg@gmail.com",userPasswordResetLinkResponse.body.link);
+    notifyResetLink(email,userPasswordResetLinkResponse.body.link);
     res.status(200).send();
   }
   // got invalid email or some error saving to DB
   else if(userPasswordResetLinkResponse.status === 400){
-    console.log("no link was made but server response should appear as if email was valid");
-    console.log("error details-" + userPasswordResetLinkResponse.body);
+    LoggerService.log("no link was made but server response should appear as if email was valid");
+    LoggerService.log("error details-" + userPasswordResetLinkResponse.body);
     res.status(200).send();
   }
 
   //some error
   else{
-    console.log("some error-" + userPasswordResetLinkResponse.body);
+    LoggerService.log("some error-" + userPasswordResetLinkResponse.body);
     res.status(500).send();
   }
 
@@ -51,7 +51,7 @@ async function restPassword(req, res){
 
 // Check if there are at least three parts (including the empty string at the beginning)
   if (parts.length !== 3) {
-    console.log("URL format is not as expected.");
+    LoggerService.log("URL format is not as expected.");
     res.status(404).send();
     return;
   } else {

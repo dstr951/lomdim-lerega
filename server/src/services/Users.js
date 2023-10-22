@@ -166,7 +166,7 @@ async function resetPassword(email, newPassword, token) {
       ) {
         try {
           if (!validatePassword(newPassword)){
-            console.log("new password not valid");
+            LoggerService.log("new password not valid");
             return {status: 401};
           }
           // Hash the password
@@ -179,36 +179,36 @@ async function resetPassword(email, newPassword, token) {
             }
           },{runValidators : true});
 
-          console.log("Updated password successfully");
+          LoggerService.log("Updated password successfully");
           //destroy reset link
           PasswordReset.deleteOne({ email: email })
               .then(() => {
-                console.log("Delete link successfully");
+                LoggerService.log("Delete link successfully");
               })
               .catch((error) => {
                 console.log("Error deleting link:", error);
               });
           return { status: 200 };
         } catch (e) {
-          console.log("Error updating password: " + e.message);
+          LoggerService.log("Error updating password: " + e.message);
           return { status: 500 };
         }
       } else {
         if (resetUserPassword.token !== token) {
-          console.log("Email doesn't match token from URL");
+          LoggerService.log("Email doesn't match token from URL");
         } else {
-          console.log("Link expired");
+          LoggerService.log("Link expired");
           //delete expired links
           deleteExpiredPasswordResets();
         }
         return { status: 401 };
       }
     } else {
-      console.log("No link was generated for this email");
+      LoggerService.log("No link was generated for this email");
       return { status: 400 };
     }
   } catch (e) {
-    console.log("Internal error: " + e.message);
+    LoggerService.log("Internal error: " + e.message);
     return { status: 500 };
   }
 }

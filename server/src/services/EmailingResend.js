@@ -185,7 +185,6 @@ function notifyMatch(request, student, teacher) {
 }
 
 function notifyResetLink(email,link){
-  console.log(`sending email to: ${email}\nwith link: ${link}`);
   const resend = new Resend.Resend(process.env.RESEND_API_KEY);
   resend.emails.send({
     to : [email],
@@ -194,12 +193,12 @@ function notifyResetLink(email,link){
     text: `הנה קישור לאיפוס הסיסמא-\n ${link}\nהקישור יהיה זמין למשך 10 דקות.`
   }).then(() => {
     LoggerService.log(
-        "email sent"
+        `email was sent to- ${email}\n`
     );
   })
       .catch((error) => {
         LoggerService.error(
-            error
+            `email wasn't sent, error massage- ${error.message}\n`
         );
       });
 }

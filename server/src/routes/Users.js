@@ -12,5 +12,6 @@ router.post('/login',UsersController.loginUser);
 //limit the number of times it is possible to request password reset
 router.post('/resetPassword',limiter,UsersController.resetPasswordLink);
 router.put('/resetPassword/:token',UsersController.restPassword);
+router.post('/resetPassword/:token',UsersController.validLink);
 
 module.exports = router;

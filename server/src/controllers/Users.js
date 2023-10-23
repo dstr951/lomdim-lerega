@@ -44,29 +44,40 @@ async function resetPasswordLink(req, res){
 async function restPassword(req, res){
   const {email, password} = req.body;
   const url = req.url;
-  let token;
+  const token = getTokenFromUrl(url);
+  const userPasswordResetResponse = await UserService.resetPassword(email,password, token);
+  res.status(userPasswordResetResponse.status).send();
+  }
 
-// Split the URL by "/"
+async function validLink(req,res){
+  const url = req.url;
+  const token = getTokenFromUrl(url);
+  if(await UserService.validateLink(token)){
+    res.status(200).send() ;
+  }
+  else{
+    res.status(404).send() ;
+  }
+}
+
+function getTokenFromUrl(url){
+  // Split the URL by "/"
   const parts = url.split('/');
 
 // Check if there are at least three parts (including the empty string at the beginning)
   if (parts.length !== 3) {
     LoggerService.log("URL format is not as expected.");
-    res.status(404).send();
-    return;
+    return null;
+
   } else {
     // Get the third part (index 2) and assign it to a variable
-    token = parts[2];
-  }
-  const userPasswordResetResponse = await UserService.resetPassword(email,password, token);
-
-  res.status(userPasswordResetResponse.status).send();
-
+    return parts[2];
 
   }
-
+}
 module.exports = {
   loginUser,
   resetPasswordLink,
-  restPassword
+  restPassword,
+  validLink
 };

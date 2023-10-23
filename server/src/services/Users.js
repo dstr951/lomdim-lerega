@@ -213,11 +213,28 @@ async function resetPassword(email, newPassword, token) {
   }
 }
 
+async function validateLink(token){
+  try{
+    const link = await PasswordReset.findOne({token: token})
+    if(link && link.expirationDate.getTime() > Date.now()){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  catch (e) {
+    return false;
+  }
+
+}
+
 
 
 module.exports = {
   registerUser,
   loginUser,
   resetPasswordLink,
-  resetPassword
+  resetPassword,
+  validateLink
 };

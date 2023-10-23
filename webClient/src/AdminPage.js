@@ -186,13 +186,13 @@ function AdminPage() {
   }
 
   return (
-    <div className="container h-100">
+    <div className="container h-100 overflow-hidden">
       <div className="row h-100 d-flex p-0 m-0 justify-content-center">
         <div className="h1 d-flex justify-content-center m-0 p-0 align-items-center">
           Admin Panel
         </div>
         <div className="row h-100 d-flex p-0 m-0 justify-content-center">
-          <div className="row col-6 d-flex m-0 p-0 justify-content-center">
+          <div className="row col-6 h-75 d-flex m-0 p-0 justify-content-center">
             <div className="h2 d-flex justify-content-center m-0 p-0 align-items-center">
               Teachers
             </div>
@@ -218,7 +218,7 @@ function AdminPage() {
               <div>there was an error getting the teachers from the server</div>
             )}
           </div>
-          <div className="row col-6 d-flex m-0 p-0 justify-content-center">
+          <div className="row col-6 h-75 d-flex m-0 p-0 justify-content-center">
             <div className="h2 d-flex justify-content-center m-0 p-0 align-items-center">
               Students
             </div>

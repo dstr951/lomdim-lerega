@@ -19,6 +19,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passConfirm, setPassConfirm] = useState("");
+  const [agreedTermsOfService, setAgreedTermsOfService] = useState("");
 
   // Teacher fields
   const [subjects, setSubjects] = useState([]);
@@ -44,6 +45,11 @@ const Signup = () => {
   const [userType, setUserType] = useState("student");
 
   const navigate = useNavigate();
+
+  const handleChangeChecked = () => {
+    console.log("checked");
+    setAgreedTermsOfService(!agreedTermsOfService);
+  };
 
   const handleAddSubject = () => {
     if (
@@ -187,6 +193,15 @@ const Signup = () => {
         title: "משהו השתבש בהרשמה",
         confirmButtonText: "הבנתי",
         text: "מספר הטלפון צריך להכיל עשר ספרות בלבד",
+      });
+    }
+
+    if (!agreedTermsOfService) {
+      return Swal.fire({
+        icon: "error",
+        title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
+        text: "יש לאשר את תנאי השימוש לפני ההרשמה לאתר.",
       });
     }
 
@@ -621,6 +636,24 @@ const Signup = () => {
               {userType === "teacher" && teacherSignUp}
               {userType === "student" && studentSignUp}
               <br />
+              <Form.Check // prettier-ignore
+                reverse
+                checked={agreedTermsOfService}
+                onChange={handleChangeChecked}
+                type="checkbox"
+                label={
+                  <p>
+                    הנני מסכים
+                    <a
+                      target="_blank"
+                      href="https://drive.google.com/file/d/1lid3ygTK9B579tmezX2d3SWo5Sqhfjiu/view?usp=share_link"
+                    >
+                      &nbsp;לתנאי השימוש
+                    </a>
+                  </p>
+                }
+              />
+
               <button
                 variant="primary"
                 type="submit"

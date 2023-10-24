@@ -87,14 +87,12 @@
 }
 
 .back-button {
-  background-color: #807070;
-  color: #e5e2e2;
+  background-color: #808080;
   margin-top: 10px;
 }
 
 .back-button:hover {
-  background-color: #8b7b7b;
-  color: #ffffff;
+  background-color: #757575;
 }
 
 .checked-signup-button {

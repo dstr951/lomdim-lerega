@@ -6,6 +6,11 @@ import Header from "./component/Header";
 import "./style/TeacherHomepage.css";
 import "./style/App.css";
 import axios from "axios";
+import { ReactSVG } from "react-svg";
+
+import accept from "../public/assets/white-check.svg";
+import cancel from "../public/assets/white-close.svg";
+import teacherIcon from "../public/assets/teacher-icon.svg";
 
 const SERVER_ADDRESS = process.env.SERVER_ADDRESS
   ? process.env.SERVER_ADDRESS
@@ -92,11 +97,11 @@ const TeachingRequest = ({ request, token, onActionComplete }) => {
         <strong>הודעה:</strong> {request.messageContent} <br />
       </div>
       <div className="card-buttons d-flex justify-content-center">
-        <button variant="success" className="mr-2" onClick={approveRequest}>
-          אשר
+        <button id="success" className="mr-2" onClick={approveRequest}>
+          <ReactSVG src={accept} />
         </button>
-        <button variant="danger" onClick={rejectRequest}>
-          דחה
+        <button id="danger" onClick={rejectRequest}>
+          <ReactSVG src={cancel} />
         </button>
       </div>
       <ConfirmationModal
@@ -127,33 +132,31 @@ const NotificationButton = ({
         <span className="notification-count">{notifications}</span>
       </button>
 
-      {showRequests && (
-        <div className="overlay">
-          <div className="requests-modal">
-            <div className="title">ההתראות שלי</div>
-            <div className="requests-modal-body">
-              {teachingRequests.length == 0 ? (
-                <p id="center">אין התראות כרגע.</p>
-              ) : (
-                teachingRequests.map((request) => (
-                  <TeachingRequest
-                    key={request._id}
-                    request={request}
-                    token={token}
-                    onActionComplete={handleRequestAction}
-                  />
-                ))
-              )}
-            </div>
+      <div className={showRequests && "overlay"}>
+        <div className={`requests-modal ${showRequests ? "active" : ""}`}>
+          <div className="title">ההתראות שלי</div>
+          <div className="requests-modal-body">
+            {teachingRequests.length == 0 ? (
+              <p id="center">אין התראות כרגע.</p>
+            ) : (
+              teachingRequests.map((request) => (
+                <TeachingRequest
+                  key={request._id}
+                  request={request}
+                  token={token}
+                  onActionComplete={handleRequestAction}
+                />
+              ))
+            )}
+          </div>
 
-            <div className="d-flex justify-content-center mt-2">
-              <button id="close-button" onClick={() => setShowRequests(false)}>
-                סגור
-              </button>
-            </div>
+          <div className="d-flex justify-content-center mt-2">
+            <button id="close-button" onClick={() => setShowRequests(false)}>
+              סגור
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };
@@ -224,9 +227,13 @@ const TeacherHomepage = () => {
                 />
                 <div className="info-box">
                   <div className="text-box">
-                    <h2 id="orange-text">
-                      {teacherData.firstName} {teacherData.lastName}
-                    </h2>
+                    <div id="teacher-name-title">
+                      <h2 id="orange-text">
+                        {" "}
+                        {teacherData.firstName} {teacherData.lastName}{" "}
+                      </h2>
+                      <ReactSVG src={teacherIcon} />
+                    </div>
                     <p>
                       <strong>גיל:</strong> {teacherData.age} <br />
                       <a

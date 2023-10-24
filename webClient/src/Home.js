@@ -78,9 +78,8 @@ const Home = () => {
       <div className="home-section" id="section-3">
         <div className="text-section-3">
           <h1>
-            הצטרפו למאות מורים ותלמידים <br />
-            שלומדים ומלמדים, <br />
-            למען עתידנו וחוסננו הלאומי
+            הצטרפו למאות מורים ותלמידים שלומדים ומלמדים, למען עתידנו וחוסננו
+            הלאומי
             <br />
           </h1>
           <Link to="/signup">

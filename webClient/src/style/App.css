@@ -186,7 +186,7 @@ button:hover {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%); /* Center horizontally and vertically */
   width: 100%;
   max-width: 600px;
   border-radius: 10px;
@@ -194,7 +194,15 @@ button:hover {
   direction: rtl;
   background-color: #e1eaef;
   border-radius: 10px;
-  max-height: 775x;
+  max-height: 775px;
+
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.5s ease;
+}
+
+.requests-modal.active {
+  opacity: 1;
+  transform: translate(-50%, -50%); /* Center horizontally and vertically */
 }
 
 .requests-modal-body {

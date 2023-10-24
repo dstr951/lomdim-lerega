@@ -202,36 +202,34 @@ const NotificationButton = ({
         <span className="notification-count">{notifications}</span>
       </button>
 
-      {showRequests && (
-        <div className="overlay">
-          <div className="requests-modal">
-            <div className="title">ההתראות שלי</div>
-            <div
-              className="requests-modal-body"
-              id={requests.length == 0 && "no-notification"}
-            >
-              {requests.length == 0 ? (
-                <p id="center">אין התראות כרגע.</p>
-              ) : (
-                requests.map((request) => (
-                  <TeachingRequest
-                    key={request._id}
-                    request={request}
-                    token={token}
-                    onActionComplete={handleRequestAction}
-                  />
-                ))
-              )}
-            </div>
+      <div className={showRequests && "overlay"}>
+        <div className={`requests-modal ${showRequests ? "active" : ""}`}>
+          <div className="title">ההתראות שלי</div>
+          <div
+            className="requests-modal-body"
+            id={requests.length == 0 && "no-notification"}
+          >
+            {requests.length == 0 ? (
+              <p id="center">אין התראות כרגע.</p>
+            ) : (
+              requests.map((request) => (
+                <TeachingRequest
+                  key={request._id}
+                  request={request}
+                  token={token}
+                  onActionComplete={handleRequestAction}
+                />
+              ))
+            )}
+          </div>
 
-            <div className="d-flex justify-content-center mt-2">
-              <button id="close-button" onClick={() => setShowRequests(false)}>
-                סגור
-              </button>
-            </div>
+          <div className="d-flex justify-content-center mt-2">
+            <button id="close-button" onClick={() => setShowRequests(false)}>
+              סגור
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

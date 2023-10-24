@@ -43,10 +43,10 @@ const Signup = () => {
   const handleAddSubject = () => {
     if (gradeToId[startClass] > gradeToId[endClass]) {
       alert("שגיאה: טווח הכיתות אינו תקין");
-      return; 
+      return;
     }
     const newSubject = {
-      subject: selectedSubject, 
+      subject: selectedSubject,
       range: `${startClass} עד ${endClass}`,
     };
     setSubjects((prevSubjects) => [...prevSubjects, newSubject]);

@@ -12,7 +12,7 @@ function ProfileDetails({clickedProfile, setApproval, token}) {
         TeacherHomepage.defaultProps.teacher.profilePicture
     );
     useEffect(() => {
-        if (clickedProfile.email) {
+    if (clickedProfile.email && clickedProfile.role === "teacher") {
             console.log("token", token);
             const imageURL = `${SERVER_ADDRESS}/api/Teachers/${clickedProfile.email}/profilePicture`;
             axios

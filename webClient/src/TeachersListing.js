@@ -28,6 +28,7 @@ const TeachersListing = () => {
       icon: "error",
       title: "משהו השתבש",
       text: "תלמיד יקר, נראה שלא היית מחובר, אנא התחבר שוב במסך הראשי.",
+      confirmButtonText: "אישור",
     }).then(() => {
       navigate("/login", {});
     });
@@ -83,7 +84,7 @@ const TeachersListing = () => {
         });
     } else {
       setFilteredTeachers(teachers);
-      setNoTeachersText(".בחרו מקצוע, כיתה או שניהם לפני החיפוש");
+      setNoTeachersText("בחרו מקצוע, כיתה או שניהם לפני החיפוש.");
     }
   };
   const noTeachers = (

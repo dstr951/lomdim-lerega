@@ -22,9 +22,9 @@ const Signup = () => {
 
   // Teacher fields
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState("מתמטיקה");
-  const [startClass, setStartClass] = useState("א'");
-  const [endClass, setEndClass] = useState("א'");
+  const [selectedSubject, setSelectedSubject] = useState("בחר מקצוע");
+  const [startClass, setStartClass] = useState("בחר כיתה");
+  const [endClass, setEndClass] = useState("בחר כיתה");
   const [age, setAge] = useState("");
   const [socialProfileLink, setSocialProfileLink] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -46,23 +46,29 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleAddSubject = () => {
-    if (gradeToId[startClass] > gradeToId[endClass]) {
-      Swal.fire({
-        icon: "error",
-        title: "משהו השתבש בהרשמה",
-        text: "!טווח הכיתות אינו תקין",
-      });
-      return;
+    if (
+      selectedSubject != "בחר מקצוע" &&
+      startClass != "בחר כיתה" &&
+      endClass != "בחר כיתה"
+    ) {
+      if (gradeToId[startClass] > gradeToId[endClass]) {
+        Swal.fire({
+          icon: "error",
+          title: "משהו השתבש בהרשמה",
+          text: "!טווח הכיתות אינו תקין",
+        });
+        return;
+      }
+      const newSubject = {
+        subject: selectedSubject,
+        range: `${startClass} עד ${endClass}`,
+      };
+      const i = subjects.findIndex((item) => item.subject === selectedSubject);
+      if (i != -1) {
+        handleRemoveSubject(i);
+      }
+      setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
     }
-    const newSubject = {
-      subject: selectedSubject,
-      range: `${startClass} עד ${endClass}`,
-    };
-    const i = subjects.findIndex((item) => item.subject === selectedSubject);
-    if (i != -1) {
-      handleRemoveSubject(i);
-    }
-    setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
   };
 
   const handleRemoveSubject = (index) => {
@@ -134,6 +140,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "נא למלא את כל השדות",
       });
     }
@@ -142,6 +149,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "בדקו שכתובת האימייל שהזנתם תקינה",
       });
     }
@@ -150,6 +158,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "הסיסמאות אינן תואמות",
       });
     }
@@ -158,6 +167,7 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
+        confirmButtonText: "הבנתי",
         text: "הסיסמה צריכה להיות באורך לפחות 8, להכין מספרים, סימנים ותווים באנגלית בלבד",
       });
     }
@@ -166,7 +176,8 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
-        text: "מספר הטלפון צריך להכיל עשר ספרות",
+        confirmButtonText: "הבנתי",
+        text: "מספר הטלפון צריך להכיל עשר ספרות בלבד",
       });
     }
 
@@ -174,7 +185,8 @@ const Signup = () => {
       return Swal.fire({
         icon: "error",
         title: "משהו השתבש בהרשמה",
-        text: "מספר הטלפון צריך להכיל עשר ספרות",
+        confirmButtonText: "הבנתי",
+        text: "מספר הטלפון צריך להכיל עשר ספרות בלבד",
       });
     }
 
@@ -207,6 +219,7 @@ const Signup = () => {
           Swal.fire({
             icon: "success",
             title: "!ההרשמה בוצעה בהצלחה",
+            confirmButtonText: "אישור",
           }).then(() => {
             navigate("/login", { state: { email } });
           });
@@ -223,7 +236,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           });
         }
       } catch (error) {
@@ -232,12 +245,14 @@ const Signup = () => {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             html: `
               <div dir="rtl">
                 אופס, יש לנו תקלה בשרת, אנא נסו שוב מאוחר יותר 
@@ -247,7 +262,6 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
           }).then(() => {
             console.error(error);
           });
@@ -278,6 +292,7 @@ const Signup = () => {
           Swal.fire({
             icon: "success",
             title: "!ההרשמה בוצעה בהצלחה",
+            confirmButtonText: "אישור",
           }).then(() => {
             navigate("/login", { state: { email } });
           });
@@ -294,7 +309,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           });
         }
       } catch (error) {
@@ -303,6 +318,7 @@ const Signup = () => {
           return Swal.fire({
             icon: "error",
             title: "משהו השתבש בהרשמה",
+            confirmButtonText: "הבנתי",
             text: "נראה שכבר קיים משתמש עם כתובת האימייל הזאת",
           });
         } else {
@@ -318,7 +334,7 @@ const Signup = () => {
                 </span>
               </div>
             `,
-            confirmButtonText: "אישור",
+            confirmButtonText: "הבנתי",
           }).then(() => {
             console.error(error);
           });
@@ -361,6 +377,22 @@ const Signup = () => {
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
+        <div className="addFile-container">
+          <p>תמונת פרופיל:</p>
+          <Form.Control
+            type="file"
+            className="fileInput"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+        <p>קישור לפרופיל חברתי:</p>
+        <Form.Control
+          type="url"
+          placeholder="קישור לפרופיל החברתי שלך"
+          value={socialProfileLink}
+          onChange={(e) => setSocialProfileLink(e.target.value)}
+        />
         <br />
         <h2 id={color}>פרטים מקצועיים</h2>
         <div className="select-container">
@@ -372,6 +404,7 @@ const Signup = () => {
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
             >
+              <option value={"בחר מקצוע"}>בחר מקצוע</option>
               {Object.entries(idToSubject).map(([id, subject]) => (
                 <option key={id} value={subject}>
                   {subject}
@@ -387,6 +420,7 @@ const Signup = () => {
               value={startClass}
               onChange={(e) => setStartClass(e.target.value)}
             >
+              <option value={"בחר כיתה"}>בחר כיתה</option>
               {Object.entries(idToGrade).map(([id, grade]) => (
                 <option key={id} value={grade}>
                   {grade}
@@ -403,6 +437,7 @@ const Signup = () => {
               defaultValue='י"ב'
               onChange={(e) => setEndClass(e.target.value)}
             >
+              <option value={"בחר כיתה"}>בחר כיתה</option>
               {Object.entries(idToGrade).map(([id, grade]) => (
                 <option key={id} value={grade}>
                   {grade}
@@ -419,36 +454,26 @@ const Signup = () => {
             הוסף
           </button>
         </div>
-        <ListGroup className="list">
-          {subjects.map((item, index) => (
-            <ListGroup.Item key={index} className="list-item">
-              {`${item.subject} (${item.range})`}
-              <div>
-                <ReactSVG
-                  src={closeSVG}
-                  className="closeButton"
-                  onClick={() => handleRemoveSubject(index)}
-                />
-              </div>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-        <div className="addFile-container">
-          <p>תמונה:</p>
-          <Form.Control
-            type="file"
-            className="fileInput"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <p>קישור לפרופיל חברתי:</p>
-        <Form.Control
-          type="url"
-          placeholder="קישור לפרופיל החברתי שלך"
-          value={socialProfileLink}
-          onChange={(e) => setSocialProfileLink(e.target.value)}
-        />
+        <p>מקצועות שנבחרו:</p>
+        {subjects.length == 0 ? (
+          <p class="text-center">לא הוזנו מקצועות.</p>
+        ) : (
+          <ListGroup className="list">
+            {subjects.map((item, index) => (
+              <ListGroup.Item key={index} className="list-item">
+                {`${item.subject} (${item.range})`}
+                <div>
+                  <ReactSVG
+                    src={closeSVG}
+                    className="closeButton"
+                    onClick={() => handleRemoveSubject(index)}
+                  />
+                </div>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+        <br />
         <p> קצת עליי בכמה מילים...</p>
         <Form.Control
           type="text"
@@ -535,7 +560,11 @@ const Signup = () => {
               <div className="row-container">
                 <p>אני</p>
                 <button
-                  className="item-row"
+                  className={`item-row ${
+                    userType === "teacher"
+                      ? "checked-signup-button"
+                      : "unchecked-signup-button"
+                  }`}
                   id="orange-button"
                   label="מורה"
                   name="userType"
@@ -545,12 +574,15 @@ const Signup = () => {
                   מורה
                 </button>
                 <button
-                  className="item-row"
+                  className={`item-row ${
+                    userType === "student"
+                      ? "checked-signup-button"
+                      : "unchecked-signup-button"
+                  }`}
                   id="purple-button"
                   label="תלמיד"
                   name="userType"
                   inline
-                  checked={userType === "student"}
                   onClick={() => setUserType("student")}
                 >
                   תלמיד
@@ -559,6 +591,9 @@ const Signup = () => {
             </Form.Group>
             <Form onSubmit={handleSubmit}>
               <br />
+              <div className="color-red">
+                *שימו לב, כל השדות בטופס הינם חובה
+              </div>
               <h2 id={color}>פרטי התחברות</h2>
               <p>אימייל:</p>
               <Form.Control
@@ -601,7 +636,7 @@ const Signup = () => {
                   type="button"
                   className="w-100 back-button"
                 >
-                  חזור
+                  להתחברות
                 </button>
               </Link>
             </Form>

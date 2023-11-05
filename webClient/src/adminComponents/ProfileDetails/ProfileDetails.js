@@ -1,6 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Image } from "react-bootstrap";
+import TeacherHomepage from "../../TeacherHomepage";
+import axios from "axios";
 
-function ProfileDetails({ clickedProfile, setApproval }) {
+const SERVER_ADDRESS = process.env.SERVER_ADDRESS
+  ? process.env.SERVER_ADDRESS
+  : "http://localhost:3001";
+
+function ProfileDetails({ clickedProfile, setApproval, token }) {
+  const [teacherImage, setTeacherImage] = useState(
+    TeacherHomepage.defaultProps.teacher.profilePicture
+  );
+  useEffect(() => {
+    if (clickedProfile.email && clickedProfile.role === "teacher") {
+      console.log("token", token);
+      const imageURL = `${SERVER_ADDRESS}/api/Teachers/${clickedProfile.email}/profilePicture`;
+      axios
+        .get(imageURL, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((response) => {
+          if (response?.data?.profilePicture) {
+            console.log("successful request");
+            setTeacherImage(response.data.profilePicture);
+          } else {
+            setTeacherImage(
+              TeacherHomepage.defaultProps.teacher.profilePicture
+            );
+          }
+        });
+    } else {
+      setTeacherImage(TeacherHomepage.defaultProps.teacher.profilePicture);
+    }
+  }, [clickedProfile]);
   return (
     <div
       className="modal fade"
@@ -25,6 +59,15 @@ function ProfileDetails({ clickedProfile, setApproval }) {
           <div className="modal-body">
             {clickedProfile.role === "teacher" ? (
               <div>
+                <div className="d-flex justify-content-center">
+                  <Image
+                    src={`data:image/jpeg;base64,${teacherImage}`}
+                    roundedCircle
+                    width="250"
+                    height="250"
+                    className="profile-img"
+                  />
+                </div>
                 <div>
                   <span className="fw-bold">First name:</span>{" "}
                   {clickedProfile.firstName}
@@ -41,7 +84,12 @@ function ProfileDetails({ clickedProfile, setApproval }) {
                 </div>
                 <div>
                   <span className="fw-bold">Social profile link:</span>{" "}
-                  {clickedProfile.socialProfileLink}
+                  <a
+                    href={clickedProfile.socialProfileLink}
+                    className="fw-bold"
+                  >
+                    {clickedProfile.socialProfileLink}
+                  </a>
                 </div>
                 <div>
                   <span className="fw-bold">Phone number:</span>{" "}

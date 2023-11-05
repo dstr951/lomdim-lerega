@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { idToGrade, idToSubject, subjectToId } from "../Converters";
+import Swal from "sweetalert2";
 
 function ContactTeacherModal(props) {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ function ContactTeacherModal(props) {
         icon: "error",
         title: "משהו השתבש",
         text: "נא למלא את כל השדות",
+        confirmButtonText: "הבנתי",
       });
     }
 
@@ -59,9 +61,10 @@ function ContactTeacherModal(props) {
       setMessageContent("");
       setSelectedSubject("נא לבחור מקצוע");
       if (response.status === 200) {
-        Swal.fire({
+        return Swal.fire({
           icon: "success",
           title: "!ההודעה נשלחה בהצלחה",
+          confirmButtonText: "מעולה",
         });
       } else {
         return Swal.fire({
@@ -88,6 +91,7 @@ function ContactTeacherModal(props) {
           icon: "info",
           title: "בקשה למורה הזה כבר נשלחה",
           text: "אנא המתינו עד לקבלת תשובה מהמורה, בינתיים מוזמנים לנסות מורים אחרים",
+          confirmButtonText: "הבנתי",
         });
       } else {
         return Swal.fire({
@@ -122,7 +126,7 @@ function ContactTeacherModal(props) {
         id="no-background"
       >
         <Form onSubmit={sendMessageToTeacher} className="requests-modal">
-          <div className="title">יצרית קשר - מורה</div>
+          <div className="title">יצירת קשר עם מורה</div>
 
           <div className="requests-modal-body">
             <p>מקצוע:</p>
@@ -146,13 +150,15 @@ function ContactTeacherModal(props) {
               </Col>
             </div>
             <p>כתוב הודעתך למורה:</p>
-            <Form.Control
+            <textarea
               id="text-message"
               rows={4}
               placeholder="כתוב את הודעתך למורה כאן."
               value={messageContent}
               onChange={(e) => setMessageContent(e.target.value)}
             />
+            <div className="color-red">*שימו לב, כל השדות בטופס הינם חובה</div>
+            <br />
             <div>
               {" "}
               <div md={6} className="d-flex justify-content-center">

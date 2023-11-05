@@ -96,3 +96,16 @@
   background-color: #8b7b7b;
   color: #ffffff;
 }
+
+.checked-signup-button {
+  border: black 2.5px solid;
+}
+#orange-button.unchecked-signup-button{
+	background-color:#F8B98F;
+}
+#purple-button.unchecked-signup-button{
+	background-color:#C5B1D9;
+}
+.color-red{
+	color: #d81259;
+}
